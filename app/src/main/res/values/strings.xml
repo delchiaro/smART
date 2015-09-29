@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Beaconav</string>
+    <string name="title_activity_map">Beaconav</string>
+    <string name="title_activity_opengl_test">OpenglTestActivity</string>
+    <string name="json_test">Verranno visualizzati ID, latitudine e longitudine dei musei presenti sul database:</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_canvas_test">canvasTestActivity</string>
+    <string name="title_activity_test_location">testLocationActivity</string>
+    <string name="get_location">Get Location</string>
+    <string name="disconnect">Disconnect Service</string>
+    <string name="connect">Connect Service</string>
+    <string name="title_activity_test_updating_location">testUpdatingLocationActivity</string>
+    <string name="title_activity_jsontest">JSONTest</string>
+    <string name="action_hide">Hide Panel</string>
+    <string name="action_show">Show Panel</string>
+    <string name="action_anchor_enable">Enable Anchor Point</string>
+    <string name="action_anchor_disable">Disable Anchor Point</string>
+    <string name="museum_search_hint">Search Museums</string>
+    <string name="title_activity_searchable">SearchableActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,39 @@
+<resources>		
+    <string name="google_maps_key_instructions" templateMergeStrategy="replace"><!--		
+		
+    TODO: Before you run your application, you need a Google Maps API key.		
+		
+    To get one, follow this link, follow the directions and press "Create" at the end:		
+		
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=F2:38:F5:29:EE:22:B4:04:D3:BD:16:C3:4F:11:70:66:13:B2:21:DF%3Bmicc.beaconav		
+		
+    You can also add your credentials to an existing key, using this line:		
+
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"		
+    string in this file.
+
+
+
+    Macbook pro Franco: D9:34:BA:1B:B9:BC:84:BA:98:4A:8E:F5:20:B1:36:F9:8A:D8:DE:F6;micc.beaconav
+    Lenovo OS X NAGASH: 5C:B5:B9:16:A9:C9:81:F2:A9:CF:6A:C0:02:17:D4:B3:44:A0:5E:2D;micc.beaconav
+    Lenovo Win8 Nagash: F2:38:F5:29:EE:22:B4:04:D3:BD:16:C3:4F:11:70:66:13:B2:21:DF;micc.beaconav
+
+    --></string>
+
+
+
+
+    <!-- COMMENTA TUTTE LE STRINGHE TRANNE QUELLE RELATIVE AL PC DAL QUALE STAI LAVORANDO !!!!!! -->
+
+
+        <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyAb9d51do-Gpyz78S5cCnkYQHjywhatvKo</string>
+
+
+
+        <!-- <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyCNMQpbxgo4qQsVdKPZ4RljXSuVJPKVFOU</string>
+     -->
+
+
+
+</resources>

@@ -1,0 +1,91 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1343\cocoasubrtf140
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15500\viewh14940\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs28 \cf0 Indoor Navigation Concept \'97\
+
+\b0\fs24 \
+\
+
+\b Idea di base -\
+
+\b0 La mappa \'e8 un bitmap (eventualmente vettoriale ma per ora consideriamola un bitmap).\
+\'c8 quindi sempre una immagine rettangolare, ed avr\'e1 associata ad essa una altezza e larghezza in pixel.\
+Dovremo associare all\'92angolo in alto a sinistra la posizione (0,0) (in metri) mentre a quello inbasso a destra la posizione(X,Y) in metri, avendo delle misure reali dell\'92edificio.\
+Inoltre i due angoli sopra citati dovranno essere associati a due coordinate GPS.\
+Sar\'e1 quindi possibile semplicemente associare i due angoli a due coordinate GPS in modo che automaticamente si calcoli la posizione in metri dell\'92angolo in basso a destra rispetto alla posizione di riferimento (0,0) associata all\'92angolo in alto a sinistra (dovremo fare un algoritmo di conversione distanza GPS -> distanza in metri).\
+\
+All\'92interno della mappa dovremo gestire la navigabilit\'e1 con un  grafo di Spot, ogni spot \'e8 collegato agli altri spot verso cui pu\'f2 navigare.\
+Gli spot sono quindi:\
+\
+ArtWorks 	(extends DrawableSpot)\
+Door		(extends DrawableSpot)\
+Path		(extends Spot)\
+\
+[Beacon 	(extends Spot)] (non navigabili ma solo riferimenti per localizzazione)\
+\
+\
+FOTO 1\
+\
+\
+Supponendo infatti che qualsiasi ArtWork sia sempre un punto i arrivo per un path e mai un punto intermedio, si potrebbero eliminare tutti gli ArtWork dal grafo e lasciare solo Door e Path.\
+In questo modo, poich\'e8 la nostra posizione sar\'e1 sempre e comunque esterna al grafo degli spot e dovremo ricongiungerci ad esso, potremmo creare una linea diretta tra la nostra posizione e l\'92opera d\'92arte verso la quale vogliamo navigare (se \'e8 nella stessa stanza) o verso la prossima porta che ci avvicina all\'92opera d\'92arte.\
+\
+Questa soluzione ci permette di alleggerire molto la memorizzazione dei link tra i vari spot (il numero di link cresce esponenzialmente in ogni stanza col numero di spot presenti nella stanza nel caso pessimo).\
+Inoltre la soluzione sar\'e1 pi\'f9 flessibile anche graficamente, infatti l\'92utente verr\'e1 guidato direttamente verso l\'92opera invece di riallacciarsi al grafo attraverso il PathSpot pi\'f9 vicino alla propria posizione nella mappa (che nella maggior parte dei casi consiglierebbe all\'92utente di fare della strada in una direzione non utile all\'92avvicinamento verso l\'92interesse richiesto, soluzione visivamente molto brutta).\
+\
+Entrambe le soluzioni sopra citate soffrono per\'f2 di un problema comune: stanze concave impongono dei muri interni attraverso il quale l\'92algoritmo potrebbe consigliare di navigare per andare verso un opera o per riallacciarsi al grafo degli spot. lo stesso vale per stanze con muri perimetrali convessi ma che impongono ostacoli interni (muri divisori interni o simili, diciamo terreno non calpestabile o non camminabile), che da ora in poi chiameremo comunque stanze concave.\
+\
+Per risolvere questo problema si pu\'f2 riapplicare il concetto col quale abbiamo risolto il problema al livello museo-stanze: \
+\'93ogni stanza ha dei punti di ingresso detti porte, se siamo all\'92interno di una stanza possiamo navigare liberamente solo all\'92interno della stanza, oppure passare ad un\'92altra stanza tramite una porta\'94/\
+\
+Questo concetto porta ad una buona sintesi del grafo degli spot per soluzioni di tipo (1) (in cui ogni opera \'e8 collegata a tutte le altre opere e a tutti gli altri spot per stanze semplici, ovvero convesse) in cui abbiamo Doors, Path e ArtWork.\
+Lo stesso concetto porta alla semplificazione della soluzione (1) arrivando alla soluzione (2) (artwork svincolate dal grafo degli spot, poich\'e8 in una stanza convessa qualsiasi linea retta non interseca il perimetro, abbiamo solo i punti di ingresso/uscita cio\'e8 le porte).\
+ \
+Possiamo quindi passare dalla soluzione (2) ad una terza soluzione (3) per risolvere il problema delle stanze concave: ogni stanza \'e8 a sua volta suddivisa in \'93sottostanze virtuali\'94 che hanno dei punti di ingresso/uscita (porte virtuali). Queste stanze virtuali (da ora in poi Aree) dovranno esserenecessariamente CONVESSE e la loro unione deve ricoprire la superficie della stanza che le contiene.\
+In questo modo \'e8 possibile sintetizzare una stanza concava in un insieme di aree convesse, le quali hanno delle porte virtuali (ingressi all\'92area) che scanseranno gli eventuali ostacoli (che rendono la stanza concava).\
+Se la stanza \'e8 invece gi\'e0 convessa, avr\'e1 una sola area che coincider\'e1 con la stanza stessa.\
+\
+\
+\
+
+\b\fs28 Implementazione: ConvexArea e Grafo di Ingress.\
+
+\b0\fs24 \
+L\'92idea di base \'e8 che ogni stanza ha 1\'85 N ConvexArea (come spiegato precedentemente) ed ogni ConvexArea \'e8 interconnessa alle altre ConvexArea attraverso delle porte virtuali (chiamate Ingress, ingressi).\
+Il concetto di Ingress \'e8 poco pi\'f9 complesso di una porta virtuale: unisce infatti il concetto di porta virtuale e porta fisica disegnabile sullo schermo, avendo:\
+\
+- 2 puntatori alle ConvexArea collegate\
+- 2 spot che fungono da \'93punto di aggancio\'94 per le linee che dovranno essere disegnate durante la navigazione\
+- 1 eventuale DrawableSpot che, in caso di porta fisica, verr\'e1 inizializzato e disegnato quindi sullo schermo.\
+\
+Perch\'e8 ci sono ben 3 spot? Perch\'e8 cos\'ec potremo inserire i 2 spot di aggiancio non precisamente nel punto in cui intendiamo creare il passaggio, ma poco pi\'f9 vicino (idealmente) in modo da creare delle smussature nelle linee della navigazione.\
+\
+\
+(FOTO 1 vs 2 punti di aggancio)\
+\
+\
+\
+\
+Gli Ingress sono organizzati in un grafo (GRAFO DI INGRESS): Ogni nodo del grafo contiene un Ingress ed una lista di link (verso gli altri nodi).\
+Quindi dicendo che \'93ogni ConvexArea A \'e8 interconnessa verso altre ConvexArea B1\'85 Bn attraverso degli Ingress\'94 intendiamo dire che ogni ConvexArea ha (possiede i riferimenti a) 1 \'85 N nodi del grafo di ingress, ed ogni rispettivo ingress avr\'e1 quindi uno dei due puntatori che punta alla ConvexArea A, e l\'92altro che punta a Bi (con i che va da 1 a N).\
+\
+\
+\
+\
+(FOTO GRAFO)\
+\
+\
+\
+Le ConvexArea che hanno una porta fisica ( cio\'e8 un muro con porta che \'e8 in comune con un muro fisico della stanza, Room) dovranno inizializzare tale Ingress in modo che abbia il DrawableSpot diverso da null (in modo che venga disegnata effettivamente la porta).\
+\
+Non utilizzeremo quindi mai le Room per la gestione del percorso, bens\'ec ci rifaremo sempre alle ConvexArea.\
+Room servir\'e1 solo per disegnare gli effettivi muri fisici della stanza e per inizializzare le porte fisiche degli ingress che poggiano su mura fisiche.\
+\
+\
+\
+\
+\
+}

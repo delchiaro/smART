@@ -1,0 +1,4 @@
+
+
+v2.0: riprogettato completamente utilizzando le convex area (e quindi i Convex Cut), eliminando i pathSpot.
+v1.0: initial release.

@@ -1,0 +1,162 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1343\cocoasubrtf140
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red26\green26\blue26;\red247\green247\blue247;\red32\green119\blue159;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx0\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li285\fi-277\pardirnatural
+
+\f0\fs24 \cf0 V 1.0\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li285\fi2\pardirnatural
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li285\fi2\pardirnatural
+
+\b \cf0 \ul \ulc0 Artwork
+\b0 \ulnone \
+
+\b name, descr:
+\b0  Informazioni su opere d\'92arte\
+
+\b x, y:
+\b0  posizione sulla mappa dell\'92opera d\'92arte (in double, espresse in metri)\
+
+\b ID_nearestPathSpot:
+\b0  ID del pathspot pi\'f9 vicino (il percorso minimo verso l\'92opera porter\'e1 a questo pathSpot)\
+
+\b ID_image:
+\b0  ID della Image che rappresenta l\'92artwork\
+
+\b is_musem_preview:
+\b0  valore booleano, se settato ad 1 (true) l\'92immagine associata a questa artwork verr\'e1 visualizzata nell\'92anteprima del museo.\
+\
+\
+
+\b \ul PathSpot
+\b0 \ulnone \
+
+\b x, y:
+\b0  posizione.\
+
+\b ID_room: 
+\b0 id della stanza che contiene il PathSpot.\
+\
+\
+\
+
+\b \ul Image
+\b0 \ulnone \
+
+\b link_****DPI:
+\b0  link dell\'92immagine con una grandezza appropriata per i DPI dello schermo indicati, seguendo le linee guida di android: {\field{\*\fldinst{HYPERLINK "http://developer.android.com/guide/practices/screens_support.html"}}{\fldrslt http://developer.android.com/guide/practices/screens_support.html}}\
+\
+in breve si utilizza questa formula: 
+\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+ 
+\b \expnd0\expndtw0\kerning0
+3:4:6:8:12:16\
+
+\b0 \expnd0\expndtw0\kerning0
+Quindi le immagini, presa una generica unit\'e1 di misura (pixel), devono essere ridimensionate come segue.\
+ldpi: 	3x\
+mdpi: 	4x (misura standard)\
+hdpi:	6x\
+xhdpi:	8x\
+xxhdpi:	12x\
+xxxhdp:	16x\
+\
+Dalle linee guida:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\li285\fi2\sl380\sa300
+
+\i \cf2 \expnd0\expndtw0\kerning0
+ For example, if you have a bitmap drawable that's 48x48 pixels for medium-density screens, all the different sizes should be:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\li285\fi2\sl380\sa100
+\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+36x36 (0.75x) for low-density\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+48x48 (1.0x baseline) for medium-density\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+72x72 (1.5x) for high-density\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+96x96 (2.0x) for extra-high-density\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+180x180 (3.0x) for extra-extra-high-density\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+192x192 (4.0x) for extra-extra-extra-high-density (launcher icon only; see {\field{\*\fldinst{HYPERLINK "http://developer.android.com/guide/practices/screens_support.html#xxxhdpi-note"}}{\fldrslt \cf4 \expnd0\expndtw0\kerning0
+note}} above)
+\i0 \cb1 \expnd0\expndtw0\kerning0
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\li285\fi2\sl380\sa100
+\cf2 \
+(NB: xxxhdpi non \'e8 molto importante, e ad ogni modo l\'92app prender\'e0 automaticamente la pi\'f9 grande immagine disponibile se la dimensione perfetta per lo schermo non \'e8 presente nel DB)\
+\
+
+\b \ul QRCode\
+\ulnone code:
+\b0  il codice del qrCode (un testo). Questo codice \'e8 univoco (unique, in sql), nonostante ci\'f2 non \'e8 chiave primaria (\'e8 sempre meglio avere una chiave primaria con valore intero, cio\'e8 il campo ID, come tutte le altre tabelle del DB).\
+\
+
+\b \ul Beacon
+\b0 \ulnone \
+
+\b minor, major:
+\b0  sono i codici identificativi (due valori interi) del beacon. Sono unici, ovvero non possono esistere due beacon nel DB aventi entrambi lo stesso minor e major (definito vincolo unique sulla coppia (minor, major)).\
+\
+
+\b \ul SensorAssociation\
+
+\i \ulnone definisce una associazione tra un QRcode \ul e/o\ulnone  un Beacon con una artwork \ul o\ulnone  un pathspot.
+\i0\b0 \
+
+\b ID_beacon: 
+\b0 definito come unique, cio\'e8 pu\'f2 esistere solo una tupla che si riferisce ad un certo beacon (poich\'e8 un beacon pu\'f2 essere associato ad un solo PathSpot 
+\b \ul o 
+\b0 \ulnone ad un solo Artwork).
+\b \
+ID_qrcode: 
+\b0 definito come unique, cio\'e8 pu\'f2 esistere solo una tupla che si riferisce ad un certo qrcode (come nel caso precedente di ID_beacon). Se vogliamo associare un QR_code allo stesso oggetto a cui \'e8 associato un beacon, \'e8 bene quindi utilizzare la medesima tupla in modo che si indichi il fatto che l\'92oggetto Artwork o PathSpot \'e8 legato ad un certo ed unico beacon e ad un altro unico qrcode. Si pu\'f2 pensare che ogni oggetto Artwork o PathSpot pu\'f2 essere legato al massimo ad 1 sensore per ogni tipologia di sensore (in questo caso esistono 2 tipologie di sensori: qrcode e beacon). Quindi tutte le associazioni tra tutte le tipologie di sensori e tale oggetto devono essere fatte nella stessa tupla.
+\b \
+ID_pathSpot: 
+\b0 per rafforzare ci\'f2 che \'e8 stato detto sopra, definiamo questo campo come unique. Non possono quindi esistere due tuple che si riferiscono allo stesso pathSpot.
+\b \
+ID_artwork: 
+\b0 stesso discorso fatto su ID_pathSpot lo facciamo per ID_artwork, che \'e8 anche questo unique.\
+Dobbiamo aggiungere una considrazione che non \'e8 stata ancora concretizzata come vincolo sul database (per assenza della possibilit\'e1 di creare gerarchie di classi nei database relazionali): una SensorAssociation DEVE avere ID_pathSpot O ID_artwork a NULL. Infatti lo stesso sensore non pu\'f2 riferirsi sia ad un Artwork che ad un PathSpot! Poich\'e8 in tal caso l\'92applicazione tendenzialmente, rilevando la presenza del sensore, non saprebbe se associarlo all\'92artwork o al PathSpot.\
+Per evitare problemi, nella applicazione mobile, daremo la precedenza ad una delle due (probabilmente le Artwork, che intrinsecamente hanno una informazione in pi\'f9, contenendo infatti oltre alle info dell\'92artwork anche le info del PathSpot pi\'f9 vicino, ovvero della posizione occupata dall\'92utente).\
+Un\'92altra soluzione progettuale potrebbe essere quella di eliminare l\'92associazione \'93nearestPathSpot\'94 di Artwork, e quindi fare tale associazione tramite SensorAssociation. Questo obbligherebbe per\'f2 a creare una tupla di SensorAssociation anche nel caso che l\'92artwork non abbia ancora sensori associati, ma abbia un nearestPathSpot definito, per questo \'e8 stata per adesso esclusa (i nomi delle tabelle non corrisponderebbero a ci\'f2 che \'e8 effettivamente memorizzato all\'92interno).\
+\
+NB: se si avessero sia ID_artwork che ID_pathSpot diversi da null, ID_pathSpot verrebbe ignorato dalla logica dell\'92applicativo mobile ma non dalla logica del database (vincoli) che imporrebbe comunque che nessun altra tupla di questa tabella abbia nuovamente lo stesso ID_pathSpot, perdendo quindi la possibilit\'e1 di associare effettivamente dei sensori all\'92ID_pathSpot a meno che di non alterare la tupla settando ID_pathSpot a null. Si potrebbe creare una procedura automatica che setti a NULL ID_pathSpot per ogni tupla in cui \'e8 settato un valore di ID_artwork (trigger?).\
+\
+\
+\
+
+\b \ul GraphSpotAssociation
+\b0 \
+\ulnone Serve a realizzare una associazione N a N  tra PathSpot e PathSpot stesso, in modo da creare un grafo di PathSpot.\
+Ogni tupla di pathSpot \'e8 referenziabile N volte da GraphSpotAssociation, ed ogni volta che \'e8 referenziata \'e8 associata ad un\'92altra tupla di pathSpot tramite la seconda chiave esterna.\
+In breve ogni tupla di GraphSpotAssociation crea un collegamento (arco del grafo) bidirezionale tra due pathSpot (nodi del grafo).\
+\
+
+\b \ul Vertex\
+\ulnone index_in_room:
+\b0  indica un valore per l\'92ordinamento dei vertici di una stanza. Le stanze hanno infatti i vertici organizzati come una lista ordinata, non \'e8 importante il singolo index quanto l\'92ordinamento che ne deriva. I vertici definiscono un poligono disegnato con delle rette punto punto che partono dal vertice con index minore interpolando il vertice successivo fino ad arrivare all\'92ultimo vertice. Automaticamente poi la logica del programma disegner\'e1 il collegamento tra ultimo vertice e primo vertice per chiudere effettivamente il poligono.\
+\ul Ci si deve quindi preoccupare solo di porre in sequenza i vertici del poligono, evitando di pensare ai segmenti che uniscono i punti del poligono.\
+\ulnone \
+
+\b ID_room:
+\b0  ID della stanza alla quale il vertice si riferisce. I vertici rappresentano i vertici di un poligono, l\'92entit\'e1 poligono \'e8 identificata proprio dalla stanza. Quindi i vertici verranno raggruppati (e prelevati) per singola stanza ed ordinati seguendo il loro index_in_room.\
+\
+
+\b type:
+\b0  il tipo di vertice, definito da una tabella esterna. Nella logica del programma allo stato attuale sono definiti 3 tipi di vertici:\
+- wall\
+- door\
+- aperture\
+\ul La tipologia del vertice non modifica la logica del programma, ma influenza solo la modalit\'e1 di disegno del segmento che parte dal vertice attuale fino al vertice successivo\ulnone  nell\'92ordinamento dei vertici definito nel poligono (stanza).\
+Un vertice \'e8 quindi interpretabile come \'93fine della modalit\'e1 di disegno imposta dal vertice che mi precede, inizio della modalit\'e1 di disegno che impongo con il mio tipo\'94, a sua volta il vertice successivo terminer\'e1 quindi la sua modalit\'e1 di disegno, se non esiste un vertice successivo la sua modalit\'e1 di disegno terminer\'e1 nel primo vertice (il successore dell\'92ultimo vertice \'e8 il primo vertice).\
+
+\b \ul \
+\
+
+\b0 \ulnone \
+}

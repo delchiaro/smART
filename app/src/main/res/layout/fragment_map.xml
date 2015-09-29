@@ -1,0 +1,55 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+
+
+
+
+    <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+
+        class="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Location1"-->
+        <!--android:id="@+id/buttonLocation"-->
+        <!--android:layout_gravity="left|bottom"-->
+        <!--android:onClick="onClickBtnTestLocation1" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Single Location"-->
+        <!--android:id="@+id/buttonSingleLocation"-->
+        <!--android:layout_gravity="center_horizontal|bottom"-->
+        <!--android:onClick="onClickBtnTestLocation2" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="JSON Test"-->
+        <!--android:id="@+id/buttonJson"-->
+        <!--android:layout_gravity="left|bottom"-->
+        <!--android:onClick="onClickBtnJsonTest"-->
+        <!--android:layout_marginBottom="50dp" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="proximity test"-->
+        <!--android:id="@+id/buttonProximity"-->
+        <!--android:layout_gravity="left|bottom"-->
+        <!--android:layout_marginBottom="100dp"-->
+        <!--android:onClick="toggleFakeProximity" />-->
+
+
+</FrameLayout>

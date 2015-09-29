@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="64dp"
+        sothree:umanoShadowHeight="0dp"
+        sothree:umanoParalaxOffset="100dp"
+        sothree:umanoDragView="@+id/dragView"
+        android:clipChildren="false" >
+
+        <!-- android:clipChildren="false"
+                consente di non nascondere gli overflow della dragView (slidingLayout)
+                (COSI FAB RESTA SOPRA LA MAIN CONTENT)
+        -->
+
+
+        <!-- MAIN CONTENT -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+            <!--Contenitore della mappa (outdoor, indoor)-->
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragment_map_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </RelativeLayout>
+
+
+            <!--<SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_view"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/layout_searchbar_corners"/>-->
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/notifyToIndoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="108dp"
+                android:visibility="invisible"
+                sothree:fab_colorNormal="@android:color/holo_red_light"
+                sothree:fab_colorPressed="@color/white_pressed"
+                sothree:fab_icon="@drawable/ic_report_white_48dp"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/scanCodeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="64dp"
+                sothree:fab_colorNormal="@color/black_semi_transparent"
+                sothree:fab_colorPressed="@color/white_pressed"
+                sothree:fab_icon="@mipmap/ic_qr_code"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/notifyArtworkProximity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="136dp"
+                sothree:fab_colorNormal="@color/white"
+                sothree:fab_colorPressed="@color/white_pressed"
+                sothree:fab_icon="@drawable/ic_report_black_48dp"/>
+
+            <com.nhaarman.supertooltips.ToolTipRelativeLayout
+                android:id="@+id/to_indoor_tooltip_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="170dp"/>
+
+            <com.nhaarman.supertooltips.ToolTipRelativeLayout
+                android:id="@+id/artwork_found_tooltip_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="200dp"/>
+
+
+            <!--Questi 2 textView vanno tolti, servono solo per testare-->
+            <TextView
+                android:id="@+id/scan_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp" />
+            <TextView
+                android:id="@+id/scan_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+
+
+        </FrameLayout>
+
+
+
+
+
+        <!-- SLIDING LAYOUT -->
+        <LinearLayout
+            android:id="@+id/dragView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            >
+
+
+            <!--Questa è la barra dello slider-->
+            <LinearLayout
+                android:id="@+id/slidingBar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal"
+                >
+                <!--android:layout_height deve cambiare col android:layout_height del RelativeLayout qui sotto
+                nell'animazione a schermo intero-->
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="@android:color/white"
+                    android:id="@+id/fragment_sliding_header_container"
+                    > <!--Questo è il colore che deve cambiare-->
+
+
+                    <!--Qui ci va un fragment per swappare la barra e il titolo-->
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="275dp"
+                android:layout_marginTop="-91dp"
+                fab:fab_icon="@drawable/white_museum"
+                fab:fab_colorNormal="@color/orange"
+                fab:fab_colorPressed="@color/white_pressed"
+            />
+
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragment_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="18dp">
+
+                <!-- Qui ci finiscono i vari fragment -->
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+</RelativeLayout>
