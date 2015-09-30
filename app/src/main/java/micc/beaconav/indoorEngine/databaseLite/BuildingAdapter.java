@@ -198,25 +198,92 @@ public class BuildingAdapter{
             int x_ci = vertexData.getColumnIndex("x");
             int y_ci = vertexData.getColumnIndex("y");
             int type_ci = vertexData.getColumnIndex("vertexType");
+            int vertex_ID_ci = vertexData.getColumnIndex("Vertex.ID");
 
             float vertex_x;
             float vertex_y;
-            int vertex_type;
+            Vertex.Type vertex_type;
+            int vertexID;
 
+
+            HashMap<Integer, Integer> doorMap1 = new HashMap<>();
+            HashMap<Integer, Room> doorMap2 = new HashMap<>();
 
             Vertex.Type[] vertexTypeMap = new Vertex.Type[3];
             vertexTypeMap[0] = Vertex.Type.WALL;
             vertexTypeMap[1] = Vertex.Type.DOOR;
             vertexTypeMap[2] = Vertex.Type.APERTURE;
 
+            Integer oldVertexId = null;
+            Vertex.Type oldVertexType = null;
+            boolean doorOpened = false;
+
             if (vertexData != null && vertexData.moveToFirst()) {
                 do {
                     roomID = vertexData.getInt(ID_ci);
                     vertex_x = vertexData.getFloat(x_ci);
                     vertex_y = vertexData.getFloat(y_ci);
-                    vertex_type = vertexData.getInt(type_ci);
+                    vertex_type = vertexTypeMap[vertexData.getInt(type_ci)];
+                    vertexID = vertexData.getInt(vertex_ID_ci);
 
-                    roomMap.get(roomID).pushVertex(new Vertex(vertex_x, vertex_y, vertexTypeMap[vertex_type]));
+                    Room room =  roomMap.get(roomID);
+                    room.pushVertex(new Vertex(vertex_x, vertex_y, vertex_type));
+
+
+
+
+                    // COSTRUZIONIE DELLE PORTE TRAMITE I VERTEX * * * * * * * * * * * * *
+                    // se il vertex corrente è una door o una aperture
+                    if ( vertex_type == Vertex.Type.DOOR || vertex_type == Vertex.Type.APERTURE )
+                    {
+                        // se non si era giá "aperta" la porta
+                        if(doorOpened == false)
+                        {
+                            // apriamo la porta e salviamo i dati di questo vertice
+                            doorOpened = true;
+                            oldVertexId = vertexID;
+                            oldVertexType = vertex_type;
+                        }
+
+                        // se invece la porta era giá stata aperta, vediamo se possiamo chiuderla senza errori
+                        else
+                        {
+                            if( oldVertexType != vertex_type)
+                            {
+                                // TODO: lanciare eccezione!!! La porta inizia con un tipo e finisce con un altro, inconsistenza sul DB lite !!
+                            }
+                            else
+                            {
+                                // in questo caso la porta è consistente.. cerco se era giá stata inserita nella mappa delle porte:
+
+                                Integer id2 = doorMap1.get(oldVertexId);
+                                if(id2 == null)
+                                    id2 = doorMap1.get(vertexID);
+
+                                if(id2 == null)
+                                {
+                                    // La porta non era ancora stata inserita nella mappa delle porte! La inseriamo..
+                                    doorMap1.put(oldVertexId, vertexID);
+                                    doorMap2.put(vertexID, room);
+                                }
+                                else
+                                {
+                                    // In questo caso la porta era giá stata inserita, possiamo ritrovare la stanza alla quale era collegata
+                                    // la porta, e quindi generare l'entitá porta su RAM (nel modello del software android):
+                                    Room linkedRoom = doorMap2.get(id2);
+
+                                    // TODO: new Door(room, linkedRoom);
+                                    // Sará possibile volendo anche rimuovere dalla hashmap 1 e 2 le corrispondenti chiavi ma attenti!!
+
+                                }
+
+                            }
+                        }
+                    }
+                    // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
+
+
+
 
                 } while (vertexData.moveToNext());
 
