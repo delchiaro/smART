@@ -279,6 +279,9 @@ public class BuildingAdapter{
 
                             }
                         }
+                        doorOpened = false;
+                        oldVertexId = null;
+                        oldVertexType = null;
                     }
                     // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
 
