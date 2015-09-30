@@ -9,7 +9,7 @@ import micc.beaconav.util.containerContained.Contained;
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class Spot extends Contained<Room>
+public class Spot
 {
 
 
@@ -17,14 +17,7 @@ public class Spot extends Contained<Room>
     public Spot(){
         this(0,0);
     }
-    public Spot(Room room_container) {
-        this(0,0, room_container);
-    }
-    public Spot(float x, float y){
-        this(x, y, null);
-    }
-    public Spot(float x, float y, Room room_container) {
-        if(room_container != null ) room_container.add(this);
+    public Spot(float x, float y) {
         this._absolute_x = x;
         this._absolute_y = y;
     }
@@ -55,18 +48,6 @@ public class Spot extends Contained<Room>
         this.y(y);
     }
 
-
-
-
-
-
-
-
-    public Room              getContainerRoom()  {
-        return super.getContainer();
-    }
-    public Floor             getContainerFloor()      { return getContainerRoom().getContainerFloor(); }
-    public Building          getBuildingContainer()   { return getContainerFloor().getContainerBuilding(); }
 
 
 }

@@ -26,10 +26,7 @@ public class ArtSpot extends MarkerSpot
 
     public ArtSpot() { this( 0, 0); }
     public ArtSpot(float x, float y) {
-        this(x, y, null);
-    }
-    public ArtSpot(float x, float y, Room room_container) {
-        super(x, y, room_container);
+        super(x, y);
         initDrawable();
         if(borderPaint == null)
         {

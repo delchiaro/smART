@@ -79,7 +79,6 @@ public class ArtListFragment extends Fragment
         {
             ListAdapter adapter = new ListAdapter(getActivity(), iArtRowList);
             listView.setAdapter(adapter);
-
             listView.setOnItemClickListener(new ListView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

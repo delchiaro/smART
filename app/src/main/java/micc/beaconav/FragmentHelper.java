@@ -255,6 +255,9 @@ public class FragmentHelper  implements MuseumMarkerManager
 
 
     public final void showIndoorFragment(MuseumRow museum) {
+//        indoorMapFragment = new IndoorMapFragment();
+//        swapFragment(R.id.fragment_map_container, indoorMapFragment);
+
         indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
         swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
         activeMainFragment = MainFragment.INDOOR;
@@ -308,8 +311,9 @@ public class FragmentHelper  implements MuseumMarkerManager
         mainActivity.setFABListener(defaultFABOnClickListener);
     }
 
-    public final void showMuseumListFragment() {
 
+    public final void showMuseumListFragment() {
+    // TODO: Punto di accesso per museum list
         if(DbManager.museumDownloader.isDownloadStarted() == false) {
             DbManager.museumDownloader.startDownload();
             DbManager.museumDownloader.addHandler(new JSONHandler<MuseumRow>() {

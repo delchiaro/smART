@@ -17,10 +17,7 @@ public abstract class DrawableSpot extends Spot
 
     public DrawableSpot() { this(0,0); }
     public DrawableSpot(float x, float y) {
-        this(x, y, null);
-    }
-    public DrawableSpot(float x, float y, Room room_container) {
-        super(x, y, room_container);
+        super(x, y);
         this._drawable = generateDrawable();
         _scaleTranslation_x = x_pixel();
         _scaleTranslation_y = y_pixel();

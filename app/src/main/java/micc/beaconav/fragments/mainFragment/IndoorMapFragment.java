@@ -204,290 +204,290 @@ public class IndoorMapFragment extends Fragment
         // BUILDING DEFINITION
         building = new Building(50*PPM, 50*PPM);
 
-        // FLOOR DEFINITION
-        Floor floor = new Floor(0);
-        building.add(floor);
-
-
-        // ROOM DEFINITION
-        Room corridoio = new Room();
-        floor.add(corridoio);
-
-        Room ingressoFerracani = new Room();
-        floor.add(ingressoFerracani);
-
-        Room stanzaFerracani = new Room();
-        floor.add(stanzaFerracani);
-
-        Room bagno = new Room();
-        floor.add(bagno);
-
-        Room stanzaPC = new Room();
-        floor.add(stanzaPC);
-
-        Room stanzaRasta = new Room();
-        floor.add(stanzaRasta);
-
-        Room ingresso = new Room();
-        floor.add(ingresso);
-
-        Room stanzaEntrataSegreta = new Room();
-        floor.add(stanzaEntrataSegreta);
-
-        Room corridoio2 = new Room();
-        floor.add(corridoio2);
-
-        Room stanzaBertini = new Room();
-        floor.add(stanzaBertini);
-
-        Room bagno2 = new Room();
-        floor.add(bagno2);
-
-        Room stanzaPulizie = new Room();
-        floor.add(stanzaPulizie);
-
-
-
-
-        DoorSpot[] doorsAppoggio;
-
-
-        // VertexDefinitions and Spot Definitions
-        corridoio.pushWall(new PointF(11f,   1f));
-        corridoio.pushWall(new PointF(16f, 1f));
-            corridoio.pushAperture(new PointF(16f, 4f));
-            doorsAppoggio = Room.addDoorSpot(corridoio, 15f, 5f, true, bagno, 17f, 5f, true);
-            DoorSpot door_corridoio_bagno = doorsAppoggio[0];
-            corridoio.pushWall(new PointF(16f, 6f));
-
-            corridoio.pushAperture(new PointF(16f, 12f));
-            Room.addDoorSpot(corridoio, 15f, 13f, true, stanzaPC, 17f, 13f, true);
-            corridoio.pushWall(new PointF(16f, 14f));
-
-            corridoio.pushAperture(new PointF(16f, 24f));
-            doorsAppoggio = Room.addDoorSpot(corridoio, 15f, 25f, DoorSpot.Visibility.VISIBLE, true, ingressoFerracani, 17f, 25f, true);
-            DoorSpot door_corridoio_ingressoFerracani = doorsAppoggio[0];
-            corridoio.pushWall(new PointF(16f, 26f));
-
-
-        corridoio.pushWall(new PointF(16f, 31f));
-
-            corridoio.pushAperture(new PointF(15f, 31f));
-            doorsAppoggio = Room.addDoorSpot(corridoio, 14f, 30f, true, ingresso, 14f, 32f, true);
-            DoorSpot door_corridoio_ingresso = doorsAppoggio[0];
-            corridoio.pushWall(new PointF(13f, 31f));
-
-        corridoio.pushWall(new PointF(11f,   31f));
-
-
-
-
-
-        ingressoFerracani.pushWall(new PointF(16f, 21f));
-
-            ingressoFerracani.pushAperture(new PointF(18f, 21f));
-            doorsAppoggio = Room.addDoorSpot(ingressoFerracani, 19f, 22f, true, stanzaRasta, 19f, 20f, DoorSpot.Visibility.VISIBLE, true);
-            DoorSpot door_stanzaRasta_ingressoFerracani = doorsAppoggio[1];
-            ingressoFerracani.pushWall(new PointF(20f, 21f));
-
-        ingressoFerracani.pushWall(new PointF(22f, 21f));
-
-            ingressoFerracani.pushAperture(new PointF(22f, 24f));
-            Room.addDoorSpot(ingressoFerracani, 21f, 25f, true, stanzaFerracani, 23f, 25f, true);
-            ingressoFerracani.pushWall(new PointF(22f, 26f));
-
-        ingressoFerracani.pushWall(new PointF(22f, 30f));
-        ingressoFerracani.pushWall(new PointF(16f, 30f));
-
-
-
-
-        stanzaFerracani.pushWall(new PointF(22f, 21f));
-        stanzaFerracani.pushWall(new PointF(30f,  21f));
-        stanzaFerracani.pushWall(new PointF(30f,  30f));
-        stanzaFerracani.pushWall(new PointF(22f, 30f));
-
-
-        bagno.pushWall(new PointF(16f, 1f));
-        bagno.pushWall(new PointF(22f, 1f));
-        bagno.pushWall(new PointF(22f, 8f));
-        bagno.pushWall(new PointF(16f, 8f));
-
-
-
-        stanzaPC.pushWall(new PointF(16f, 8f));
-        stanzaPC.pushWall(new PointF(30f, 8f));
-        stanzaPC.pushWall(new PointF(30f, 18f));
-        stanzaPC.pushWall(new PointF(16f, 18f));
-
-
-
-
-        stanzaRasta.pushWall(new PointF(16f, 18f));
-        stanzaRasta.pushWall(new PointF(30f, 18f));
-        stanzaRasta.pushWall(new PointF(30f, 21f));
-        stanzaRasta.pushWall(new PointF(16f, 21f));
-
-
-
-        stanzaEntrataSegreta.pushWall(new PointF(0f, 31f));
-        stanzaEntrataSegreta.pushWall(new PointF(11f, 31f));
-            stanzaEntrataSegreta.pushAperture(new PointF(11f, 34f));
-            doorsAppoggio = Room.addDoorSpot(stanzaEntrataSegreta, 10f, 35f, DoorSpot.Visibility.VISIBLE, true, ingresso, 12f, 35f, true);
-            DoorSpot door_entrataSegreta_ingresso = doorsAppoggio[0];
-            DoorSpot door_ingresso_entrataSegreta = doorsAppoggio[1];
-            stanzaEntrataSegreta.pushWall(new PointF(11f, 36));
-        stanzaEntrataSegreta.pushWall(new PointF(11f, 44f));
-        stanzaEntrataSegreta.pushWall(new PointF(0f, 44f));
-
-
-
-
-        ingresso.pushWall(new PointF(11f, 31f));
-        ingresso.pushWall(new PointF(16f, 31f));
-        ingresso.pushWall(new PointF(16f, 30f));
-        ingresso.pushWall(new PointF(20f, 30f));
-        ingresso.pushWall(new PointF(20f, 44f));
-        ingresso.pushWall(new PointF(11f, 44f));
-
-
-
-        corridoio2.pushWall(new PointF(20f, 30f));
-        corridoio2.pushWall(new PointF(49f, 30f));
-        corridoio2.pushWall(new PointF(49f, 35f));
-
-            corridoio2.pushAperture(new PointF(46f, 35f));
-            doorsAppoggio = Room.addDoorSpot(corridoio2, 45f, 34f, DoorSpot.Visibility.VISIBLE, true, stanzaPulizie, 45f, 36f, true);
-            DoorSpot door_corridioio2_pulizie = doorsAppoggio[0];
-            corridoio2.pushWall(new PointF(44f, 35f));
-
-            corridoio2.pushAperture(new PointF(37f, 35f));
-            Room.addDoorSpot(corridoio2, 36f, 34f, true, bagno2, 36f, 36f, true);
-            corridoio2.pushWall(new PointF(35f, 35f));
-
-            corridoio2.pushAperture(new PointF(28f, 35f));
-            doorsAppoggio = Room.addDoorSpot(corridoio2, 27f, 34f, DoorSpot.Visibility.VISIBLE, true, stanzaBertini, 34f, 36f, true);
-            DoorSpot door_corridoio2_stanzaBertini = doorsAppoggio[0];
-            corridoio2.pushWall(new PointF(26f, 35f));
-
-        corridoio2.pushWall(new PointF(20f, 35f));
-
-            corridoio2.pushAperture(new PointF(20f, 34f));
-            doorsAppoggio = Room.addDoorSpot(corridoio2, 21f, 33f, DoorSpot.Visibility.VISIBLE, true, ingresso, 19f, 33f, true);
-            DoorSpot door_corridio2_ingresso = doorsAppoggio[0];
-            corridoio2.pushWall(new PointF(20f, 32f));
-
-
-
-
-
-        stanzaBertini.pushWall(new PointF(20f, 35f));
-        stanzaBertini.pushWall(new PointF(32f, 35f));
-        stanzaBertini.pushWall(new PointF(44f, 44f));
-        stanzaBertini.pushWall(new PointF(20f, 44f));
-
-
-        bagno2.pushWall(new PointF(32f, 35f));
-        bagno2.pushWall(new PointF(42f, 35f));
-        bagno2.pushWall(new PointF(42f, 44f));
-        bagno2.pushWall(new PointF(32f, 44f));
-
-
-        stanzaPulizie.pushWall(new PointF(42f, 35f));
-        stanzaPulizie.pushWall(new PointF(49f, 35f));
-        stanzaPulizie.pushWall(new PointF(49f, 44f));
-        stanzaPulizie.pushWall(new PointF(42f, 44f));
-
-
-
-
-
-
-
-
-        // SPOT DEFINITIONS
-//        final ArtSpot spot1;
-//        final ArtSpot spot2;
-//        final ArtSpot spot3;
-
-
-
-            // CORRIDOIO
-        corridoio.getRoomSpot().x(13.5f);
-        corridoio.getRoomSpot().y(18);
-
-
-        final PathSpot pathSpotCorridoio = new PathSpot(13.5f, 5f);
-        //qr_spot_map.put("path_corridoio", pathSpotCorridoio);
-        pathSpotCorridoio.addLinkBidirectional(door_corridoio_bagno);
-
-        final ArtSpot artSpotCorridoio = new ArtSpot(13.5f, 2f, corridoio);
-        qr_spot_map.put("art_corridoio2", artSpotCorridoio);
-        artSpotCorridoio.setNearestPathSpot(pathSpotCorridoio);
-
-        door_corridoio_ingresso.addLinkBidirectional(door_corridoio_ingressoFerracani);
-
-            // INGRESSO FERRACANI
-        ingressoFerracani.getRoomSpot().x(18.5f);
-        ingressoFerracani.getRoomSpot().y(25);
-
-
-        // INGRESSO
-        ingresso.getRoomSpot().x(14f);
-        ingresso.getRoomSpot().y(33f);
-        final PathSpot pathSpotIngresso = new PathSpot(13.5f, 37f);
-        qr_spot_map.put("path_scale", pathSpotIngresso);
-        pathSpotIngresso.addLinkBidirectional(ingresso.getRoomSpot());
-        pathSpotIngresso.addLinkBidirectional(door_ingresso_entrataSegreta);
-        pathSpotIngresso.addLinkBidirectional(door_corridio2_ingresso);
-
-
-        // STANZA ENTRATA SEGRETA
-//        final PathSpot pathSpotDivani = new PathSpot(9f, 42f);
-        stanzaEntrataSegreta.getRoomSpot().x(5);
-        stanzaEntrataSegreta.getRoomSpot().y(38);
-        final ArtSpot artSpotDivani = new ArtSpot(10f, 42f, stanzaEntrataSegreta);
-        //artSpotDivani.setNearestPathSpot(pathSpotDivani);
-
-        qr_spot_map.put("art_divani", artSpotDivani);
-        //pathSpotDivani.addLinkBidirectional(stanzaEntrataSegreta.getRoomSpot());
-
-
-            // CORRIDOIO 2
-        corridoio2.getRoomSpot().x(37);
-        corridoio2.getRoomSpot().y(32);
-        door_corridioio2_pulizie.x(45);
-        door_corridioio2_pulizie.y(32);
-        // final ArtSpot artSpotCorridoio2 = new ArtSpot(44, 31, corridoio2);
-        // artSpotCorridoio2.setNearestPathSpot(door_corridioio2_pulizie);
-        // qr_spot_map.put("art_corridoio2", artSpotCorridoio2);
-        door_corridio2_ingresso.addLinkBidirectional(corridoio2.getRoomSpot());
-
-
-            // STANZA FERRACANI
-        final ArtSpot artSpotStanzaFerracani = new ArtSpot(28f,25f, stanzaFerracani);
-        int beaconID = GoodBadBeaconProximityManager.getID(31950, 39427);
-        beacon_spot_map.put(beaconID, artSpotStanzaFerracani);
-
-        int virtualBeaconID = GoodBadBeaconProximityManager.getID(4123, 24794);
-        beacon_spot_map.put(virtualBeaconID, artSpotCorridoio);
-
-
-
-        DbManager.getLastArtworkDownloader().addHandler(new JSONHandler<ArtworkRow>() {
-            @Override
-            public void onJSONDownloadFinished(ArtworkRow[] result) {
-                if (result.length >= 7)
-                {
-                    artSpotStanzaFerracani.setArtworkRow(result[2]); // bacco di caravaggio
-                   // artSpotCorridoio2.setArtworkRow(result[6]); // madonna del cardellino (Raffaello)
-                    artSpotCorridoio.setArtworkRow(result[6]); // madonna del cardellino (Raffaello)
-                    artSpotDivani.setArtworkRow(result[4]);// madonna di ognissanti
-
-                }
-            }
-        });
-
+//////        // FLOOR DEFINITION
+//////        Floor floor = new Floor(0);
+//////        building.add(floor);
+//////
+//////
+//////        // ROOM DEFINITION
+//////        Room corridoio = new Room();
+//////        floor.add(corridoio);
+//////
+//////        Room ingressoFerracani = new Room();
+//////        floor.add(ingressoFerracani);
+//////
+//////        Room stanzaFerracani = new Room();
+//////        floor.add(stanzaFerracani);
+//////
+//////        Room bagno = new Room();
+//////        floor.add(bagno);
+//////
+//////        Room stanzaPC = new Room();
+//////        floor.add(stanzaPC);
+//////
+//////        Room stanzaRasta = new Room();
+//////        floor.add(stanzaRasta);
+//////
+//////        Room ingresso = new Room();
+//////        floor.add(ingresso);
+//////
+//////        Room stanzaEntrataSegreta = new Room();
+//////        floor.add(stanzaEntrataSegreta);
+//////
+//////        Room corridoio2 = new Room();
+//////        floor.add(corridoio2);
+//////
+//////        Room stanzaBertini = new Room();
+//////        floor.add(stanzaBertini);
+//////
+//////        Room bagno2 = new Room();
+//////        floor.add(bagno2);
+//////
+//////        Room stanzaPulizie = new Room();
+//////        floor.add(stanzaPulizie);
+//////
+//////
+//////
+//////
+//////        DoorSpot[] doorsAppoggio;
+//////
+//////
+//////        // VertexDefinitions and Spot Definitions
+//////        corridoio.pushWall(new PointF(11f,   1f));
+//////        corridoio.pushWall(new PointF(16f, 1f));
+//////            corridoio.pushAperture(new PointF(16f, 4f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio, 15f, 5f, true, bagno, 17f, 5f, true);
+//////            DoorSpot door_corridoio_bagno = doorsAppoggio[0];
+//////            corridoio.pushWall(new PointF(16f, 6f));
+//////
+//////            corridoio.pushAperture(new PointF(16f, 12f));
+//////            Room.addDoorSpot(corridoio, 15f, 13f, true, stanzaPC, 17f, 13f, true);
+//////            corridoio.pushWall(new PointF(16f, 14f));
+//////
+//////            corridoio.pushAperture(new PointF(16f, 24f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio, 15f, 25f, DoorSpot.Visibility.VISIBLE, true, ingressoFerracani, 17f, 25f, true);
+//////            DoorSpot door_corridoio_ingressoFerracani = doorsAppoggio[0];
+//////            corridoio.pushWall(new PointF(16f, 26f));
+//////
+//////
+//////        corridoio.pushWall(new PointF(16f, 31f));
+//////
+//////            corridoio.pushAperture(new PointF(15f, 31f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio, 14f, 30f, true, ingresso, 14f, 32f, true);
+//////            DoorSpot door_corridoio_ingresso = doorsAppoggio[0];
+//////            corridoio.pushWall(new PointF(13f, 31f));
+//////
+//////        corridoio.pushWall(new PointF(11f,   31f));
+//////
+//////
+//////
+//////
+//////
+//////        ingressoFerracani.pushWall(new PointF(16f, 21f));
+//////
+//////            ingressoFerracani.pushAperture(new PointF(18f, 21f));
+//////            doorsAppoggio = Room.addDoorSpot(ingressoFerracani, 19f, 22f, true, stanzaRasta, 19f, 20f, DoorSpot.Visibility.VISIBLE, true);
+//////            DoorSpot door_stanzaRasta_ingressoFerracani = doorsAppoggio[1];
+//////            ingressoFerracani.pushWall(new PointF(20f, 21f));
+//////
+//////        ingressoFerracani.pushWall(new PointF(22f, 21f));
+//////
+//////            ingressoFerracani.pushAperture(new PointF(22f, 24f));
+//////            Room.addDoorSpot(ingressoFerracani, 21f, 25f, true, stanzaFerracani, 23f, 25f, true);
+//////            ingressoFerracani.pushWall(new PointF(22f, 26f));
+//////
+//////        ingressoFerracani.pushWall(new PointF(22f, 30f));
+//////        ingressoFerracani.pushWall(new PointF(16f, 30f));
+//////
+//////
+//////
+//////
+//////        stanzaFerracani.pushWall(new PointF(22f, 21f));
+//////        stanzaFerracani.pushWall(new PointF(30f,  21f));
+//////        stanzaFerracani.pushWall(new PointF(30f,  30f));
+//////        stanzaFerracani.pushWall(new PointF(22f, 30f));
+//////
+//////
+//////        bagno.pushWall(new PointF(16f, 1f));
+//////        bagno.pushWall(new PointF(22f, 1f));
+//////        bagno.pushWall(new PointF(22f, 8f));
+//////        bagno.pushWall(new PointF(16f, 8f));
+//////
+//////
+//////
+//////        stanzaPC.pushWall(new PointF(16f, 8f));
+//////        stanzaPC.pushWall(new PointF(30f, 8f));
+//////        stanzaPC.pushWall(new PointF(30f, 18f));
+//////        stanzaPC.pushWall(new PointF(16f, 18f));
+//////
+//////
+//////
+//////
+//////        stanzaRasta.pushWall(new PointF(16f, 18f));
+//////        stanzaRasta.pushWall(new PointF(30f, 18f));
+//////        stanzaRasta.pushWall(new PointF(30f, 21f));
+//////        stanzaRasta.pushWall(new PointF(16f, 21f));
+//////
+//////
+//////
+//////        stanzaEntrataSegreta.pushWall(new PointF(0f, 31f));
+//////        stanzaEntrataSegreta.pushWall(new PointF(11f, 31f));
+//////            stanzaEntrataSegreta.pushAperture(new PointF(11f, 34f));
+//////            doorsAppoggio = Room.addDoorSpot(stanzaEntrataSegreta, 10f, 35f, DoorSpot.Visibility.VISIBLE, true, ingresso, 12f, 35f, true);
+//////            DoorSpot door_entrataSegreta_ingresso = doorsAppoggio[0];
+//////            DoorSpot door_ingresso_entrataSegreta = doorsAppoggio[1];
+//////            stanzaEntrataSegreta.pushWall(new PointF(11f, 36));
+//////        stanzaEntrataSegreta.pushWall(new PointF(11f, 44f));
+//////        stanzaEntrataSegreta.pushWall(new PointF(0f, 44f));
+//////
+//////
+//////
+//////
+//////        ingresso.pushWall(new PointF(11f, 31f));
+//////        ingresso.pushWall(new PointF(16f, 31f));
+//////        ingresso.pushWall(new PointF(16f, 30f));
+//////        ingresso.pushWall(new PointF(20f, 30f));
+//////        ingresso.pushWall(new PointF(20f, 44f));
+//////        ingresso.pushWall(new PointF(11f, 44f));
+//////
+//////
+//////
+//////        corridoio2.pushWall(new PointF(20f, 30f));
+//////        corridoio2.pushWall(new PointF(49f, 30f));
+//////        corridoio2.pushWall(new PointF(49f, 35f));
+//////
+//////            corridoio2.pushAperture(new PointF(46f, 35f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio2, 45f, 34f, DoorSpot.Visibility.VISIBLE, true, stanzaPulizie, 45f, 36f, true);
+//////            DoorSpot door_corridioio2_pulizie = doorsAppoggio[0];
+//////            corridoio2.pushWall(new PointF(44f, 35f));
+//////
+//////            corridoio2.pushAperture(new PointF(37f, 35f));
+//////            Room.addDoorSpot(corridoio2, 36f, 34f, true, bagno2, 36f, 36f, true);
+//////            corridoio2.pushWall(new PointF(35f, 35f));
+//////
+//////            corridoio2.pushAperture(new PointF(28f, 35f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio2, 27f, 34f, DoorSpot.Visibility.VISIBLE, true, stanzaBertini, 34f, 36f, true);
+//////            DoorSpot door_corridoio2_stanzaBertini = doorsAppoggio[0];
+//////            corridoio2.pushWall(new PointF(26f, 35f));
+//////
+//////        corridoio2.pushWall(new PointF(20f, 35f));
+//////
+//////            corridoio2.pushAperture(new PointF(20f, 34f));
+//////            doorsAppoggio = Room.addDoorSpot(corridoio2, 21f, 33f, DoorSpot.Visibility.VISIBLE, true, ingresso, 19f, 33f, true);
+//////            DoorSpot door_corridio2_ingresso = doorsAppoggio[0];
+//////            corridoio2.pushWall(new PointF(20f, 32f));
+//////
+//////
+//////
+//////
+//////
+//////        stanzaBertini.pushWall(new PointF(20f, 35f));
+//////        stanzaBertini.pushWall(new PointF(32f, 35f));
+//////        stanzaBertini.pushWall(new PointF(44f, 44f));
+//////        stanzaBertini.pushWall(new PointF(20f, 44f));
+//////
+//////
+//////        bagno2.pushWall(new PointF(32f, 35f));
+//////        bagno2.pushWall(new PointF(42f, 35f));
+//////        bagno2.pushWall(new PointF(42f, 44f));
+//////        bagno2.pushWall(new PointF(32f, 44f));
+//////
+//////
+//////        stanzaPulizie.pushWall(new PointF(42f, 35f));
+//////        stanzaPulizie.pushWall(new PointF(49f, 35f));
+//////        stanzaPulizie.pushWall(new PointF(49f, 44f));
+//////        stanzaPulizie.pushWall(new PointF(42f, 44f));
+//////
+////
+////
+////
+////
+////
+////
+////
+////        // SPOT DEFINITIONS
+//////        final ArtSpot spot1;
+//////        final ArtSpot spot2;
+//////        final ArtSpot spot3;
+////
+////
+////
+////            // CORRIDOIO
+////        corridoio.getRoomSpot().x(13.5f);
+////        corridoio.getRoomSpot().y(18);
+////
+////
+////        final PathSpot pathSpotCorridoio = new PathSpot(13.5f, 5f);
+////        //qr_spot_map.put("path_corridoio", pathSpotCorridoio);
+////        pathSpotCorridoio.addLinkBidirectional(door_corridoio_bagno);
+////
+////        final ArtSpot artSpotCorridoio = new ArtSpot(13.5f, 2f, corridoio);
+////        qr_spot_map.put("art_corridoio2", artSpotCorridoio);
+////        artSpotCorridoio.setNearestPathSpot(pathSpotCorridoio);
+////
+////        door_corridoio_ingresso.addLinkBidirectional(door_corridoio_ingressoFerracani);
+////
+////            // INGRESSO FERRACANI
+////        ingressoFerracani.getRoomSpot().x(18.5f);
+////        ingressoFerracani.getRoomSpot().y(25);
+////
+////
+////        // INGRESSO
+////        ingresso.getRoomSpot().x(14f);
+////        ingresso.getRoomSpot().y(33f);
+////        final PathSpot pathSpotIngresso = new PathSpot(13.5f, 37f);
+////        qr_spot_map.put("path_scale", pathSpotIngresso);
+////        pathSpotIngresso.addLinkBidirectional(ingresso.getRoomSpot());
+////        pathSpotIngresso.addLinkBidirectional(door_ingresso_entrataSegreta);
+////        pathSpotIngresso.addLinkBidirectional(door_corridio2_ingresso);
+////
+////
+////        // STANZA ENTRATA SEGRETA
+//////        final PathSpot pathSpotDivani = new PathSpot(9f, 42f);
+////        stanzaEntrataSegreta.getRoomSpot().x(5);
+////        stanzaEntrataSegreta.getRoomSpot().y(38);
+////        final ArtSpot artSpotDivani = new ArtSpot(10f, 42f, stanzaEntrataSegreta);
+////        //artSpotDivani.setNearestPathSpot(pathSpotDivani);
+////
+////        qr_spot_map.put("art_divani", artSpotDivani);
+////        //pathSpotDivani.addLinkBidirectional(stanzaEntrataSegreta.getRoomSpot());
+////
+////
+////            // CORRIDOIO 2
+////        corridoio2.getRoomSpot().x(37);
+////        corridoio2.getRoomSpot().y(32);
+////        door_corridioio2_pulizie.x(45);
+////        door_corridioio2_pulizie.y(32);
+////        // final ArtSpot artSpotCorridoio2 = new ArtSpot(44, 31, corridoio2);
+////        // artSpotCorridoio2.setNearestPathSpot(door_corridioio2_pulizie);
+////        // qr_spot_map.put("art_corridoio2", artSpotCorridoio2);
+////        door_corridio2_ingresso.addLinkBidirectional(corridoio2.getRoomSpot());
+////
+////
+////            // STANZA FERRACANI
+////        final ArtSpot artSpotStanzaFerracani = new ArtSpot(28f,25f, stanzaFerracani);
+////        int beaconID = GoodBadBeaconProximityManager.getID(31950, 39427);
+////        beacon_spot_map.put(beaconID, artSpotStanzaFerracani);
+////
+////        int virtualBeaconID = GoodBadBeaconProximityManager.getID(4123, 24794);
+////        beacon_spot_map.put(virtualBeaconID, artSpotCorridoio);
+////
+////
+//
+//        DbManager.getLastArtworkDownloader().addHandler(new JSONHandler<ArtworkRow>() {
+//            @Override
+//            public void onJSONDownloadFinished(ArtworkRow[] result) {
+//                if (result.length >= 7)
+//                {
+//                    artSpotStanzaFerracani.setArtworkRow(result[2]); // bacco di caravaggio
+//                   // artSpotCorridoio2.setArtworkRow(result[6]); // madonna del cardellino (Raffaello)
+//                    artSpotCorridoio.setArtworkRow(result[6]); // madonna del cardellino (Raffaello)
+//                    artSpotDivani.setArtworkRow(result[4]);// madonna di ognissanti
+//
+//                }
+//            }
+//        });
+//
 
 
 
@@ -513,6 +513,9 @@ public class IndoorMapFragment extends Fragment
 
 
         // DRAWING:
+
+
+
         backgroundBmp = generateBackgroundBmp(building);
         //backgroundImgView.setImageDrawable(indoorMap); // disegno background in vettoriale
         // disegno background stampando il vettoriale su un bitmap

@@ -21,12 +21,12 @@ public class LocalizationSpot extends PathSpot {
 
     public LocalizationSpot(PathSpot associatedPathSpot)
     {
-        super(associatedPathSpot.x(), associatedPathSpot.y(), associatedPathSpot.getContainerRoom());
+        super(associatedPathSpot.x(), associatedPathSpot.y());
         this.associatedPathSpot = associatedPathSpot;
     }
 
     public LocalizationSpot(PathSpot associatedPath, float x, float y, Room room_container) {
-        super(x, y, room_container);
+        super(x, y);
         this.associatedPathSpot = associatedPath;
         initDrawable();
     }

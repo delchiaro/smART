@@ -32,14 +32,11 @@ public class PathSpot extends DrawableSpot implements DijkstraNodeAdapter<PathSp
     private List<PathSpot> _linkedSpots = new ArrayList<PathSpot>();
 
 
-    public PathSpot(float x, float y, Room room_container) {
-        super(x, y, room_container);
-        initDrawable();
-    }
     public PathSpot(float x, float y) {
         super(x, y);
         initDrawable();
     }
+
 
 
 

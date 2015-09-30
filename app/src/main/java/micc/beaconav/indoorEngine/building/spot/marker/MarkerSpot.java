@@ -23,11 +23,8 @@ public abstract class MarkerSpot extends DrawableSpot {
 
     protected boolean _selected = false;
 
-    protected MarkerSpot(float x, float y) {
+    public MarkerSpot(float x, float y){
         super(x, y);
-    }
-    public MarkerSpot(float x, float y, Room roomContainer){
-        super(x, y, roomContainer);
        // _generatedPathSpot = new PathSpot(x, y);
     }
 
@@ -38,9 +35,7 @@ public abstract class MarkerSpot extends DrawableSpot {
     }
 
     public PathSpot getNearestPathSpot() {
-        if(_nearestPathSpot != null)
-            return _nearestPathSpot;
-        else return getContainerRoom().getRoomSpot();
+        return _nearestPathSpot;
     }
 
     public void select() {

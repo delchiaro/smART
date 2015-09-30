@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity
     }
 
     private void initActivityAndXML() {
-    // FIND VIEW BY ID * * * * * * * * * * * * * * * * * * * * * * * *
+    // FIND VIEW BY I_D * * * * * * * * * * * * * * * * * * * * * * * *
         //mSearch = (SearchView) findViewById(R.id.search_view);
         mSlidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         //mSlidingUpPanelLayout.setEnableDragViewTouchEvents(true);
