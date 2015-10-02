@@ -86,9 +86,9 @@ public class BuildingAdapter{
         {
             String sql ="SELECT Position.ID_room as ID_room Position.*, Artwork.ID as idArtwork, Artwork.*, QRCode.code as QRCode, Beacon.minor, Beacon.major" +
                     "FROM Position " +
-                    " JOIN Artwork ON Artwork.ID_position = Position.id " +
-                    " JOIN QRCode ON QRCode.ID_position = Position.id " +
-                    " JOIN Beacon  ON Beacon.ID_position = Position.id ";
+                    " LEFT JOIN Artwork ON Artwork.ID_position = Position.id " +
+                    " LEFT JOIN QRCode ON QRCode.ID_position = Position.id " +
+                    " LEFT JOIN Beacon  ON Beacon.ID_position = Position.id ";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -125,36 +125,7 @@ public class BuildingAdapter{
     }
 
 
-    public Cursor getTestData()
-    {
-        try
-        {
-            String sql ="SELECT * FROM Vertex";
-            //sql = "SELECT * FROM android_metadata";
-            //sql = "SELECT name FROM sqlite_master WHERE type='table'";
-            Cursor mCur = mDb.rawQuery(sql, null);
-//
-//            if(mCur != null)
-//                mCur.moveToNext();
-            return mCur;
-        }
-        catch (SQLException mSQLException)
-        {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
-        }
-//        Cursor cursor = null;
-//        try {
-//            cursor = mDb.query("Vertex", new String[] { "ID", "x", "y", "type"}, null, null, null, null, null);
-//
-//        }
-//        catch (SQLException mSQLException)
-//        {
-//            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-//            throw mSQLException;
-//        }
-//        return cursor;
-    }
+
 
 
 
@@ -215,7 +186,7 @@ public class BuildingAdapter{
             vertexTypeMap[2] = Vertex.Type.APERTURE;
 
             Integer oldVertexId = null;
-            Vertex.Type oldVertexType = null;
+            Vertex oldVertex = null;
             boolean doorOpened = false;
 
             if (vertexData != null && vertexData.moveToFirst()) {
@@ -227,7 +198,8 @@ public class BuildingAdapter{
                     vertexID = vertexData.getInt(vertex_ID_ci);
 
                     Room room =  roomMap.get(roomID);
-                    room.pushVertex(new Vertex(vertex_x, vertex_y, vertex_type));
+                    Vertex vertex = new Vertex(vertex_x, vertex_y, vertex_type);
+                    room.pushVertex(vertex);
 
 
 
@@ -241,14 +213,14 @@ public class BuildingAdapter{
                         {
                             // apriamo la porta e salviamo i dati di questo vertice
                             doorOpened = true;
+                            oldVertex = vertex;
                             oldVertexId = vertexID;
-                            oldVertexType = vertex_type;
                         }
 
                         // se invece la porta era giá stata aperta, vediamo se possiamo chiuderla senza errori
                         else
                         {
-                            if( oldVertexType != vertex_type)
+                            if( oldVertex.getType() != vertex_type)
                             {
                                 // TODO: lanciare eccezione!!! La porta inizia con un tipo e finisce con un altro, inconsistenza sul DB lite !!
                             }
@@ -256,10 +228,13 @@ public class BuildingAdapter{
                             {
                                 // in questo caso la porta è consistente.. cerco se era giá stata inserita nella mappa delle porte:
 
-                                Integer id2 = doorMap1.get(oldVertexId);
-                                if(id2 == null)
+                                Integer id1 = oldVertexId;
+                                Integer id2 = doorMap1.get(id1);
+                                if(id2 == null) {
+                                    id1 = vertexID;
                                     id2 = doorMap1.get(vertexID);
 
+                                }
                                 if(id2 == null)
                                 {
                                     // La porta non era ancora stata inserita nella mappa delle porte! La inseriamo..
@@ -271,9 +246,13 @@ public class BuildingAdapter{
                                     // In questo caso la porta era giá stata inserita, possiamo ritrovare la stanza alla quale era collegata
                                     // la porta, e quindi generare l'entitá porta su RAM (nel modello del software android):
                                     Room linkedRoom = doorMap2.get(id2);
+                                    Room.addDoor(room, linkedRoom, vertex, oldVertex);
 
-                                    // TODO: new Door(room, linkedRoom);
+
                                     // Sará possibile volendo anche rimuovere dalla hashmap 1 e 2 le corrispondenti chiavi ma attenti!!
+                                    doorMap1.remove(id1);
+                                    doorMap2.remove(id2);
+                                    //TODO: controlla se non da errori.
 
                                 }
 
@@ -281,7 +260,7 @@ public class BuildingAdapter{
                         }
                         doorOpened = false;
                         oldVertexId = null;
-                        oldVertexType = null;
+                        oldVertex = null;
                     }
                     // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
 

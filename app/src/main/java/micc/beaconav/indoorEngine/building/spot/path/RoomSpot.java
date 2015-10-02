@@ -16,9 +16,6 @@ public class RoomSpot extends PathSpot {
         super(x, y);
     }
 
-    public RoomSpot(float x, float y, Room room_container) {
-        super(x, y, room_container);
-    }
 
 
 

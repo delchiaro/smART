@@ -196,7 +196,7 @@ public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS
         return _wrapperDrawable = generateWrapperDrawable();
     }
 
-    public final Drawable storedWrapperDrawable() {
+    public final Drawable getWrapperDrawable() {
         return this._wrapperDrawable;
     }
 

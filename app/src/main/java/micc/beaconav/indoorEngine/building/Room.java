@@ -6,6 +6,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import micc.beaconav.indoorEngine.ProportionsHelper;
 import micc.beaconav.indoorEngine.building.painting.MapPaint;
@@ -33,12 +34,42 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
     //private DrawableSpotManager<DrawableSpot> _drawableSpotManager = new DrawableSpotManager<>();
 
     private ArrayList<Vertex> _vertices = new ArrayList<Vertex>();
+    private ArrayList<Door> _doors = new ArrayList<Door>();
 
-    @Override
-    public void setContainer(Floor container, Key key) {
-        super.setContainer(container, key);
-//        this.add(_roomSpot);
+
+
+// * * * * * * * *  D O O R S * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // package protected
+
+    public static Door addDoor(Room r1, Room r2, Vertex v1, Vertex v2)
+    {
+        Door door = null;
+        Vertex r1v1 = r1._vertices.get(r1._vertices.indexOf(v1));
+        Vertex r1v2 = r1._vertices.get(r1._vertices.indexOf(v2));
+        Vertex r2v1 = r1._vertices.get(r2._vertices.indexOf(v1));
+        Vertex r2v2 = r1._vertices.get(r2._vertices.indexOf(v2));
+
+        if(  r1v1 != null && r1v2 != null && ( ( r1v1 == r2v1 ) || (r1v1 == r2v2) ) && ( (r1v2 == r2v2) || (r1v2 == r2v1) ) )
+        {
+            door = new Door(v1, v2, r1, r2);
+            r1._addDoor(door);
+            r2._addDoor(door);
+        }
+        return door;
     }
+    private void _addDoor(Door door) {
+        this._doors.add(door);
+    }
+    public Iterator<Door> getDoors() {
+        return this._doors.iterator();
+    }
+    public boolean containsDoor(final Door door){
+        return this._doors.contains(door);
+    }
+    public Door getDoor(int index) {
+        return this._doors.get(index);
+    }
+
 
 // * * * * * * * *  S P O T S  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -144,31 +175,38 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
             Vertex oldVertex = null;
             vertex = _vertices.get(0);
 
-            for (int i = 1; i < nVertices; i++)
+            // nVertices + 1 perchè voglio anche ritornare sull'ultimo vertice per controllare la coppia
+            // di vertici [nVertices]-[0] oltre che [0]-[1], [1]-[2], ..., [nVertices-1]-[nVertices]
+            for (int i = 1; i < nVertices+1; i++)
             {
                 oldVertex = vertex;
-                vertex = _vertices.get(i);
-                if (vertex.getType() == Vertex.Type.APERTURE)
-                {
-                    canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
-                            vertex.getX() * PPM, vertex.getY() * PPM, this.wallsPaint);
-                }
-                switch (oldVertex.getType())
-                {
-                    case DOOR:
-                        // PRIMA RIMUOVO IL MURO E POI INSERISCO LA PORTA..
-                        // se non è necessario eliminare il disegno della apertura
-                        canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
-                                vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
-                        canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
-                                vertex.getX() * PPM, vertex.getY() * PPM, this.doorPaint);
-                        break;
+                vertex = _vertices.get(i%nVertices); // coda circolare
 
-                    case APERTURE:
-                        canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
-                                vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
-                        break;
+//                if (vertex.getType() == Vertex.Type.APERTURE)
+//                {
+//                    canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
+//                            vertex.getX() * PPM, vertex.getY() * PPM, this.wallsPaint);
+//                }
+                if( vertex.getType() == oldVertex.getType())
+                {
+                    // solo se i due vertex sono entrambi door o entrambi aperture disegno entrambe
+                    switch (oldVertex.getType())
+                    {
+                        case DOOR:
+                            // PRIMA RIMUOVO IL MURO E POI INSERISCO LA PORTA..
+                            // se non è necessario eliminare il disegno della apertura
+                            canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
+                                    vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
+                            canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
+                                    vertex.getX() * PPM, vertex.getY() * PPM, this.doorPaint);
+                            break;
 
+                        case APERTURE:
+                            canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
+                                    vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
+                            break;
+
+                    }
                 }
             }
         }
