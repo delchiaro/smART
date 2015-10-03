@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.painting;
+package micc.beaconav.indoorEngine.building;
 
 import android.graphics.Color;
 import android.graphics.Paint;

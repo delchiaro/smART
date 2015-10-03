@@ -6,10 +6,8 @@ import android.graphics.PointF;
 import java.util.Collection;
 import java.util.Iterator;
 
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpotManager;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpotManager;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
+import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.util.containerContained.ContainerContained;
 
 /**
@@ -23,8 +21,7 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
     private PointF padding = new PointF(0,0);
 
 
-    private PathSpotManager<PathSpot> _pathSpotManager = new PathSpotManager<>();
-    private MarkerSpotManager<MarkerSpot> _markerSpotManager = new MarkerSpotManager<>();
+    private MarkerManager<IndoorMarker> _markerManager = new MarkerManager<>();
 
 
 
@@ -49,30 +46,15 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
 
 
 
-    public void addMarker(MarkerSpot marker) {
-        this._markerSpotManager.add(marker);
+    void addMarker(IndoorMarker marker) {
+        this._markerManager.add(marker);
     }
-    public void addAllMarkers(Collection<MarkerSpot> markers) {
-        this._markerSpotManager.addAll(markers);
+    void addAllMarkers(Collection<IndoorMarker> markers) {
+        this._markerManager.addAll(markers);
     }
-    public MarkerSpotManager getMarkerManager() {
-        return this._markerSpotManager;
+    MarkerManager getMarkerManager() {
+        return this._markerManager;
     }
-
-
-
-
-    public void addPathSpot(PathSpot pathSpot) {
-        this._pathSpotManager.add(pathSpot);
-    }
-    public void addAllPathSpot(Collection<PathSpot> pathSpot) {
-        this._pathSpotManager.addAll(pathSpot);
-    }
-    public PathSpotManager getPathSpotManager() {
-        return this._pathSpotManager;
-    }
-
-
 
 
 

@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.path;
+package micc.beaconav.indoorEngine.spot.__old.path;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.indoorEngine.building.spot.draw.DrawableSpotManager;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)

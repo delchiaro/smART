@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.path;
+package micc.beaconav.indoorEngine.spot.__old.path;
 
 import android.graphics.Color;
 import android.graphics.Paint;

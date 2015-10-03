@@ -1,7 +1,6 @@
 package micc.beaconav.indoorEngine.building;
 
-import micc.beaconav.indoorEngine.building.spot.Spot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
 
 /**
  * Created by Nagash on 10/1/2015.

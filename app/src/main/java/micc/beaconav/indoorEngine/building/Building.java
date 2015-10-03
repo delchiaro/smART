@@ -4,9 +4,9 @@ import android.graphics.Canvas;
 
 import java.util.TreeMap;
 
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpotManager;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpotManager;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraSolver;
 import micc.beaconav.util.containerContained.Container;
 
@@ -54,20 +54,16 @@ public class Building extends Container<Floor>
     }
 
 
-    public MarkerSpotManager getActiveMarkerManager() {
+    public MarkerManager getActiveMarkerManager() {
         return this.getActiveFloor().getMarkerManager();
     }
-    public PathSpotManager getActivePathSpotManager() {
-        return this.getActiveFloor().getPathSpotManager();
-    }
-
 
 
 
     public PathSpotManager<PathSpot> drawBestPath( PathSpot startSpot, PathSpot goalSpot) {
         dijkstraPath = new PathSpotManager( dijkstraSolver.solve(startSpot, goalSpot));
 
-        MarkerSpotManager  markerManager = getActiveMarkerManager();
+        MarkerManager markerManager = getActiveMarkerManager();
         if(markerManager != null) {
             dijkstraPath.resetAllTranslationAndScale();
             dijkstraPath.translate(markerManager.get_translation_x(), markerManager.get_translation_y());

@@ -3,7 +3,7 @@ package micc.beaconav.db.dbHelper.room;
 import micc.beaconav.db.dbJSONManager.tableScheme.TableRow;
 import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.FloatField;
 import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.LongField;
-import micc.beaconav.indoorEngine.building.spot.Spot;
+import micc.beaconav.indoorEngine.spot.Spot;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)

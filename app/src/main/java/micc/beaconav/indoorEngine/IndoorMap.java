@@ -1,17 +1,14 @@
 package micc.beaconav.indoorEngine;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.os.AsyncTask;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,20 +33,14 @@ import micc.beaconav.indoorEngine.beaconHelper.BeaconBestProximityListener;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconProximityListener;
 import micc.beaconav.indoorEngine.beaconHelper.GoodBadBeaconProximityManager;
 import micc.beaconav.indoorEngine.building.Building;
-import micc.beaconav.indoorEngine.building.Floor;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.Vertex;
-import micc.beaconav.indoorEngine.building.spot.Spot;
-import micc.beaconav.indoorEngine.building.spot.custom.ArtSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpotManager;
-import micc.beaconav.indoorEngine.building.spot.marker.OnSpotMarkerSelectedListener;
-import micc.beaconav.indoorEngine.building.spot.path.LocalizationSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpotManager;
-import micc.beaconav.indoorEngine.databaseLite.BuildingAdapter;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
+import micc.beaconav.indoorEngine.spot.Spot;
+import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
+import micc.beaconav.indoorEngine.spot.marker.OnMarkerSelectedListener;
+import micc.beaconav.indoorEngine.spot.__old.path.LocalizationSpot;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloader;
-import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloaderListener;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
@@ -58,7 +49,7 @@ public class IndoorMap
 
         implements BeaconProximityListener,
                     BeaconBestProximityListener,
-                    OnSpotMarkerSelectedListener<ArtSpot>,
+        OnMarkerSelectedListener<ArtMarker>,
                     View.OnTouchListener
 
 {
@@ -79,7 +70,7 @@ public class IndoorMap
     private ToolTipView toolTipView;
 
 
-    MarkerSpotManager markerManager;
+    MarkerManager markerManager;
     PathSpotManager pathSpotManager;
     PathSpotManager myLocationPathSpotManager;
 
@@ -458,17 +449,17 @@ public class IndoorMap
 
     Date startNavigationDate;
     Date startProximityDate;
-    ArtSpot  selectedMarker = null;
-    ArtSpot  proximityMarker = null;
+    ArtMarker selectedMarker = null;
+    ArtMarker proximityMarker = null;
     LocalizationSpot localizedSpot = null;
 
 
 
     // GESTIONE MARKER SELEZIONATO:
     @Override
-    public void onMarkerSpotSelected(ArtSpot newSelectedMarker) {
+    public void onMarkerSpotSelected(ArtMarker newSelectedMarker) {
 
-        MarkerSpot oldSelectedMarker = selectedMarker;
+        Marker oldSelectedMarker = selectedMarker;
         if(oldSelectedMarker != null && oldSelectedMarker.isSelected() ) {
             oldSelectedMarker.deselect();
             //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
@@ -506,13 +497,13 @@ public class IndoorMap
     }
 
     public void simulateArtSpotSelection(ArtworkRow row) {
-        if(row != null && row.getLinkedArtSpot() != null)
+        if(row != null && row.getLinkedArtMarker() != null)
         {
-            MarkerSpot oldSelectedMarker = selectedMarker;
+            Marker oldSelectedMarker = selectedMarker;
             if(oldSelectedMarker != null && oldSelectedMarker.isSelected())
                 oldSelectedMarker.deselect();
 
-            selectedMarker = row.getLinkedArtSpot();
+            selectedMarker = row.getLinkedArtMarker();
             selectedMarker.select();
             markerManager.invalidate();
         }
@@ -530,17 +521,17 @@ public class IndoorMap
                 hideDijkstraPath();
                 lostCurrentLocation();
             }
-            else if( scannedSpot instanceof ArtSpot)
+            else if( scannedSpot instanceof ArtMarker)
             {
-                ArtSpot scannedArtSpot = (ArtSpot) scannedSpot;
-                if(scannedArtSpot.getArtworkRow() != null )
+                ArtMarker scannedArtMarker = (ArtMarker) scannedSpot;
+                if(scannedArtMarker.getArtworkRow() != null )
                 {
-                    this.onMarkerSpotSelected(scannedArtSpot);
+                    this.onMarkerSpotSelected(scannedArtMarker);
                     FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
-                if( scannedArtSpot.getNearestPathSpot() != null)
+                if( scannedArtMarker.getNearestPathSpot() != null)
                 {
-                    newCurrentLocation(scannedArtSpot.getNearestPathSpot());
+                    newCurrentLocation(scannedArtMarker.getNearestPathSpot());
                     hideDijkstraPath();
                     lostCurrentLocation();
                 }
@@ -637,7 +628,7 @@ public class IndoorMap
 
         Spot beaconAssociatedSpot  = beacon_spot_map.get(ABeaconProximityManager.getID(bestProximity));
 
-        if( beaconAssociatedSpot instanceof ArtSpot )
+        if( beaconAssociatedSpot instanceof ArtMarker)
         {
             // OLD PROXIMITY MARKER: (for statistics)
             if(this.proximityMarker != null && this.proximityMarker.getArtworkRow() != null && startProximityDate != null)
@@ -648,7 +639,7 @@ public class IndoorMap
             }// TODO: COMMENTA SE CRASHA
 
             // NEW PROXIMITY MARKER:
-            this.proximityMarker = (ArtSpot) beaconAssociatedSpot;
+            this.proximityMarker = (ArtMarker) beaconAssociatedSpot;
             if( proximityMarker.getNearestPathSpot() != null)
             {
                 newCurrentLocation(proximityMarker.getNearestPathSpot());

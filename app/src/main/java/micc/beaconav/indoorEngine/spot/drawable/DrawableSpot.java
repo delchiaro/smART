@@ -1,10 +1,9 @@
-package micc.beaconav.indoorEngine.building.spot.draw;
+package micc.beaconav.indoorEngine.spot.drawable;
 
 import android.graphics.drawable.Drawable;
 
 import micc.beaconav.indoorEngine.ProportionsHelper;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.spot.Spot;
+import micc.beaconav.indoorEngine.spot.Spot;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)

@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.marker;
+package micc.beaconav.indoorEngine.spot.marker.collidable;
 
 import android.graphics.PointF;
 

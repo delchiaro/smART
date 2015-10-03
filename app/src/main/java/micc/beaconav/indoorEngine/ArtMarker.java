@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.custom;
+package micc.beaconav.indoorEngine;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,23 +10,55 @@ import android.graphics.drawable.Drawable;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.db.dbHelper.IArtRow;
 import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
+import micc.beaconav.indoorEngine.building.IndoorMarker;
 import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.spot.marker.Collidable;
-import micc.beaconav.indoorEngine.building.spot.marker.CollidableCircle;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpot;
+import micc.beaconav.indoorEngine.spot.marker.collidable.Collidable;
+import micc.beaconav.indoorEngine.spot.marker.collidable.CollidableCircle;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
 
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class ArtSpot extends MarkerSpot
+public class ArtMarker extends IndoorMarker implements IArtRow
 {
-    private  ArtworkRow artworkRow;
 
-    public ArtSpot() { this( 0, 0); }
-    public ArtSpot(float x, float y) {
+
+
+    private static Paint borderPaint = null;
+    private static Paint fillPaint = null;
+
+    private static Paint borderPaintSelected = null;
+    private static Paint borderPaintSelected2 = null;
+    private static Paint fillPaintSelected = null;
+
+    private static final float bluePaintStroke = 4;
+    private final static int radius_DP           = 5;
+    private final static int radius_selected_DP  = 8;
+    private final static int radius_collision_DP = 25;
+
+    private final static int radius         = FragmentHelper.dpToPx(radius_DP);
+    private final static int radius_selected = FragmentHelper.dpToPx(radius_selected_DP);
+    private final static int radius_collision = FragmentHelper.dpToPx(radius_collision_DP);
+
+    private static Paint bmpPaint = null;
+    private static Bitmap bmpSelected = null;
+    private static Bitmap bmp = null;
+    private static int bmp_x_offset = -1;
+    private static int bmp_y_offset = -1;
+
+
+
+    public ArtMarker(float x, float y, String name, String descr, int imageID, int ID) {
         super(x, y);
+
+        this._name = name;
+        this._descr = descr;
+        this._imageID = imageID;
+        this._ID = ID;
+
         initDrawable();
         if(borderPaint == null)
         {
@@ -63,42 +95,10 @@ public class ArtSpot extends MarkerSpot
     }
 
 
-    public void setArtworkRow(ArtworkRow row) {
-        this.artworkRow = row;
-        if(row.getLinkedArtSpot() != this)
-        {
-            row.setLinkArtSpot(this);
-        }
-    }
-    public ArtworkRow getArtworkRow() {
-        return this.artworkRow;
-    }
-
-
-    private static Paint borderPaint = null;
-    private static Paint fillPaint = null;
-
-    private static Paint borderPaintSelected = null;
-    private static Paint borderPaintSelected2 = null;
-    private static Paint fillPaintSelected = null;
 
 
 
-    private static final float bluePaintStroke = 4;
-    private final static int radius_DP           = 5;
-    private final static int radius_selected_DP  = 8;
-    private final static int radius_collision_DP = 25;
 
-    private final static int radius         = FragmentHelper.dpToPx(radius_DP);
-    private final static int radius_selected = FragmentHelper.dpToPx(radius_selected_DP);
-    private final static int radius_collision = FragmentHelper.dpToPx(radius_collision_DP);
-
-
-    private static Paint bmpPaint = null;
-    private static Bitmap bmpSelected = null;
-    private static Bitmap bmp = null;
-    private static int bmp_x_offset = -1;
-    private static int bmp_y_offset = -1;
 
     public static void flushDrawable() {
         if(bmp != null) {
@@ -124,10 +124,9 @@ public class ArtSpot extends MarkerSpot
             bmpPaint = new Paint();
         }
     }
+
     @Override
     protected Drawable generateDrawable() {
-
-
 
         return new Drawable() {
             @Override
@@ -165,6 +164,8 @@ public class ArtSpot extends MarkerSpot
 
 
 
+
+
     @Override
     protected void onReselected() {
 
@@ -186,4 +187,36 @@ public class ArtSpot extends MarkerSpot
     }
 
 
+
+
+
+
+
+    // ROBA DI: IArtRow
+    private String _name;
+    private String _descr;
+    private int _imageID;
+    private int _ID;
+
+
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public int getImageId() {
+        return 0;
+    }
+
+    @Override
+    public long getID() {
+        return 0;
+    }
 }

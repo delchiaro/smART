@@ -8,7 +8,7 @@ import micc.beaconav.db.dbJSONManager.tableScheme.TableRow;
 import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.FloatField;
 import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.LongField;
 import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.StringField;
-import micc.beaconav.indoorEngine.building.spot.custom.ArtSpot;
+import micc.beaconav.indoorEngine.ArtMarker;
 
 
 /**
@@ -18,7 +18,7 @@ public class ArtworkRow extends TableRow<ArtworkSchema> implements IArtRow
 {
     static ArtworkSchema schema = new ArtworkSchema();
     private Context context;
-    private ArtSpot linkedArtSpot = null;
+    private ArtMarker linkedArtMarker = null;
 
     public final LongField ID          = (LongField) field(schema.ID);
     public final StringField title       = (StringField) field(schema.title);
@@ -92,17 +92,17 @@ public class ArtworkRow extends TableRow<ArtworkSchema> implements IArtRow
 
 
 
-
-    public final void setLinkArtSpot(ArtSpot spot) {
-        this.linkedArtSpot = spot;
-        if(spot.getArtworkRow() != this)
-        {
-            spot.setArtworkRow(this);
-        }
-    }
-    public final ArtSpot getLinkedArtSpot(){
-        return this.linkedArtSpot;
-    }
+//
+//    public final void setLinkArtSpot(ArtMarker spot) {
+//        this.linkedArtMarker = spot;
+//        if(spot.getArtworkRow() != this)
+//        {
+//            spot.setArtworkRow(this);
+//        }
+//    }
+//    public final ArtMarker getLinkedArtMarker(){
+//        return this.linkedArtMarker;
+//    }
 
 }
 

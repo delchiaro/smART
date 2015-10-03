@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.path;
+package micc.beaconav.indoorEngine.spot.__old.path;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,8 +12,7 @@ import java.util.List;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.spot.draw.DrawableSpot;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraNodeAdapter;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraStatistics;
 

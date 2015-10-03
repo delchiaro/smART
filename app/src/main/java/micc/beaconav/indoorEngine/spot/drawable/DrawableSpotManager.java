@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.draw;
+package micc.beaconav.indoorEngine.spot.drawable;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import micc.beaconav.indoorEngine.building.spot.SpotManager;
+import micc.beaconav.indoorEngine.spot.SpotManager;
 
 
 /**
@@ -41,18 +41,18 @@ public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS
         spot.setRealtimeScaleTranslationFactor(this._last_final_scaleTranslation_factor);
         spot.setFinalScaleTranlationFactor();
         spot.setRealtimeScaleTranslationFactor(this._realtime_scaleTranslation_factor);
-
         return superResult;
     }
 
     @Override
-    public boolean addAll(Collection<DS> spots) {
+    public boolean addAll(Collection<? extends DS> spots) {
         boolean result = true;
+
         for(DS spot : spots){
             if(this.add(spot) == false)
                 result = false;
         }
-        return result;
+        return true;
     }
 
     public float get_translation_x() {

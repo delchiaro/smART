@@ -37,17 +37,14 @@ import micc.beaconav.indoorEngine.IndoorMap;
 import micc.beaconav.indoorEngine.ProportionsHelper;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconProximityListener;
 import micc.beaconav.indoorEngine.building.Building;
-import micc.beaconav.indoorEngine.building.Floor;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.spot.Spot;
-import micc.beaconav.indoorEngine.building.spot.custom.ArtSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpot;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpotManager;
-import micc.beaconav.indoorEngine.building.spot.marker.OnSpotMarkerSelectedListener;
-import micc.beaconav.indoorEngine.building.spot.path.DoorSpot;
-import micc.beaconav.indoorEngine.building.spot.path.LocalizationSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpotManager;
+import micc.beaconav.indoorEngine.spot.Spot;
+import micc.beaconav.indoorEngine.ArtMarker;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
+import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
+import micc.beaconav.indoorEngine.spot.marker.OnMarkerSelectedListener;
+import micc.beaconav.indoorEngine.spot.__old.path.LocalizationSpot;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconBestProximityListener;
 import micc.beaconav.indoorEngine.beaconHelper.GoodBadBeaconProximityManager;
@@ -57,7 +54,7 @@ import micc.beaconav.indoorEngine.beaconHelper.GoodBadBeaconProximityManager;
  */
 public class IndoorMapFragment extends Fragment
         implements View.OnTouchListener, BeaconProximityListener, BeaconBestProximityListener,
-        OnSpotMarkerSelectedListener<ArtSpot>
+        OnMarkerSelectedListener<ArtMarker>
 {
 
 
@@ -81,7 +78,7 @@ public class IndoorMapFragment extends Fragment
 
     IndoorMap indoorMap;
     Building building;
-    MarkerSpotManager markerManager;
+    MarkerManager markerManager;
     PathSpotManager pathSpotManager;
     PathSpotManager myLocationPathSpotManager;
 
@@ -91,7 +88,7 @@ public class IndoorMapFragment extends Fragment
 
     GoodBadBeaconProximityManager proximityManager;
 
-//    HashMap<Integer, MarkerSpot> marker_beacon_map = new HashMap<>();
+//    HashMap<Integer, Marker> marker_beacon_map = new HashMap<>();
 //    HashMap<Integer, PathSpot>   pathSpot_beacon_map = new HashMap<>();
 
     HashMap<Integer, Spot> beacon_spot_map = new HashMap<>();
@@ -164,7 +161,7 @@ public class IndoorMapFragment extends Fragment
         localizationImgView = null;
 
         container = null;
-        ArtSpot.flushDrawable();
+        ArtMarker.flushDrawable();
 
         //libera la memoria!!
         //http://stackoverflow.com/questions/13421945/retained-fragments-with-ui-and-memory-leaks
@@ -406,9 +403,9 @@ public class IndoorMapFragment extends Fragment
 ////
 ////
 ////        // SPOT DEFINITIONS
-//////        final ArtSpot spot1;
-//////        final ArtSpot spot2;
-//////        final ArtSpot spot3;
+//////        final ArtMarker spot1;
+//////        final ArtMarker spot2;
+//////        final ArtMarker spot3;
 ////
 ////
 ////
@@ -421,7 +418,7 @@ public class IndoorMapFragment extends Fragment
 ////        //qr_spot_map.put("path_corridoio", pathSpotCorridoio);
 ////        pathSpotCorridoio.addLinkBidirectional(door_corridoio_bagno);
 ////
-////        final ArtSpot artSpotCorridoio = new ArtSpot(13.5f, 2f, corridoio);
+////        final ArtMarker artSpotCorridoio = new ArtMarker(13.5f, 2f, corridoio);
 ////        qr_spot_map.put("art_corridoio2", artSpotCorridoio);
 ////        artSpotCorridoio.setNearestPathSpot(pathSpotCorridoio);
 ////
@@ -446,7 +443,7 @@ public class IndoorMapFragment extends Fragment
 //////        final PathSpot pathSpotDivani = new PathSpot(9f, 42f);
 ////        stanzaEntrataSegreta.getRoomSpot().x(5);
 ////        stanzaEntrataSegreta.getRoomSpot().y(38);
-////        final ArtSpot artSpotDivani = new ArtSpot(10f, 42f, stanzaEntrataSegreta);
+////        final ArtMarker artSpotDivani = new ArtMarker(10f, 42f, stanzaEntrataSegreta);
 ////        //artSpotDivani.setNearestPathSpot(pathSpotDivani);
 ////
 ////        qr_spot_map.put("art_divani", artSpotDivani);
@@ -458,14 +455,14 @@ public class IndoorMapFragment extends Fragment
 ////        corridoio2.getRoomSpot().y(32);
 ////        door_corridioio2_pulizie.x(45);
 ////        door_corridioio2_pulizie.y(32);
-////        // final ArtSpot artSpotCorridoio2 = new ArtSpot(44, 31, corridoio2);
+////        // final ArtMarker artSpotCorridoio2 = new ArtMarker(44, 31, corridoio2);
 ////        // artSpotCorridoio2.setNearestPathSpot(door_corridioio2_pulizie);
 ////        // qr_spot_map.put("art_corridoio2", artSpotCorridoio2);
 ////        door_corridio2_ingresso.addLinkBidirectional(corridoio2.getRoomSpot());
 ////
 ////
 ////            // STANZA FERRACANI
-////        final ArtSpot artSpotStanzaFerracani = new ArtSpot(28f,25f, stanzaFerracani);
+////        final ArtMarker artSpotStanzaFerracani = new ArtMarker(28f,25f, stanzaFerracani);
 ////        int beaconID = GoodBadBeaconProximityManager.getID(31950, 39427);
 ////        beacon_spot_map.put(beaconID, artSpotStanzaFerracani);
 ////
@@ -492,9 +489,9 @@ public class IndoorMapFragment extends Fragment
 
 
 
-//        spot1 = new ArtSpot( 2f, 2f);
-//        spot2 = new ArtSpot( 8f, 28);
-//        spot3 = new ArtSpot( 11f, 27f);
+//        spot1 = new ArtMarker( 2f, 2f);
+//        spot2 = new ArtMarker( 8f, 28);
+//        spot3 = new ArtMarker( 11f, 27f);
 //        corridoio.add(spot1);
 //        stanzaFerracani.add(spot2);
 //        stanzaFerracani.add(spot3);
@@ -545,8 +542,8 @@ public class IndoorMapFragment extends Fragment
     }
 
 
-    ArtSpot  selectedMarker = null;
-    ArtSpot  proximityMarker = null;
+    ArtMarker selectedMarker = null;
+    ArtMarker proximityMarker = null;
     LocalizationSpot localizedSpot = null;
 //    LocalizationSpot lastLocalizedPathSpot = null;
 
@@ -555,9 +552,9 @@ public class IndoorMapFragment extends Fragment
 
     // GESTIONE MARKER SELEZIONATO:
     @Override
-    public void onMarkerSpotSelected(ArtSpot newSelectedMarker) {
+    public void onMarkerSpotSelected(ArtMarker newSelectedMarker) {
 
-        MarkerSpot oldSelectedMarker = selectedMarker;
+        Marker oldSelectedMarker = selectedMarker;
         if(oldSelectedMarker != null && oldSelectedMarker.isSelected() ) {
             oldSelectedMarker.deselect();
           //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
@@ -568,16 +565,7 @@ public class IndoorMapFragment extends Fragment
         if(selectedMarker != null)
         {
             selectedMarker.select();
-            if(selectedMarker.getArtworkRow() == null)
-                DbManager.getLastArtworkDownloader().addHandler( new JSONHandler<ArtworkRow>() {
-                    @Override
-                    public void onJSONDownloadFinished(ArtworkRow[] result) {
-
-                        if(selectedMarker != null && selectedMarker.getArtworkRow() != null)
-                           FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
-                    }
-                });
-            else FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
+            FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
         }
         else
         {
@@ -595,13 +583,13 @@ public class IndoorMapFragment extends Fragment
     }
 
     public void simulateArtSpotSelection(ArtworkRow row) {
-        if(row != null && row.getLinkedArtSpot() != null)
+        if(row != null && row.getLinkedArtMarker() != null)
         {
-            MarkerSpot oldSelectedMarker = selectedMarker;
+            Marker oldSelectedMarker = selectedMarker;
             if(oldSelectedMarker != null && oldSelectedMarker.isSelected())
                   oldSelectedMarker.deselect();
 
-            selectedMarker = row.getLinkedArtSpot();
+            selectedMarker = row.getLinkedArtMarker();
             selectedMarker.select();
             markerManager.invalidate();
         }
@@ -619,17 +607,17 @@ public class IndoorMapFragment extends Fragment
                 hideDijkstraPath();
                 lostCurrentLocation();
             }
-            else if( scannedSpot instanceof ArtSpot)
+            else if( scannedSpot instanceof ArtMarker)
             {
-                ArtSpot scannedArtSpot = (ArtSpot) scannedSpot;
-                if(scannedArtSpot.getArtworkRow() != null )
+                ArtMarker scannedArtMarker = (ArtMarker) scannedSpot;
+                if(scannedArtMarker.getArtworkRow() != null )
                 {
-                    this.onMarkerSpotSelected(scannedArtSpot);
+                    this.onMarkerSpotSelected(scannedArtMarker);
                     FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
-                if( scannedArtSpot.getNearestPathSpot() != null)
+                if( scannedArtMarker.getNearestPathSpot() != null)
                 {
-                    newCurrentLocation(scannedArtSpot.getNearestPathSpot());
+                    newCurrentLocation(scannedArtMarker.getNearestPathSpot());
                     hideDijkstraPath();
                     lostCurrentLocation();
                 }
@@ -725,7 +713,7 @@ public class IndoorMapFragment extends Fragment
 
         Spot beaconAssociatedSpot  = beacon_spot_map.get(ABeaconProximityManager.getID(bestProximity));
 
-        if( beaconAssociatedSpot instanceof ArtSpot )
+        if( beaconAssociatedSpot instanceof ArtMarker)
         {
             // OLD PROXIMITY MARKER: (for statistics)
             if(this.proximityMarker != null && this.proximityMarker.getArtworkRow() != null && startProximityDate != null)
@@ -736,7 +724,7 @@ public class IndoorMapFragment extends Fragment
             }// TODO: COMMENTA SE CRASHA
 
             // NEW PROXIMITY MARKER:
-            this.proximityMarker = (ArtSpot) beaconAssociatedSpot;
+            this.proximityMarker = (ArtMarker) beaconAssociatedSpot;
             if( proximityMarker.getNearestPathSpot() != null)
             {
                 newCurrentLocation(proximityMarker.getNearestPathSpot());

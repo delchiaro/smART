@@ -1,10 +1,5 @@
-package micc.beaconav.indoorEngine.building.spot;
+package micc.beaconav.indoorEngine.spot;
 
-
-import micc.beaconav.indoorEngine.building.Building;
-import micc.beaconav.indoorEngine.building.Floor;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.util.containerContained.Contained;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)

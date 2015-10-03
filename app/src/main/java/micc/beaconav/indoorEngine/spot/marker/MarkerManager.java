@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.marker;
+package micc.beaconav.indoorEngine.spot.marker;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -6,25 +6,25 @@ import android.view.View;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import micc.beaconav.indoorEngine.building.spot.draw.DrawableSpotManager;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  *
  */
-public class MarkerSpotManager<MS extends  MarkerSpot> extends DrawableSpotManager<MS>  implements View.OnTouchListener
+public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> implements View.OnTouchListener
 {
 
-    // TODO: implementare metodi per touch, ritornare il marker toccato tra quelli nel manager
-
-    MS selectedMarker = null;
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
-    OnSpotMarkerSelectedListener<MS> listener = null;
+    M selectedMarker = null;
+    OnMarkerSelectedListener<M> listener = null;
 
 
-    public void setOnMarkerSpotSelectedListener( OnSpotMarkerSelectedListener<MS> listener) {
+
+
+    public void setOnMarkerSpotSelectedListener( OnMarkerSelectedListener<M> listener) {
         this.listener = listener;
     }
 
@@ -50,7 +50,7 @@ public class MarkerSpotManager<MS extends  MarkerSpot> extends DrawableSpotManag
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
                     if (clickDuration < MAX_CLICK_DURATION)
                     {
-                        MS selectedMarker = tapEvent(event);
+                        M selectedMarker = tapEvent(event);
                         if(selectedMarker != null && this.listener != null )
                         {
                             listener.onMarkerSpotSelected(selectedMarker);
@@ -70,12 +70,12 @@ public class MarkerSpotManager<MS extends  MarkerSpot> extends DrawableSpotManag
         return true;
     }
 
-    public MS tapEvent(MotionEvent event) {
+    public M tapEvent(MotionEvent event) {
 
         MotionEvent.PointerCoords pointerCoords = new MotionEvent.PointerCoords();
         event.getPointerCoords(0, pointerCoords);
 
-        MS collidedMarker = getCollidedMarker(pointerCoords.x, pointerCoords.y);
+        M collidedMarker = getCollidedMarker(pointerCoords.x, pointerCoords.y);
 
         if(collidedMarker != null)
         {
@@ -83,8 +83,8 @@ public class MarkerSpotManager<MS extends  MarkerSpot> extends DrawableSpotManag
             {
                 if (selectedMarker != null)
                     selectedMarker.deselect();
-                collidedMarker.select();
                 selectedMarker = collidedMarker;
+                selectedMarker.select();
             }
             else
             {
@@ -95,16 +95,16 @@ public class MarkerSpotManager<MS extends  MarkerSpot> extends DrawableSpotManag
         return collidedMarker;
     }
 
-    public MS getCollidedMarker(float x, float y) {
+    public M getCollidedMarker(float x, float y) {
 
-        MS collidedMarker = null;
+        M collidedMarker = null;
 
-        Iterator<MS> markerIter = iterator();
+        Iterator<M> markerIter = iterator();
         boolean collided = false;
 
         while( !collided && markerIter.hasNext())
         {
-            MS marker = markerIter.next();
+            M marker = markerIter.next();
             if(marker.checkCollision(x, y))
             {
                 collided = true;

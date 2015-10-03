@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import micc.beaconav.indoorEngine.ProportionsHelper;
-import micc.beaconav.indoorEngine.building.painting.MapPaint;
-import micc.beaconav.indoorEngine.building.spot.marker.MarkerSpot;
-import micc.beaconav.indoorEngine.building.spot.path.PathSpot;
-import micc.beaconav.indoorEngine.building.spot.Spot;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
+import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.util.containerContained.ContainerContained;
 
 /**
@@ -33,6 +32,8 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
 
     //private DrawableSpotManager<DrawableSpot> _drawableSpotManager = new DrawableSpotManager<>();
 
+
+    private ArrayList<IndoorMarker> _markers = new ArrayList<>();
     private ArrayList<Vertex> _vertices = new ArrayList<Vertex>();
     private ArrayList<Door> _doors = new ArrayList<Door>();
 
@@ -73,16 +74,15 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
 
 // * * * * * * * *  S P O T S  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-    private void tryAddToManager(Spot newSpot ) {
-        if(newSpot instanceof PathSpot)
-        {
-            this.getContainerFloor().addPathSpot((PathSpot) newSpot);
-        }
-        else if( newSpot instanceof MarkerSpot)
-        {
-            this.getContainerFloor().addMarker((MarkerSpot) newSpot);
-        }
+    public void addMarker(IndoorMarker marker) {
+        // TODO: controlla che il marker sia veramente all'interno di questa stanza!
+
+        this._markers.add(marker);
+        this.getContainerFloor().addMarker(marker);
+        marker.setRoom(this);
+
     }
+
 
 
 
@@ -279,7 +279,7 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
 //        if(linkToRoomSpot) pathSpot.addLinkBidirectional(this.getRoomSpot());
 //    }
 //
-//    public void addMarker(MarkerSpot marker) {
+//    public void addMarker(Marker marker) {
 //        this.add(marker);
 //    }
 //

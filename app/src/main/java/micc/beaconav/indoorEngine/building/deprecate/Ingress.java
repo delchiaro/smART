@@ -3,7 +3,7 @@
 //import android.graphics.Canvas;
 //import android.graphics.PointF;
 //
-//import micc.beaconav.indoorEngine.building.spot.Spot;
+//import micc.beaconav.indoorEngine.spot.Spot;
 //import micc.beaconav.indoorEngine.drawable.Drawable;
 //
 ///**

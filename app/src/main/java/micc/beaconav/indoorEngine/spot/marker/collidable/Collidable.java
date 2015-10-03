@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.building.spot.marker;
+package micc.beaconav.indoorEngine.spot.marker.collidable;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
