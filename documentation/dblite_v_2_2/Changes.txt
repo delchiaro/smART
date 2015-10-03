@@ -1,0 +1,6 @@
+﻿
+v2.1: inserito vincolo unique su tabella Vertex sulla coppia di colonne (x,y), così si impedisce l’inserimento di due vertici con lo stesso valore di coordinate ma con un ID differente.
+
+v2.0: riprogettato completamente utilizzando le convex area (e quindi i Convex Cut), eliminando i pathSpot.
+v1.0: initial release.
+v2.2: fix Artwork, adesso la chiave esterna è verso Position e sono state rimosse le colonne x e y, ridondanti con Position.. ovviamente doveva essere così dalla versione 2.0 ma era rimasta alla 1.0 per errore.
