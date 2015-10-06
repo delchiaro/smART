@@ -244,7 +244,8 @@ public class BuildingAdapter{
 
                 // COSTRUZIONIE DELLE PORTE TRAMITE I VERTEX * * * * * * * * * * * * *
                 // se il vertex corrente è una door o una aperture
-                if (vertex_type == Vertex.Type.DOOR || vertex_type == Vertex.Type.APERTURE) {
+                if (vertex_type == Vertex.Type.DOOR || vertex_type == Vertex.Type.APERTURE)
+                {
                     // se non si era giá "aperta" la porta
                     if (doorOpened == false) {
                         // apriamo la porta e salviamo i dati di questo vertice
@@ -254,10 +255,14 @@ public class BuildingAdapter{
                     }
 
                     // se invece la porta era giá stata aperta, vediamo se possiamo chiuderla senza errori
-                    else {
-                        if (oldVertex.getType() != vertex_type) {
+                    else
+                    {
+                        if (oldVertex.getType() != vertex_type)
+                        {
                             // TODO: lanciare eccezione!!! La porta inizia con un tipo e finisce con un altro, inconsistenza sul DB lite !!
-                        } else {
+                        }
+                        else
+                        {
                             // in questo caso la porta è consistente.. cerco se era giá stata inserita nella mappa delle porte:
 
                             Integer id1 = oldVertexId;
@@ -286,10 +291,11 @@ public class BuildingAdapter{
                             }
 
                         }
+                        doorOpened = false;
+                        oldVertexId = null;
+                        oldVertex = null;
                     }
-                    doorOpened = false;
-                    oldVertexId = null;
-                    oldVertex = null;
+
                 }
                 // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
 

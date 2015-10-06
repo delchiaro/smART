@@ -175,6 +175,8 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
             Vertex oldVertex = null;
             vertex = _vertices.get(0);
 
+
+            boolean doorJustClosed = false;
             // nVertices + 1 perchè voglio anche ritornare sull'ultimo vertice per controllare la coppia
             // di vertici [nVertices]-[0] oltre che [0]-[1], [1]-[2], ..., [nVertices-1]-[nVertices]
             for (int i = 1; i < nVertices+1; i++)
@@ -182,12 +184,13 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
                 oldVertex = vertex;
                 vertex = _vertices.get(i%nVertices); // coda circolare
 
-//                if (vertex.getType() == Vertex.Type.APERTURE)
-//                {
-//                    canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
-//                            vertex.getX() * PPM, vertex.getY() * PPM, this.wallsPaint);
-//                }
-                if( vertex.getType() == oldVertex.getType())
+                if(doorJustClosed)
+                {
+                    // se al ciclo precedente si è chiusa una porta (disegnata) allora saltiamo
+                    // il vertice successivo.
+                    doorJustClosed = false;
+                }
+                else if( vertex.getType() == oldVertex.getType())
                 {
                     // solo se i due vertex sono entrambi door o entrambi aperture disegno entrambe
                     switch (oldVertex.getType())
@@ -199,15 +202,18 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
                                     vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
                             canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
                                     vertex.getX() * PPM, vertex.getY() * PPM, this.doorPaint);
+                            doorJustClosed = true;
                             break;
 
                         case APERTURE:
                             canvas.drawLine(oldVertex.getX() * PPM, oldVertex.getY() * PPM,
                                     vertex.getX() * PPM, vertex.getY() * PPM, this.aperturePaint);
+                            doorJustClosed = true;
                             break;
 
                     }
                 }
+
             }
         }
 
