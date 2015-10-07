@@ -21,8 +21,8 @@ import java.util.Timer;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
+import micc.beaconav.indoorEngine.ArtworkRow;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)

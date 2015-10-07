@@ -16,7 +16,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import micc.beaconav.db.dbHelper.DbManager;
 import micc.beaconav.db.dbHelper.IArtRow;
-import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.db.dbJSONManager.JSONHandler;
 import micc.beaconav.fragments.backPressedListeners.OnBackPressedListener;
@@ -26,6 +25,7 @@ import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.
 import micc.beaconav.fragments.slidingHeaderFragment.NameHeaderFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.SeekBarHeaderFragment;
 import micc.beaconav.fragments.mainFragment.IndoorMapFragment;
+import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.IndoorMapFragmentLite;
 import micc.beaconav.outdoorEngine.Map;
 import micc.beaconav.fragments.mainFragment.MapFragment;
@@ -294,12 +294,14 @@ public class FragmentHelper  implements MuseumMarkerManager
         {
             artworkListFragment = new ArtListFragment();
             artworkList_museumRow = museum;
-            DbManager.getArtworkDownloader(museum, new JSONHandler<ArtworkRow>() {
-                @Override
-                public void onJSONDownloadFinished(ArtworkRow[] result) {
-                    artworkListFragment.insertRows(result);
-                }
-            });
+
+            // TODO: Artworks from dblite not from DB.
+//            DbManager.getArtworkDownloader(museum, new JSONHandler<ArtworkRow>() {
+//                @Override
+//                public void onJSONDownloadFinished(ArtworkRow[] result) {
+//                    artworkListFragment.insertRows(result);
+//                }
+//            });
         }
 
 

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import micc.beaconav.indoorEngine.ArtMarker;
+import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.Floor;
 import micc.beaconav.indoorEngine.building.Room;
@@ -217,8 +218,8 @@ public class BuildingAdapter{
             int vertexID;
 
 
-            HashMap<Integer, Integer> doorMap1 = new HashMap<>();
-            HashMap<Integer, Room> doorMap2 = new HashMap<>();
+            HashMap<Integer, Integer> doorMap1 = new HashMap<>();// lega un ID di un vertice porta con un ID del vertice porta accoppiato
+            HashMap<Integer, Room> doorMap2 = new HashMap<>();// lega un ID di un vertice porta accoppiato, con una room.
 
             Vertex.Type[] vertexTypeMap = new Vertex.Type[3];
             vertexTypeMap[0] = Vertex.Type.WALL;
@@ -356,7 +357,9 @@ public class BuildingAdapter{
                 minor = positionData.getInt(minor_ci);
                 major = positionData.getInt(major_ci);
 
-                roomMap.get(roomID).addMarker(new ArtMarker(x, y, artworkName, artworkDescr, imageID , artworkID));
+                ArtworkRow artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
+
+                roomMap.get(roomID).addMarker(new ArtMarker(x, y, artworkRow));
 
 
             } while (positionData.moveToNext());

@@ -14,9 +14,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
 import micc.beaconav.db.dbHelper.IArtRow;
-import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
+import micc.beaconav.indoorEngine.ArtworkRow;
 
 import java.util.List;
 

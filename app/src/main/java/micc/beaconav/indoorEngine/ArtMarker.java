@@ -10,19 +10,15 @@ import android.graphics.drawable.Drawable;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.db.dbHelper.IArtRow;
-import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
 import micc.beaconav.indoorEngine.building.IndoorMarker;
-import micc.beaconav.indoorEngine.building.Room;
 import micc.beaconav.indoorEngine.spot.marker.collidable.Collidable;
 import micc.beaconav.indoorEngine.spot.marker.collidable.CollidableCircle;
-import micc.beaconav.indoorEngine.spot.marker.Marker;
 
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class ArtMarker extends IndoorMarker implements IArtRow
+public class ArtMarker extends IndoorMarker
 {
 
 
@@ -50,14 +46,14 @@ public class ArtMarker extends IndoorMarker implements IArtRow
     private static int bmp_y_offset = -1;
 
 
+    private ArtworkRow _row;
 
-    public ArtMarker(float x, float y, String name, String descr, int imageID, int ID) {
+
+    public ArtMarker(float x, float y, ArtworkRow row) {
         super(x, y);
 
-        this._name = name;
-        this._descr = descr;
-        this._imageID = imageID;
-        this._ID = ID;
+        this._row = row;
+        this._row.setMarker(this);
 
         initDrawable();
         if(borderPaint == null)
@@ -95,6 +91,10 @@ public class ArtMarker extends IndoorMarker implements IArtRow
     }
 
 
+    public ArtworkRow getArtworkRow()
+    {
+        return _row;
+    }
 
 
 
@@ -187,36 +187,4 @@ public class ArtMarker extends IndoorMarker implements IArtRow
     }
 
 
-
-
-
-
-
-    // ROBA DI: IArtRow
-    private String _name;
-    private String _descr;
-    private int _imageID;
-    private int _ID;
-
-
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public int getImageId() {
-        return 0;
-    }
-
-    @Override
-    public long getID() {
-        return 0;
-    }
 }

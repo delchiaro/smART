@@ -25,7 +25,6 @@ import java.util.List;
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
 import micc.beaconav.db.dbHelper.DbManager;
-import micc.beaconav.db.dbHelper.artwork.ArtworkRow;
 import micc.beaconav.db.dbJSONManager.JSONHandler;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
@@ -470,16 +469,18 @@ public class IndoorMap
         if(selectedMarker != null)
         {
             selectedMarker.select();
-            if(selectedMarker.getArtworkRow() == null)
-                DbManager.getLastArtworkDownloader().addHandler( new JSONHandler<ArtworkRow>() {
-                    @Override
-                    public void onJSONDownloadFinished(ArtworkRow[] result) {
 
-                        if(selectedMarker != null && selectedMarker.getArtworkRow() != null)
-                            FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
-                    }
-                });
-            else FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
+            // TODO: artworks not from JSON but from DBLITE
+//            if(selectedMarker.getArtworkRow() == null)
+//                DbManager.getLastArtworkDownloader().addHandler( new JSONHandler<ArtworkRow>() {
+//                    @Override
+//                    public void onJSONDownloadFinished(ArtworkRow[] result) {
+//
+//                        if(selectedMarker != null && selectedMarker.getArtworkRow() != null)
+//                            FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
+//                    }
+//                });
+//            else FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
         }
         else
         {
@@ -497,13 +498,13 @@ public class IndoorMap
     }
 
     public void simulateArtSpotSelection(ArtworkRow row) {
-        if(row != null && row.getLinkedArtMarker() != null)
+        if(row != null && row.getMarker() != null)
         {
             Marker oldSelectedMarker = selectedMarker;
             if(oldSelectedMarker != null && oldSelectedMarker.isSelected())
                 oldSelectedMarker.deselect();
 
-            selectedMarker = row.getLinkedArtMarker();
+            selectedMarker = row.getMarker();
             selectedMarker.select();
             markerManager.invalidate();
         }
@@ -529,12 +530,14 @@ public class IndoorMap
                     this.onMarkerSpotSelected(scannedArtMarker);
                     FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
-                if( scannedArtMarker.getNearestPathSpot() != null)
-                {
-                    newCurrentLocation(scannedArtMarker.getNearestPathSpot());
-                    hideDijkstraPath();
-                    lostCurrentLocation();
-                }
+
+                // TODO: artwork nearest Path Spot
+//                if( scannedArtMarker.getNearestPathSpot() != null)
+//                {
+//                    newCurrentLocation(scannedArtMarker.getNearestPathSpot());
+//                    hideDijkstraPath();
+//                    lostCurrentLocation();
+//                }
 
             }
         }
@@ -640,11 +643,13 @@ public class IndoorMap
 
             // NEW PROXIMITY MARKER:
             this.proximityMarker = (ArtMarker) beaconAssociatedSpot;
-            if( proximityMarker.getNearestPathSpot() != null)
-            {
-                newCurrentLocation(proximityMarker.getNearestPathSpot());
-                startProximityDate = new Date(); // for statistics
-            }
+
+            // TODO: artwork nearest Path Spot
+//            if( proximityMarker.getNearestPathSpot() != null)
+//            {
+//                newCurrentLocation(proximityMarker.getNearestPathSpot());
+//                startProximityDate = new Date(); // for statistics
+//            }
         }
         else if( beaconAssociatedSpot instanceof  PathSpot )
         {
@@ -711,21 +716,23 @@ public class IndoorMap
 
         if(this.localizedSpot!= null && selectedMarker != null)
         {
-            if(selectedMarker.getNearestPathSpot() != null)
-            {
-                navigationImgView.setImageDrawable(null);
-                pathSpotManager =  building.drawBestPath(localizedSpot.getAssociatedPathSpot(), selectedMarker.getNearestPathSpot());
-                navigationImgView.setImageDrawable(pathSpotManager.newWrapperDrawable());
-                pathSpotManager.invalidate();
-                return 1;
-            }
-            else
-            {
-                Toast toast = Toast.makeText(context,
-                        "Purtroppo l'opera d'arte selezionata non è stata localizzata sulla mappa...", Toast.LENGTH_SHORT);
-                toast.show();
-                return -1;
-            }
+            // TODO: artwork nearest Path Spot
+//            if(selectedMarker.getNearestPathSpot() != null)
+//            {
+//                navigationImgView.setImageDrawable(null);
+//                pathSpotManager =  building.drawBestPath(localizedSpot.getAssociatedPathSpot(), selectedMarker.getNearestPathSpot());
+//                navigationImgView.setImageDrawable(pathSpotManager.newWrapperDrawable());
+//                pathSpotManager.invalidate();
+//                return 1;
+//            }
+//            else
+//            {
+//                Toast toast = Toast.makeText(context,
+//                        "Purtroppo l'opera d'arte selezionata non è stata localizzata sulla mappa...", Toast.LENGTH_SHORT);
+//                toast.show();
+//                return -1;
+//            }
+            return -1000; // TODO: delete..
         }
         else
         {
