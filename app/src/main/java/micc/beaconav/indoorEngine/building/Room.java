@@ -47,8 +47,8 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
         Door door = null;
         Vertex r1v1 = r1._vertices.get(r1._vertices.indexOf(v1));
         Vertex r1v2 = r1._vertices.get(r1._vertices.indexOf(v2));
-        Vertex r2v1 = r1._vertices.get(r2._vertices.indexOf(v1));
-        Vertex r2v2 = r1._vertices.get(r2._vertices.indexOf(v2));
+        Vertex r2v1 = r2._vertices.get(r2._vertices.indexOf(v1));
+        Vertex r2v2 = r2._vertices.get(r2._vertices.indexOf(v2));
 
         if(  r1v1 != null && r1v2 != null && ( ( r1v1 == r2v1 ) || (r1v1 == r2v2) ) && ( (r1v2 == r2v2) || (r1v2 == r2v1) ) )
         {
@@ -115,7 +115,9 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
         return this._vertices.get(index);
     }
 
-
+    public int nVertices(){
+        return this._vertices.size();
+    }
 
 
 

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import micc.beaconav.indoorEngine.ArtMarker;
 import micc.beaconav.indoorEngine.ArtworkRow;
@@ -218,19 +219,21 @@ public class BuildingAdapter{
             int vertexID;
 
 
-            HashMap<Integer, Integer> doorMap1 = new HashMap<>();// lega un ID di un vertice porta con un ID del vertice porta accoppiato
-            HashMap<Integer, Room> doorMap2 = new HashMap<>();// lega un ID di un vertice porta accoppiato, con una room.
+            HashMap<Vertex, Integer> vertex_ID_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
+            HashMap<Integer, Vertex> ID_vertex_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
 
             Vertex.Type[] vertexTypeMap = new Vertex.Type[3];
             vertexTypeMap[0] = Vertex.Type.WALL;
             vertexTypeMap[1] = Vertex.Type.DOOR;
             vertexTypeMap[2] = Vertex.Type.APERTURE;
 
-            Integer oldVertexId = null;
-            Vertex oldVertex = null;
-            boolean doorOpened = false;
 
             int roomID;
+            Integer oldRoomID = null;
+
+            Vertex vertex;
+            Room room = null;
+
             do {
                 roomID = vertexData.getInt(ID_ci);
                 vertex_x = vertexData.getFloat(x_ci);
@@ -238,69 +241,107 @@ public class BuildingAdapter{
                 vertex_type = vertexTypeMap[vertexData.getInt(type_ci)];
                 vertexID = vertexData.getInt(vertex_ID_ci);
 
-                Room room = roomMap.get(roomID);
-                Vertex vertex = new Vertex(vertex_x, vertex_y, vertex_type);
+                vertex = ID_vertex_map.get(vertexID);
+                if(vertex == null)
+                {
+                    // se non era giá nella mappa lo genero e lo aggiungo alla mappa
+                    vertex = new Vertex(vertex_x, vertex_y, vertex_type);
+                    ID_vertex_map.put(vertexID, vertex);
+                }
+
+                room = roomMap.get(roomID);
                 room.pushVertex(vertex);
 
+            } while (vertexData.moveToNext());
 
-                // COSTRUZIONIE DELLE PORTE TRAMITE I VERTEX * * * * * * * * * * * * *
-                // se il vertex corrente è una door o una aperture
-                if (vertex_type == Vertex.Type.DOOR || vertex_type == Vertex.Type.APERTURE)
+
+
+
+            // I N I Z I O COSTRUZIONI DELLE PORTE * * * * * * * * * * * * * * * * * *
+
+            HashMap<Vertex, Vertex> doorMap1 = new HashMap<>();// lega un ID di un vertice porta con un ID del vertice porta accoppiato
+            HashMap<Vertex, Room> doorMap2 = new HashMap<>();// lega un ID di un vertice porta accoppiato, con una room.
+
+
+            Iterator<Room> rumIter = floor.getIterator();
+            while(rumIter.hasNext())
+            {
+                room = rumIter.next();
+
+                // FINALIZZO LA VECCHIA STANZA ROOM CERCANDO LE PORTE
+                int NV = room.nVertices();
+                Vertex v = null;
+                Vertex old_v = null;
+
+                if (NV > 2)
                 {
-                    // se non si era giá "aperta" la porta
-                    if (doorOpened == false) {
-                        // apriamo la porta e salviamo i dati di questo vertice
-                        doorOpened = true;
-                        oldVertex = vertex;
-                        oldVertexId = vertexID;
-                    }
+                    v = room.getVertex(0);
+                    boolean doorJustClosed = false;
 
-                    // se invece la porta era giá stata aperta, vediamo se possiamo chiuderla senza errori
-                    else
-                    {
-                        if (oldVertex.getType() != vertex_type)
+                    for (int i = 1; i < NV + 1; i++) {
+                        old_v = v;
+                        v = room.getVertex(i % NV);
+
+                        if (doorJustClosed)
                         {
-                            // TODO: lanciare eccezione!!! La porta inizia con un tipo e finisce con un altro, inconsistenza sul DB lite !!
+                            // se al ciclo precedente si è chiusa una porta allora saltiamo
+                            // il vertice successivo.
+                            doorJustClosed = false;
                         }
-                        else
+                        else if (v.getType() != Vertex.Type.WALL)
                         {
-                            // in questo caso la porta è consistente.. cerco se era giá stata inserita nella mappa delle porte:
+                            if (v.getType() == old_v.getType())
+                            {
+                                Integer old_v_ID = vertex_ID_map.get(old_v);
+                                Integer vID = vertex_ID_map.get(v);
 
-                            Integer id1 = oldVertexId;
-                            Integer id2 = doorMap1.get(id1);
-                            if (id2 == null) {
-                                id1 = vertexID;
-                                id2 = doorMap1.get(vertexID);
+                                Vertex v1 = old_v;
+                                Vertex v2 = doorMap1.get(v1);
+
+                                // cerco nella mappa se è giá stata rilevata la porta con estremitá oldVertexId
+
+                                if (v2 == null)
+                                {
+                                    // se non è stata ancora rilevata controllo che non sia stata memorizzata
+                                    // con l'altra estremitá (vertexID)
+                                    v1 = v;
+                                    v2 = doorMap1.get(v);
+                                }
+
+                                if (v2 == null)
+                                {
+                                    // La porta non era ancora stata inserita nella mappa delle porte! La inseriamo..
+                                    doorMap1.put(v, old_v);
+                                    doorMap2.put(old_v, room);
+                                }
+                                else
+                                {
+                                    // In questo caso la porta era giá stata inserita, possiamo ritrovare la stanza alla quale era collegata
+                                    // la porta, e quindi generare l'entitá porta su RAM (nel modello del software android):
+                                    Room linkedRoom = doorMap2.get(v2);
+                                    Room.addDoor(room, linkedRoom, v1, v2);
+
+
+                                    // Sará possibile volendo anche rimuovere dalla hashmap 1 e 2 le corrispondenti chiavi ma attenti!!
+                                    doorMap1.remove(v1);
+                                    doorMap2.remove(v2);
+                                    //TODO: controlla se non da errori.
+                                }
+                                doorJustClosed = true;
 
                             }
-                            if (id2 == null) {
-                                // La porta non era ancora stata inserita nella mappa delle porte! La inseriamo..
-                                doorMap1.put(oldVertexId, vertexID);
-                                doorMap2.put(vertexID, room);
-                            } else {
-                                // In questo caso la porta era giá stata inserita, possiamo ritrovare la stanza alla quale era collegata
-                                // la porta, e quindi generare l'entitá porta su RAM (nel modello del software android):
-                                Room linkedRoom = doorMap2.get(id2);
-                                Room.addDoor(room, linkedRoom, vertex, oldVertex);
-
-
-                                // Sará possibile volendo anche rimuovere dalla hashmap 1 e 2 le corrispondenti chiavi ma attenti!!
-                                doorMap1.remove(id1);
-                                doorMap2.remove(id2);
-                                //TODO: controlla se non da errori.
-
-                            }
-
                         }
-                        doorOpened = false;
-                        oldVertexId = null;
-                        oldVertex = null;
+
                     }
 
                 }
-                // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
 
-            } while (vertexData.moveToNext());
+
+            }
+
+            // F I N E COSTRUZIONI DELLE PORTE * * * * *  * * * * * * * * * * * * *
+
+
         }
         else
         {
