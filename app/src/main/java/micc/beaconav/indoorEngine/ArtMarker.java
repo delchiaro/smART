@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.indoorEngine.building.IndoorMarker;
 import micc.beaconav.indoorEngine.spot.marker.collidable.Collidable;
 import micc.beaconav.indoorEngine.spot.marker.collidable.CollidableCircle;
 

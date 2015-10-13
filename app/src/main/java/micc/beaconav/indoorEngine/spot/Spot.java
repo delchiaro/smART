@@ -6,7 +6,8 @@ package micc.beaconav.indoorEngine.spot;
  */
 public class Spot
 {
-
+// NB: IN FUTURO POTREBBE ESSERE UN PUNTO NELLO SPAZIO N-DIMENSIONALE NON SOLO 2-DIEMNSIONALE.
+// SI POTREBBE SCEGLIERE LA DIMENSIONE TRAMITE MECCANISMO DI TEMPLATE O altro.
 
 
     public Spot(){

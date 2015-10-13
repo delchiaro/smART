@@ -20,7 +20,8 @@ import micc.beaconav.indoorEngine.building.Vertex;
 /**
  * Created by nagash on 24/09/15.
  */
-public class BuildingAdapter{
+public class BuildingAdapter
+{
     protected static final String TAG = "DataAdapter";
 
     private final Context mContext;
@@ -375,7 +376,7 @@ public class BuildingAdapter{
             float x;
             float y;
             int roomID;
-            int artworkID;
+            Integer artworkID;
             int imageID;
             String artworkName;
             String artworkDescr;
@@ -398,10 +399,14 @@ public class BuildingAdapter{
                 minor = positionData.getInt(minor_ci);
                 major = positionData.getInt(major_ci);
 
-                ArtworkRow artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
-
-                roomMap.get(roomID).addMarker(new ArtMarker(x, y, artworkRow));
-
+                ArtworkRow artworkRow = null;
+                if( artworkID != null )
+                {
+                    artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
+                    roomMap.get(roomID).addMarker(new ArtMarker(x, y, artworkRow));
+                }
+                else
+                    roomMap.get(roomID).addMarker(new Indoo);
 
             } while (positionData.moveToNext());
         }

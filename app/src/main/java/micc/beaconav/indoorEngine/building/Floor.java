@@ -21,7 +21,7 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
     private PointF padding = new PointF(0,0);
 
 
-    private MarkerManager<IndoorMarker> _markerManager = new MarkerManager<>();
+    private MarkerManager<Marker> _markerManager = new MarkerManager<>();
 
 
 
@@ -46,10 +46,10 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
 
 
 
-    void addMarker(IndoorMarker marker) {
+    void addMarker(Marker marker) {
         this._markerManager.add(marker);
     }
-    void addAllMarkers(Collection<IndoorMarker> markers) {
+    void addAllMarkers(Collection<Marker> markers) {
         this._markerManager.addAll(markers);
     }
     MarkerManager getMarkerManager() {

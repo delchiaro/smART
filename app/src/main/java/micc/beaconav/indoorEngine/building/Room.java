@@ -33,7 +33,6 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
     //private DrawableSpotManager<DrawableSpot> _drawableSpotManager = new DrawableSpotManager<>();
 
 
-    private ArrayList<IndoorMarker> _markers = new ArrayList<>();
     private ArrayList<Vertex> _vertices = new ArrayList<Vertex>();
     private ArrayList<Door> _doors = new ArrayList<Door>();
 
@@ -74,14 +73,6 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
 
 // * * * * * * * *  S P O T S  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-    public void addMarker(IndoorMarker marker) {
-        // TODO: controlla che il marker sia veramente all'interno di questa stanza!
-
-        this._markers.add(marker);
-        this.getContainerFloor().addMarker(marker);
-        marker.setRoom(this);
-
-    }
 
 
 

@@ -22,8 +22,6 @@ public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> impl
     OnMarkerSelectedListener<M> listener = null;
 
 
-
-
     public void setOnMarkerSpotSelectedListener( OnMarkerSelectedListener<M> listener) {
         this.listener = listener;
     }
@@ -51,13 +49,12 @@ public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> impl
                     if (clickDuration < MAX_CLICK_DURATION)
                     {
                         M selectedMarker = tapEvent(event);
-                        if(selectedMarker != null && this.listener != null )
+                        if(this.listener != null)
                         {
-                            listener.onMarkerSpotSelected(selectedMarker);
-                        }
-                        else if(selectedMarker == null && this.listener != null)
-                        {
-                            listener.onNullMarkerSpotSelected();
+                            if (selectedMarker != null)
+                                listener.onMarkerSpotSelected(selectedMarker);
+                            else
+                                listener.onNullMarkerSpotSelected();
                         }
 
                     }
