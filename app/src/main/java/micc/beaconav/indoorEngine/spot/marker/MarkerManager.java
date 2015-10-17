@@ -6,6 +6,8 @@ import android.view.View;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import micc.beaconav.indoorEngine.spot.Spot;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
 import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
 
 /**
@@ -14,7 +16,6 @@ import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
  */
 public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> implements View.OnTouchListener
 {
-
     private static final int MAX_CLICK_DURATION = 150;
     private long startClickTime;
 
@@ -22,9 +23,18 @@ public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> impl
     OnMarkerSelectedListener<M> listener = null;
 
 
+
+
+    @Override
+    public boolean add(M spot) {
+        boolean superResult = super.add(spot);
+        return superResult;
+    }
+
     public void setOnMarkerSpotSelectedListener( OnMarkerSelectedListener<M> listener) {
         this.listener = listener;
     }
+
 
 
     @Override

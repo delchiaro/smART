@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.indoorEngine.building.ConvexArea;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
 import micc.beaconav.indoorEngine.spot.marker.collidable.Collidable;
 import micc.beaconav.indoorEngine.spot.marker.collidable.CollidableCircle;
 
@@ -17,9 +19,8 @@ import micc.beaconav.indoorEngine.spot.marker.collidable.CollidableCircle;
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class ArtMarker extends IndoorMarker
+public class ArtworkMarker extends Marker<ArtworkPosition>
 {
-
 
 
     private static Paint borderPaint = null;
@@ -45,14 +46,13 @@ public class ArtMarker extends IndoorMarker
     private static int bmp_y_offset = -1;
 
 
-    private ArtworkRow _row;
+    public final ArtworkPosition getArtworkPosition()
+    {
+        return this.getContainer();
+    }
+    public ArtworkMarker(float x, float y) {
+        super(x, y, true); //unrepleciable container (unrepleciable convexArea container)
 
-
-    public ArtMarker(float x, float y, ArtworkRow row) {
-        super(x, y);
-
-        this._row = row;
-        this._row.setMarker(this);
 
         initDrawable();
         if(borderPaint == null)
@@ -90,10 +90,6 @@ public class ArtMarker extends IndoorMarker
     }
 
 
-    public ArtworkRow getArtworkRow()
-    {
-        return _row;
-    }
 
 
 

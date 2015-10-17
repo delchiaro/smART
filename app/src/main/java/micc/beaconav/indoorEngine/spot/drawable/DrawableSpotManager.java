@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.SpotManager;
 
 
@@ -17,9 +18,6 @@ import micc.beaconav.indoorEngine.spot.SpotManager;
  */
 public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS>
 {
-
-
-
     private Drawable _wrapperDrawable = null;
 
 
@@ -34,6 +32,7 @@ public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS
     }
 
 
+
     @Override
     public boolean add(DS spot) {
         boolean superResult = super.add(spot);
@@ -43,6 +42,22 @@ public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS
         spot.setRealtimeScaleTranslationFactor(this._realtime_scaleTranslation_factor);
         return superResult;
     }
+
+    @Override
+    public Iterator<DS> iterator() {
+        /** @Return: iterator che itera sui soli elementi del tipo generico DS
+         *
+         */
+        return super.iterator();
+    }
+
+//    public Iterator<Spot> allSpotsIterator() {
+//        /** @Return: iterator che itera su tutti gli Spots aggiunti (anche non del tipo generico DS)
+//         *
+//         */
+//        return _genericSpotManager.iterator();
+//    }
+
 
     @Override
     public boolean addAll(Collection<? extends DS> spots) {

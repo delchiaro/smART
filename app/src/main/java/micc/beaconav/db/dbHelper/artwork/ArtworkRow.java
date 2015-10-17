@@ -8,7 +8,7 @@
 //import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.FloatField;
 //import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.LongField;
 //import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.StringField;
-//import micc.beaconav.indoorEngine.ArtMarker;
+//import micc.beaconav.indoorEngine.ArtworkMarker;
 //
 //
 ///**
@@ -18,7 +18,7 @@
 //{
 //    static ArtworkSchema schema = new ArtworkSchema();
 //    private Context context;
-//    private ArtMarker linkedArtMarker = null;
+//    private ArtworkMarker linkedArtMarker = null;
 //
 //    public final LongField ID          = (LongField) field(schema.ID);
 //    public final StringField title       = (StringField) field(schema.title);
@@ -93,14 +93,14 @@
 //
 //
 ////
-////    public final void setLinkArtSpot(ArtMarker spot) {
+////    public final void setLinkArtSpot(ArtworkMarker spot) {
 ////        this.linkedArtMarker = spot;
 ////        if(spot.getArtworkRow() != this)
 ////        {
 ////            spot.setArtworkRow(this);
 ////        }
 ////    }
-////    public final ArtMarker getLinkedArtMarker(){
+////    public final ArtworkMarker getLinkedArtMarker(){
 ////        return this.linkedArtMarker;
 ////    }
 //

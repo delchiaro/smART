@@ -10,12 +10,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import micc.beaconav.indoorEngine.ArtMarker;
+import micc.beaconav.indoorEngine.ArtworkMarker;
+import micc.beaconav.indoorEngine.ArtworkPosition;
 import micc.beaconav.indoorEngine.ArtworkRow;
+import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
 import micc.beaconav.indoorEngine.building.Building;
+import micc.beaconav.indoorEngine.building.ConvexArea;
 import micc.beaconav.indoorEngine.building.Floor;
+import micc.beaconav.indoorEngine.building.Position;
 import micc.beaconav.indoorEngine.building.Room;
 import micc.beaconav.indoorEngine.building.Vertex;
+import micc.beaconav.indoorEngine.spot.marker.Marker;
 
 /**
  * Created by nagash on 24/09/15.
@@ -84,6 +89,48 @@ public class BuildingAdapter
         }
     }
 
+
+    public Cursor getConvexAreas()
+    {
+        try
+        {
+            String sql ="SELECT ConvexArea.* "+
+                    "  FROM ConvexArea" +
+                    "  JOIN Room ON Room.ID = ConvexArea.ID_room";
+
+            Cursor mCur = mDb.rawQuery(sql, null);
+            if(mCur != null)
+                mCur.moveToFirst();
+            return mCur;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+
+    public Cursor getVertexInAllConvexAreas()
+    {
+        try
+        {
+            String sql ="SELECT ConvexAreaVertices.*, Vertex.x as x, Vertex.y as y, Vertex.type as ID_type " +
+                    "FROM ConvexAreaVertices JOIN Vertex ON ConvexAreaVertices.ID_vertex = Vertex.ID " +
+                    "JOIN ConvexArea ON ConvexAreaVertices.ID_convexArea = ConvexArea.ID " +
+                    "ORDER BY ID_room ASC\t";
+            Cursor mCur = mDb.rawQuery(sql, null);
+            if(mCur != null)
+                mCur.moveToFirst();
+            return mCur;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
     public Cursor getPoiInAllRooms()
     {
         try
@@ -133,12 +180,13 @@ public class BuildingAdapter
     {
         try
         {
-            String sql ="SELECT Position.*, Artwork.*, QRCode.*, Beacon.*, Room.ID as ID_room " +
+            String sql ="SELECT Position.*, Artwork.*, QRCode.*, Beacon.*, Room.ID as ID_room, ConvexArea.ID as ID_convexArea " +
                     "FROM Position " +
                     "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
                     "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +
                     "LEFT JOIN Beacon ON Position.ID = Beacon.ID_position " +
-                    "JOIN Room ON Position.ID_room = Room.ID ";
+                    "JOIN Room ON Position.ID_room = Room.ID "+
+                    "JOIN ConvexArea ON Position.ID_convexArea = ConvexArea.ID ";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -159,36 +207,50 @@ public class BuildingAdapter
         Building building;
         BuildingAdapter adapter = new BuildingAdapter(context);
         adapter.open(downloadedFilePath);
-        Cursor roomsData = adapter.getRooms();
+
+
+
 
         // inizio a generare l'edificio
-
-
-        // CARICO ROOMs
         building = new Building(900, 900);
         building.add(new Floor());
         Floor floor = building.getActiveFloor();
 
-        HashMap<Integer, Room> roomMap = new HashMap<>(roomsData.getCount());
 
-        if (roomsData != null && roomsData.moveToFirst()) {
+        // * * * * * * * * * * * * LETTURA CONVEX AREAs* * * * * * * * * * * * *
+        Cursor convexAreaData = adapter.getConvexAreas();
+
+        HashMap<Integer, Room> roomMap = new HashMap<>();
+        HashMap<Integer, ConvexArea> convexAreaMap = new HashMap<>();
+
+        if (convexAreaData != null && convexAreaData.moveToFirst()) {
+            int convexAreaID;
             int roomID;
             String roomName;
             String roomDescr;
 
-            int ID_ci = roomsData.getColumnIndex("ID");
-            int name_ci = roomsData.getColumnIndex("name");
-            int descr_ci = roomsData.getColumnIndex("name");
+            int ID_convexArea_ci = convexAreaData.getColumnIndex("ID");
+
+            int ID_room_ci = convexAreaData.getColumnIndex("ID_room");
+            int roomName_ci = convexAreaData.getColumnIndex("name");
+            int roomDescr_ci = convexAreaData.getColumnIndex("descr");
 
             do {
-                roomID = roomsData.getInt(ID_ci);
-                roomName = roomsData.getString(name_ci);
-                roomDescr = roomsData.getString(descr_ci);
-                Room r = new Room();
-                roomMap.put(roomID, r);
-                floor.add(r);
+                convexAreaID = convexAreaData.getInt(ID_convexArea_ci);
+                roomID = convexAreaData.getInt(ID_room_ci);
+                Room r = roomMap.get(roomID);
+                if(r == null)
+                {
+                    r = new Room();
+                    roomMap.put(roomID, r);
+                    floor.add(r);
+                }
 
-            } while (roomsData.moveToNext());
+                ConvexArea ca = new ConvexArea();
+                r.add(ca);
+                convexAreaMap.put(convexAreaID, ca);
+
+            } while (convexAreaData.moveToNext());
         }
         else
         {
@@ -200,7 +262,17 @@ public class BuildingAdapter
 
 
 
-        // CARICO VERTEXs
+
+
+        // CARICO VERTEXs in rooms
+        Vertex.Type[] vertexTypeMap = new Vertex.Type[3];
+        vertexTypeMap[0] = Vertex.Type.WALL;
+        vertexTypeMap[1] = Vertex.Type.DOOR;
+        vertexTypeMap[2] = Vertex.Type.APERTURE;
+
+
+        HashMap<Vertex, Integer> vertex_ID_map; // lega ogni vertex (versione RAM) con il suo ID del DB
+        HashMap<Integer, Vertex> ID_vertex_map; // lega ogni vertex (versione RAM) con il suo ID del DB
 
         Cursor vertexData = adapter.getVertexInAllRooms();
         if (vertexData != null && vertexData.moveToFirst()) {
@@ -220,13 +292,10 @@ public class BuildingAdapter
             int vertexID;
 
 
-            HashMap<Vertex, Integer> vertex_ID_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
-            HashMap<Integer, Vertex> ID_vertex_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
+            vertex_ID_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
+            ID_vertex_map = new HashMap<>(vertexData.getCount()); // lega ogni vertex (versione RAM) con il suo ID del DB
 
-            Vertex.Type[] vertexTypeMap = new Vertex.Type[3];
-            vertexTypeMap[0] = Vertex.Type.WALL;
-            vertexTypeMap[1] = Vertex.Type.DOOR;
-            vertexTypeMap[2] = Vertex.Type.APERTURE;
+
 
 
             int roomID;
@@ -349,21 +418,76 @@ public class BuildingAdapter
             // TODO: gestire eccezione.. NESSUN VERTICE
             return null;
         }
-        // F I N E  CARICAMENTO VERTEX
 
 
 
+
+
+        // CARICO VERTEXs in ConvexAreas
+        Cursor caVertexData = adapter.getVertexInAllConvexAreas();
+        if (caVertexData != null && caVertexData.moveToFirst()) {
+            int convexAreaID;
+            int vertexID;
+            float vertex_x;
+            float vertex_y;
+            Vertex.Type vertex_type;
+
+            int ID_convexArea_ci = caVertexData.getColumnIndex("ID_convexArea");
+            int ID_vertex_ci = caVertexData.getColumnIndex("ID_vertex");
+            int vertex_x_ci = caVertexData.getColumnIndex("x");
+            int vertex_y_ci = caVertexData.getColumnIndex("y");
+            int vertex_type_ci = caVertexData.getColumnIndex("ID_type");
+
+            do {
+                convexAreaID = caVertexData.getInt(ID_convexArea_ci);
+                vertexID = caVertexData.getInt(ID_vertex_ci);
+                vertex_x = caVertexData.getFloat(vertex_x_ci);
+                vertex_y = caVertexData.getFloat(vertex_y_ci);
+                vertex_type = vertexTypeMap[ caVertexData.getInt(vertex_type_ci) ];
+                ConvexArea ca = convexAreaMap.get(convexAreaID);
+
+                if(ca != null)
+                {
+                    Vertex v = ID_vertex_map.get(vertexID);
+                    if(v==null)
+                    {
+                        // NON DOVREBBE MAI VERIFICARSI!!! TUTTI I VERTICI DELLA CONVEX AREA
+                        // DOVREBBERO ESSERE VERTICI DELLA ROOM E QUINDI DOVREBBERO ESSERE GIÁ STATI INSERITI
+                        v = new Vertex(vertex_x, vertex_y, vertex_type);
+                        ID_vertex_map.put(vertexID, v);
+                    }
+                    ca.addVertex(v);
+                }
+                else
+                {
+                    // NON DOVREBBE MAI VERIFICARSI!! LA QUERY SELEZIONA VERTEX ASSOCIATI AD UNA CONVEX AREA..
+                }
+
+            } while (caVertexData.moveToNext());
+        }
+        else
+        {
+            // TODO: gestire eccezione.. NESSUNA STANZA
+            return null;
+        }
 
 
 
         // C A R I C O    POSITIONs
+
+        HashMap<String, Position> QRCodePositionMap = new HashMap<>();
+        HashMap<Integer, Position> BeaconPositionMap = new HashMap<>();
+
         Cursor positionData = adapter.getPositionInAllRooms();
         if (positionData != null && positionData.moveToFirst())
         {
+
+            int roomID_ci = positionData.getColumnIndex("ID_room");
+            int convexAreaID_ci = positionData.getColumnIndex("ID_convexArea");
             int ID_ci = positionData.getColumnIndex("ID");
+
             int x_ci = positionData.getColumnIndex("x");
             int y_ci = positionData.getColumnIndex("y");
-            int roomID_ci = positionData.getColumnIndex("ID_room");
             int imageID_ci = positionData.getColumnIndex("ID_image");
             int artworkID_ci = positionData.getColumnIndex("Artwork.ID");
             int artworkName_ci = positionData.getColumnIndex("Artwork.name");
@@ -372,41 +496,66 @@ public class BuildingAdapter
             int minor_ci = positionData.getColumnIndex("Beacon.minor");
             int major_ci = positionData.getColumnIndex("Beacon.major");
 
+
+
+            int roomID;
+            int convexAreaID;
+            Integer artworkID;
             int positionID;
             float x;
             float y;
-            int roomID;
-            Integer artworkID;
             int imageID;
             String artworkName;
             String artworkDescr;
             String QRCode;
-            int minor;
-            int major;
+            Integer minor;
+            Integer major;
 
 
             do {
-
-                positionID = positionData.getInt(ID_ci);
-                x = positionData.getInt(x_ci);
-                y = positionData.getInt(y_ci);
                 roomID = positionData.getInt(roomID_ci);
-                imageID = positionData.getInt(imageID_ci);
+                convexAreaID = positionData.getInt(convexAreaID_ci);
                 artworkID = positionData.getInt(artworkID_ci);
-                artworkName = positionData.getString(artworkName_ci);
-                artworkDescr = positionData.getString(artworkDescr_ci);
+
                 QRCode = positionData.getString(qrCode_ci);
                 minor = positionData.getInt(minor_ci);
                 major = positionData.getInt(major_ci);
 
+                positionID = positionData.getInt(ID_ci);
+                x = positionData.getInt(x_ci);
+                y = positionData.getInt(y_ci);
+
+                imageID = positionData.getInt(imageID_ci);
+                artworkName = positionData.getString(artworkName_ci);
+                artworkDescr = positionData.getString(artworkDescr_ci);
+
+
                 ArtworkRow artworkRow = null;
+                ConvexArea convexArea = convexAreaMap.get(convexAreaID);
+                Position position = null;
                 if( artworkID != null )
                 {
                     artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
-                    roomMap.get(roomID).addMarker(new ArtMarker(x, y, artworkRow));
+                    position = new ArtworkPosition(x, y, artworkRow);
+                    //roomMap.get(roomID).get(convexAreaID).new ArtworkMarker(x, y, artworkRow));
                 }
                 else
-                    roomMap.get(roomID).addMarker(new Indoo);
+                {
+                    position = new Position(x, y);
+                }
+
+                convexArea.add(position);
+
+
+                if(QRCode != null)
+                {
+                    QRCodePositionMap.put(QRCode, position);
+                }
+                if(minor != null && major != null)
+                {
+                    int beaconID = ABeaconProximityManager.getID(minor,major);
+                    BeaconPositionMap.put(beaconID, position);
+                }
 
             } while (positionData.moveToNext());
         }

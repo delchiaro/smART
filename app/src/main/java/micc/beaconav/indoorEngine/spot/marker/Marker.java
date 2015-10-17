@@ -39,22 +39,34 @@ import micc.beaconav.indoorEngine.spot.marker.collidable.Collidable;
  *
  */
 
-public abstract class Marker extends DrawableSpot {
 
-    private final boolean forceUnreplaceableContainer;
+
+
+
+public abstract class Marker<CONTAINER extends IMarkerContainer> extends DrawableSpot {
+
+
+
+
+    private final boolean replaceableContainer;
+    protected CONTAINER _container;
+
     private boolean _selected = false;
 
 
     protected ArrayList<IMarkerObserver> _observers = null;
-    protected IMarkerContainer _container = null;
 
 
-    public class IrreplaceableObserverException extends  Exception {}
-
-    public Marker(float x, float y, boolean forceUnreplaceableContainer) {
+    public Marker(float x, float y, CONTAINER container, boolean forceReplaceableContainer) {
         super(x, y);
-        this._selected = false;
-        this.forceUnreplaceableContainer = forceUnreplaceableContainer;
+        this._container = container;
+        this.replaceableContainer = forceReplaceableContainer;
+    }
+    public Marker(float x, float y, CONTAINER container) {
+        this(x, y, container, false);
+    }
+    public Marker(float x, float y, boolean forceReplaceableContainer) {
+        this(x, y, null, forceReplaceableContainer);
     }
     public Marker(float x, float y) {
         this(x, y, false);
@@ -81,16 +93,21 @@ public abstract class Marker extends DrawableSpot {
         return ret;
     }
 
-    public IMarkerContainer setContainer(IMarkerContainer newContainer) throws IrreplaceableObserverException {
-        if(this.forceUnreplaceableContainer && _container != null )
-            throw new IrreplaceableObserverException();
+    public CONTAINER setContainer(CONTAINER newContainer) throws IMarkerContainer.IrreplaceableMarkerContainerException {
+        if(this.replaceableContainer == false && _container != null )
+            throw new IMarkerContainer.IrreplaceableMarkerContainerException();
         else
         {
-            IMarkerContainer ret = this._container;
+            CONTAINER ret = this._container;
             this._container = newContainer;
             return ret;
         }
     }
+
+    public CONTAINER getContainer() {
+        return this._container;
+    }
+
 
     public void select() {
         if (this.isSelected())

@@ -1,21 +1,31 @@
 package micc.beaconav.indoorEngine.building;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
+import micc.beaconav.indoorEngine.spot.marker.IMarkerContainer;
 import micc.beaconav.indoorEngine.spot.marker.Marker;
-import micc.beaconav.indoorEngine.spot.marker.IMarkerObserver;
 import micc.beaconav.util.containerContained.Contained;
+import micc.beaconav.util.containerContained.ContainerContained;
 
 /**
  * Created by nagash on 25/09/15.
  */
-public class ConvexArea extends Contained<Room> implements IMarkerObserver
+public class ConvexArea extends ContainerContained<Room, Position> implements IMarkerContainer
 {
 
-    private ArrayList<Marker> _markers = new ArrayList<>();
+    private ArrayList<Vertex> _vertices = new ArrayList<Vertex>();
+    private ArrayList<Position> _positions = new ArrayList<>();
+
     private Marker _markerSelected = null;
+
+    public ConvexArea() {
+        super();
+    }
+    public ConvexArea(ArrayList<Vertex> _vertices) {
+        super();
+        this._vertices = _vertices;
+    }
 
 
     final public Room getContainerRoom() {
@@ -28,30 +38,10 @@ public class ConvexArea extends Contained<Room> implements IMarkerObserver
         return super.getContainer().getContainerFloor();
     }
 
-
-
-
-    public void addMarker(Marker marker) throws Marker.IrreplaceableObserverException {
-        // TODO: controlla che il marker sia veramente all'interno di questa stanza!
-
-        this._markers.add(marker);
-        this.getContainerFloor().addMarker(marker);
-        marker.setObserver(this);
-
+    public final void addVertex(Vertex vertex){
+        this._vertices.add(vertex);
     }
 
-    @Override
-    public void  onMarkerSelected(@NonNull Marker selectedMarker) {
-        _markerSelected = selectedMarker;
-    }
 
-    @Override
-    public void onMarkerDeselected(@NonNull Marker selectedMarker) {
-        _markerSelected = null;
-    }
 
-    @Override
-    public void onMarkerReselected(@NonNull Marker selectedMarker) {
-
-    }
 }

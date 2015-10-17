@@ -6,6 +6,10 @@ import android.graphics.PointF;
 import java.util.Collection;
 import java.util.Iterator;
 
+import micc.beaconav.indoorEngine.spot.Spot;
+import micc.beaconav.indoorEngine.spot.SpotManager;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
 import micc.beaconav.indoorEngine.spot.marker.Marker;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.util.containerContained.ContainerContained;
@@ -22,6 +26,7 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
 
 
     private MarkerManager<Marker> _markerManager = new MarkerManager<>();
+    private SpotManager<Spot> _spotManager = new SpotManager<>();
 
 
 
@@ -42,6 +47,16 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
     }
 
 
+
+
+
+    void addSpot(Spot spot) {
+        this._spotManager.add(spot);
+    }
+
+    SpotManager getSpotManager() {
+        return this._spotManager;
+    }
 
 
 

@@ -1,6 +1,7 @@
 package micc.beaconav.indoorEngine;
 
 import micc.beaconav.db.dbHelper.artwork.IArtworkRow;
+import micc.beaconav.indoorEngine.building.Position;
 
 /**
  * Created by Nagash on 10/7/2015.
@@ -36,19 +37,19 @@ public class ArtworkRow implements IArtworkRow {
     }
 
 
-    private ArtMarker _marker = null;
+    private ArtworkPosition _position = null;
 
-    boolean setMarker(ArtMarker marker)
+    boolean setPosition(ArtworkPosition position)
     {
-        if(_marker == null) {
-            _marker = marker;
+        if(_position == null) {
+            _position = position;
             return true;
         }
         else return false;
     }
-    public ArtMarker getMarker()
+    public ArtworkPosition getPosition()
     {
-        return this._marker;
+        return this._position;
     }
 
 
