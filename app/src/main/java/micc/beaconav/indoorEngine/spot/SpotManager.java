@@ -75,7 +75,7 @@ public class SpotManager<S extends Spot> extends LinkedHashSet<S>
 //        return this._containedSpots.size();
 //    }
 //
-//    public Iterator<S> iterator() {
+//    public iterator<S> iterator() {
 //        return _containedSpots.iterator();
 //    }
 

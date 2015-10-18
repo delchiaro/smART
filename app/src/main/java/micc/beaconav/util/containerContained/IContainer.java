@@ -6,7 +6,7 @@ package micc.beaconav.util.containerContained;
  */
 
 
-public interface IContainer<CONTAINED extends IContained> {
+public interface IContainer<CONTAINED extends IContained>  {
 
 
 

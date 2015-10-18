@@ -51,7 +51,7 @@ public class DrawableSpotManager<DS extends DrawableSpot> extends SpotManager<DS
         return super.iterator();
     }
 
-//    public Iterator<Spot> allSpotsIterator() {
+//    public iterator<Spot> allSpotsIterator() {
 //        /** @Return: iterator che itera su tutti gli Spots aggiunti (anche non del tipo generico DS)
 //         *
 //         */

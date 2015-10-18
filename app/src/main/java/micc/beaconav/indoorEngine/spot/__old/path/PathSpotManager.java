@@ -105,7 +105,7 @@ public class PathSpotManager<PS extends PathSpot> extends DrawableSpotManager<PS
 
 
 
-//            public final boolean drawConLinee(Canvas canvas, Iterator<PS> spotIter, Integer index)
+//            public final boolean drawConLinee(Canvas canvas, iterator<PS> spotIter, Integer index)
 //            {
 //
 //            }

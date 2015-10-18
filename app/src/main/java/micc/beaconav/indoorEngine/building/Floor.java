@@ -8,8 +8,6 @@ import java.util.Iterator;
 
 import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.SpotManager;
-import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
-import micc.beaconav.indoorEngine.spot.drawable.DrawableSpotManager;
 import micc.beaconav.indoorEngine.spot.marker.Marker;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.util.containerContained.ContainerContained;
@@ -17,7 +15,7 @@ import micc.beaconav.util.containerContained.ContainerContained;
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class Floor extends ContainerContained<Building, Room>  // extends Drawable
+public class Floor extends ContainerContained<Building, Room> // extends Drawable
 {
     private int _floorIndex = 0;
 
@@ -77,14 +75,14 @@ public class Floor extends ContainerContained<Building, Room>  // extends Drawab
 
     public void draw(Canvas canvas) {
 
-        Iterator<Room> roomIter = super.getIterator();
+        Iterator<Room> roomIter = super.iterator();
         while(roomIter.hasNext())
         {
             roomIter.next().drawWalls(canvas, padding); //delego disegno ad ogni stanza
         }
 
 
-        roomIter = super.getIterator();
+        roomIter = super.iterator();
         while(roomIter.hasNext())
         {
             roomIter.next().drawDoorsAndAperture(canvas, padding); //delego disegno ad ogni stanza

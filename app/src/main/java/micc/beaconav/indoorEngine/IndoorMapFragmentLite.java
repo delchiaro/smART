@@ -21,6 +21,7 @@ import micc.beaconav.indoorEngine.building.Floor;
 import micc.beaconav.indoorEngine.building.Room;
 import micc.beaconav.indoorEngine.building.Vertex;
 import micc.beaconav.indoorEngine.databaseLite.BuildingAdapter;
+import micc.beaconav.indoorEngine.databaseLite.BuildingFactory;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloader;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloaderListener;
 
@@ -81,7 +82,10 @@ public class IndoorMapFragmentLite extends Fragment
     @Override
     public void onDownloadFinished(String downloadedFilePath) {
         // TODO: volendo è possibile rendere anche la generazione del Building asincrona con un thread..
-        Building building = BuildingAdapter.generateBuilding(downloadedFilePath, this.getActivity());
+
+        BuildingFactory buildingFactory = new BuildingFactory(downloadedFilePath, this.getActivity());
+        Building building =  buildingFactory.generateBuilding();
+
         indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView,
                                         navigationImgView, localizationImgView, this.getActivity());
 

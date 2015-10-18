@@ -4,7 +4,7 @@
 //import android.graphics.PointF;
 //
 //import java.util.ArrayList;
-//import java.util.Iterator;
+//import java.util.iterator;
 //import java.util.List;
 //
 //import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
@@ -82,7 +82,7 @@
 //    // TODO: change Vertex to Spot
 //    public boolean checkSpotInArea(Vertex spot) {
 //        int size = _vertices.size();
-//        Iterator<Vertex> iter = _vertices.iterator();
+//        iterator<Vertex> iter = _vertices.iterator();
 //
 //        float[] vert_x = new float[size];
 //        float[] vert_y = new float[size];
@@ -125,7 +125,7 @@
 //
 //
 //    protected void draw(Canvas canvas, PointF padding) {
-//        Iterator<Ingress> ingressIter = _ingresses.iterator();
+//        iterator<Ingress> ingressIter = _ingresses.iterator();
 //        while(ingressIter.hasNext()) {
 //            ingressIter.next().draw(canvas); //delego disegno delle porte ad ogni Ingress
 //        }
