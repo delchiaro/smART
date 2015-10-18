@@ -11,9 +11,15 @@ import java.util.Set;
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class Container<CONTAINED extends IContained>  implements IContainer<CONTAINED> {
+public class Container<CONTAINED extends IContained>  implements IContainer<CONTAINED>, Iterable<CONTAINED> {
 
     protected List<CONTAINED> _containedObjects = new ArrayList<>();
+
+    @Override
+    public Iterator<CONTAINED> iterator() {
+        return _containedObjects.iterator();
+    }
+
 
     public static class Key { private Key() {} }
     private static Key key = new Key();
@@ -73,9 +79,6 @@ public class Container<CONTAINED extends IContained>  implements IContainer<CONT
         return new ArrayList<CONTAINED>(_containedObjects);
     }
 
-    public Iterator<CONTAINED> getIterator() {
-        return _containedObjects.iterator();
-    }
 
     public CONTAINED get(int location) {
         return _containedObjects.get(location);

@@ -2,7 +2,7 @@
 //
 //import java.util.ArrayList;
 //import java.util.Arrays;
-//import java.util.Iterator;
+//import java.util.iterator;
 //import java.util.List;
 //import java.util.SortedSet;
 //import java.util.TreeSet;
@@ -68,7 +68,7 @@
 //            roomFloor.add( currentRoom);
 //
 //
-//            Iterator<ConvexAreaRow> areaIter = convexAreaSet.iterator();
+//            iterator<ConvexAreaRow> areaIter = convexAreaSet.iterator();
 //            while(areaIter.hasNext())
 //            {
 //                ConvexAreaRow areaRow = areaIter.next();

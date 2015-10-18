@@ -37,10 +37,18 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
     private ArrayList<Door> _doors = new ArrayList<Door>();
 
 
+    public Iterable<Vertex> vertices() {
+        return _vertices;
+    }
 
 // * * * * * * * *  D O O R S * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // package protected
 
+
+    /**
+     * Automatically search for convex area that contains v1 and v2 of the door,
+     *  inside room1 and room2.
+     *  Load in the room (or generate) all the convex areas before adding doors!
+     */
     public static Door addDoor(Room r1, Room r2, Vertex v1, Vertex v2)
     {
         Door door = null;
@@ -51,12 +59,18 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
 
         if(  r1v1 != null && r1v2 != null && ( ( r1v1 == r2v1 ) || (r1v1 == r2v2) ) && ( (r1v2 == r2v2) || (r1v2 == r2v1) ) )
         {
+
             door = new Door(v1, v2, r1, r2);
             r1._addDoor(door);
             r2._addDoor(door);
         }
         return door;
     }
+//    public Door connectWithDoor(Room otherRoom, Vertex v1, Vertex v2)
+//    {
+//        return addDoor(this, otherRoom, v1, v2);
+//    }
+
     private void _addDoor(Door door) {
         this._doors.add(door);
     }
