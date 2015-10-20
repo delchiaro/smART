@@ -2,16 +2,14 @@ package micc.beaconav.indoorEngine.building;
 
 import android.graphics.Canvas;
 
-import com.estimote.sdk.Beacon;
 import com.google.common.collect.HashBiMap;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpotManager;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraSolver;
 import micc.beaconav.util.containerContained.Container;
 
@@ -30,14 +28,10 @@ public class Building extends Container<Floor>
     private TreeMap<Integer, Floor> floorList;
     private int _activeFloor;
 
-    private DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
-    private PathSpotManager<PathSpot> dijkstraPath = null;
-
+    DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
+    PathSpotManager<PathSpot> dijkstraPath = null;
     private HashBiMap<String, Position> QRCodePositionMap = null;
     private HashBiMap<BeaconAddress, Position> BeaconPositionMap = null;
-
-
-
 
 
 
@@ -53,6 +47,13 @@ public class Building extends Container<Floor>
     }
     public float    getHeight(){
         return height;
+    }
+
+    public HashBiMap<String, Position> getQRCodePositionMap() {
+        return QRCodePositionMap;
+    }
+    public HashBiMap<BeaconAddress, Position> getBeaconPositionMap() {
+        return BeaconPositionMap;
     }
 
 
@@ -77,17 +78,6 @@ public class Building extends Container<Floor>
         }
         return dijkstraPath;
     }
-
-
-    public HashBiMap<String, Position> getQRCodePositionMap() {
-        return QRCodePositionMap;
-    }
-    public HashBiMap<BeaconAddress, Position> getBeaconPositionMap() {
-        return BeaconPositionMap;
-    }
-
-
-
 
 
     public void draw(Canvas canvas, int floorIndex) {

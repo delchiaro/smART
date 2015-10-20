@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.spot.__old.path;
+package micc.beaconav.indoorEngine;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.indoorEngine.building.Room;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
@@ -21,18 +22,18 @@ public class LocalizationSpot extends PathSpot {
 
     public LocalizationSpot(PathSpot associatedPathSpot)
     {
-        super(associatedPathSpot.x(), associatedPathSpot.y());
+        super(associatedPathSpot);
         this.associatedPathSpot = associatedPathSpot;
     }
 
     public LocalizationSpot(PathSpot associatedPath, float x, float y, Room room_container) {
-        super(x, y);
+        super(associatedPath);
         this.associatedPathSpot = associatedPath;
         initDrawable();
     }
 
     public LocalizationSpot(PathSpot associatedPath, float x, float y) {
-        super(x, y);
+        super(associatedPath);
         this.associatedPathSpot = associatedPath;
         initDrawable();
     }

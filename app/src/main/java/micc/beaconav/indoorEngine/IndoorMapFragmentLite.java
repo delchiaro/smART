@@ -33,11 +33,11 @@ public class IndoorMapFragmentLite extends Fragment
     implements BuildingDownloaderListener
 {
 
-//    private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/database.sqlite";
+
+    //private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/database.sqlite";
     private static String museumUrl = "http://whitelight.altervista.org/database.sqlite";
 
     IndoorMap indoorMap = null;
-
 
     ViewGroup container = null;
     ImageView backgroundImgView;
@@ -82,8 +82,6 @@ public class IndoorMapFragmentLite extends Fragment
 
 
 
-
-
     @Override
     public void onDownloadFinished(String downloadedFilePath) {
         // TODO: volendo è possibile rendere anche la generazione del Building asincrona con un thread..
@@ -92,9 +90,10 @@ public class IndoorMapFragmentLite extends Fragment
         Building building =  buildingFactory.generateBuilding();
 
         indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
-                                    this.getActivity(), FragmentHelper.instance().getMainActivity());
+                this.getActivity(), FragmentHelper.instance().getMainActivity());
 
-
+        tv.setText("Download finished!");
+        frameLayout.removeView(tv);
 
         tv.setText("Download finished!");
         frameLayout.removeView(tv);

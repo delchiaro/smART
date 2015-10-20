@@ -16,7 +16,7 @@ public class ConvexArea extends ContainerContained<Room, Position> implements IM
 {
 
     private ArrayList<Vertex> _vertices = new ArrayList<Vertex>();
-    private ArrayList<Position> _positions = new ArrayList<>();
+
     private HashSet<ConvexCut> _convexCut = new HashSet<>();
 
     private Marker _markerSelected = null;
@@ -57,6 +57,8 @@ public class ConvexArea extends ContainerContained<Room, Position> implements IM
     private void _addConvexCut(ConvexCut convexCut) {
         this._convexCut.add(convexCut);
     }
+
+    public HashSet<ConvexCut> convexCuts() { return _convexCut; }
 
     public ConvexArea() {
         super();

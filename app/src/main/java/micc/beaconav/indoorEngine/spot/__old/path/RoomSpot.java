@@ -6,13 +6,15 @@ package micc.beaconav.indoorEngine.spot.__old.path;
  *
  * Rappresenta un normale Marker con la differenza che ogni Room deve avere uno ed un solo RoomSpot
  */
-public class RoomSpot extends PathSpot {
+public class RoomSpot
+//        extends PathSpot
+{
 
 
-
-    public RoomSpot(float x, float y){
-        super(x, y);
-    }
+//
+//    public RoomSpot(float x, float y){
+//        super(x, y);
+//    }
 
 
 

@@ -20,6 +20,8 @@ public class Spot
 
 
 
+
+
     private float _absolute_x; //in meters, coordinate assolute indipendenti da traslazioni, rotazioni o scaling
     private float _absolute_y;
 

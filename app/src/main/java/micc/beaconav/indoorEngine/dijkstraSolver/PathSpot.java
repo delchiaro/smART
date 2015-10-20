@@ -1,4 +1,4 @@
-package micc.beaconav.indoorEngine.spot.__old.path;
+package micc.beaconav.indoorEngine.dijkstraSolver;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,9 +12,8 @@ import java.util.List;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
-import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraNodeAdapter;
-import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraStatistics;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
@@ -31,12 +30,36 @@ public class PathSpot extends DrawableSpot implements DijkstraNodeAdapter<PathSp
     private List<PathSpot> _linkedSpots = new ArrayList<PathSpot>();
 
 
+
+    private Spot _associatedSpot = null;
+
+    public PathSpot(Spot associatedSpot) {
+        super(associatedSpot.x(), associatedSpot.y());
+        _associatedSpot = associatedSpot;
+        initDrawable();
+    }
+
     public PathSpot(float x, float y) {
         super(x, y);
+        _associatedSpot = null;
         initDrawable();
     }
 
 
+
+    // FORZO LE COORDINATE DI QUESTO PATHSPOT AD ESSERE IDENTICHE A QUELE DELLO SPOT A CUI È ASSOCIATO.
+    @Override public final float x() {
+        if(_associatedSpot != null)
+            return _associatedSpot.x();
+        else return super.x();
+    }
+    @Override public float y() {
+        if(_associatedSpot != null )
+            return _associatedSpot.y();
+        else return super.y();
+    }
+    @Override public void x(float x) { _associatedSpot.x(x);  }
+    @Override public void y(float y) { _associatedSpot.y(y); }
 
 
 

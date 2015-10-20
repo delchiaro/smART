@@ -261,12 +261,12 @@ public class FragmentHelper  implements MuseumMarkerManager
         indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
         swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
         activeMainFragment = MainFragment.INDOOR;
-        //showArtworkListFragment(museum);
-        //indoorMapFragment.setMuseum(museum);
-        //mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
-        //mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
-        //mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
-        //mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
+//        showArtworkListFragment(museum);
+//        indoorMapFragment.setMuseum(museum);
+        mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
+        mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
+        mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
+        mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
     }
 
 
@@ -307,7 +307,7 @@ public class FragmentHelper  implements MuseumMarkerManager
 
         activeSlidingFragment = SlidingFragment.LIST;
         swapFragment(R.id.fragment_list_container, artworkListFragment);
-        showNameHeaderFragment(museum);
+//        showNameHeaderFragment(museum);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
         mainActivity.setFABListener(defaultFABOnClickListener);

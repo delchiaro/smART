@@ -33,4 +33,5 @@ public class BeaconAddress {
         result = 31 * result + _major.hashCode();
         return result;
     }
+
 }
