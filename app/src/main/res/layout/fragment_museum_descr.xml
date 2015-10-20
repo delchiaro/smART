@@ -112,6 +112,12 @@
                         android:src="@drawable/graphic"
                         android:padding="2dp"/>
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/galleryImageTest"
+                        android:padding="2dp"/>
+
                 </LinearLayout>
 
 
