@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import micc.beaconav.FragmentHelper;
+import micc.beaconav.MainActivity;
 import micc.beaconav.R;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconBestProximityListener;
@@ -70,14 +71,9 @@ public class IndoorMap
     PathSpotManager myLocationPathSpotManager;
 
     private Building building;
-    private HashMap<Integer, Position> spot_beacon_map = new HashMap<>();
-    private HashMap<Integer, Position> spot_QR_map = new HashMap<>();
-    private HashMap<Integer, Position> beacon_position_map = new HashMap<>();
-    private HashMap<String, Position> qr_position_map = new HashMap<>();
 
     GoodBadBeaconProximityManager proximityManager;
 
-    private BuildingDownloader downloader;
 
 
 
@@ -100,7 +96,7 @@ public class IndoorMap
     ImageView localizationImgView;
 
     public IndoorMap( Building building, ImageView foregroundImgView, ImageView backgroundImgView,
-                      ImageView navigationImgView, ImageView localizationImgView,Context context ) {
+                      ImageView navigationImgView, ImageView localizationImgView,Context context, MainActivity mainActivity) {
         this.context = context;
         this.building = building;
         this.backgroundImgView  = backgroundImgView;
@@ -135,6 +131,8 @@ public class IndoorMap
 
         translateAll(40, 40);
         navigationImgView.invalidate();
+
+        proximityManager = new GoodBadBeaconProximityManager(mainActivity, this);
     }
 
 
@@ -147,6 +145,20 @@ public class IndoorMap
         return frame;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * GESTIONE TOUCH EVENT IMAGE VIEW MAPPA (ZOOM - DRAG) * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     private void translateAll(int x, int y) {
 
@@ -433,59 +445,59 @@ public class IndoorMap
 
 
 
-
-
-
-
-
-
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * GESTIONE MARKERS, BEACON E NAVIGAZIONE INDOOR MAP * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
     Date startNavigationDate;
     Date startProximityDate;
-    ArtworkMarker selectedMarker = null;
-    ArtworkMarker proximityMarker = null;
-    LocalizationSpot localizedSpot = null;
+
+    //ArtworkMarker proximityMarker = null;
+    //LocalizationSpot localizedSpot = null;
+    //ArtworkMarker selectedMarker = null;
+
+    ArtworkPosition selectedArtworkPosition = null;  // position/marker Selezionato.
+    Position localizedPosition = null;               // position in cui siamo stati rilevati.
+    ArtworkPosition localizedArtworkPosition = null; // se la position in cui siamo stati rilevati è una
+                                                     // ArtworkPosition allora viene referenziata giá castata
+                                                     // da questa variabile.
+
+
+
+
 
 
 
     // GESTIONE MARKER SELEZIONATO:
     @Override
-    public void onMarkerSpotSelected(ArtworkMarker newSelectedMarker) {
-
-        Marker oldSelectedMarker = selectedMarker;
-        if(oldSelectedMarker != null && oldSelectedMarker.isSelected() ) {
-            oldSelectedMarker.deselect();
-            //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+    public void onMarkerSpotSelected(ArtworkMarker newSelectedMarker)
+    {
+        if(selectedArtworkPosition != null )
+        {
+            Marker oldSelectedMarker = selectedArtworkPosition.getMarker();
+            if (oldSelectedMarker != null && oldSelectedMarker.isSelected())
+            {
+                oldSelectedMarker.deselect();
+                markerManager.invalidate();
+                // TODO: artworkList_museumRow e` sempre null...
+                //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+            }
         }
 
-        selectedMarker = newSelectedMarker;
-
-        if(selectedMarker != null)
+        if(newSelectedMarker != null)
         {
-            selectedMarker.select();
-
-            // TODO: artworks not from JSON but from DBLITE
-//            if(selectedMarker.getArtworkRow() == null)
-//                DbManager.getLastArtworkDownloader().addHandler( new JSONHandler<ArtworkRow>() {
-//                    @Override
-//                    public void onJSONDownloadFinished(ArtworkRow[] result) {
-//
-//                        if(selectedMarker != null && selectedMarker.getArtworkRow() != null)
-//                            FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
-//                    }
-//                });
-//            else FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
+            newSelectedMarker.select();
+            selectedArtworkPosition = newSelectedMarker.getArtworkPosition();
+            FragmentHelper.instance().showArtworkDetailsFragment(selectedArtworkPosition.getArtworkRow());
         }
         else
         {
-            FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+            // TODO: artworkList_museumRow e` sempre null...
+          //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+            selectedArtworkPosition = null;
             markerManager.invalidate();
         }
-
-
-
     }
 
     @Override
@@ -493,15 +505,18 @@ public class IndoorMap
         this.onMarkerSpotSelected(null);
     }
 
-    public void simulateArtSpotSelection(ArtworkRow row) {
+    public void simulateArtMarkerSelection(ArtworkRow row) {
         if(row != null && row.getPosition() != null)
         {
-            Marker oldSelectedMarker = selectedMarker;
-            if(oldSelectedMarker != null && oldSelectedMarker.isSelected())
-                oldSelectedMarker.deselect();
+            if(selectedArtworkPosition != null)
+            {
+                Marker oldSelectedMarker = selectedArtworkPosition.getMarker();
+                if(oldSelectedMarker != null && oldSelectedMarker.isSelected())
+                    oldSelectedMarker.deselect();
+            }
 
-            selectedMarker = row.getPosition().getMarker();
-            selectedMarker.select();
+            selectedArtworkPosition = row.getPosition();
+            selectedArtworkPosition.getMarker().select();
             markerManager.invalidate();
         }
     }
@@ -510,7 +525,7 @@ public class IndoorMap
     // GESTIONE QR CODE SCANNER (MARKER PIÙ VICINO E POSIZIONE CORRENTE)
     public void onCameraScanResult(String qr_code_result)
     {
-        Position scannedPosition = qr_position_map.get(qr_code_result);
+        Position scannedPosition = building..get(qr_code_result);
         if(scannedPosition != null)
         {
             if( scannedPosition instanceof ArtworkPosition)
@@ -538,6 +553,8 @@ public class IndoorMap
             }
         }
     }
+
+
 
     // GESTIONE BEACON (MARKER PIÙ VICINO E POSIZIONE CORRENTE)
 
@@ -627,6 +644,8 @@ public class IndoorMap
 
         Position beaconAssociatedPosition  = beacon_position_map.get(ABeaconProximityManager.getID(bestProximity));
 
+        localizedPosition = beaconAssociatedPosition;
+
         if( beaconAssociatedPosition instanceof ArtworkPosition)
         {
             // TODO: STATISTICS
@@ -638,32 +657,11 @@ public class IndoorMap
 //                TimeStatisticsManager.writeInProximityTime(this.proximityMarker.getArtworkRow(), timeInSeconds + lastTimeInApp);
 //            }
 
-            // NEW PROXIMITY MARKER:
-            this.proximityMarker =  ((ArtworkPosition) beaconAssociatedPosition).getMarker();
-
-            // TODO: artwork nearest Path Spot
-//            if( proximityMarker.getNearestPathSpot() != null)
-//            {
-//                newCurrentLocation(proximityMarker.getNearestPathSpot());
-//                startProximityDate = new Date(); // for statistics
-//            }
-        }
-        else
-        {
-//            TODO: aggiorna current location da beacon
-//            this.proximityMarker = null;
-//            newCurrentLocation((PathSpot) beaconAssociatedSpot);
-        }
-
-        if(proximityMarker != null)
-        {
-            //lastLocalizedPathSpot = proximityMarker.getNearestPathSpot();
+            selectedArtworkPosition = (ArtworkPosition) beaconAssociatedPosition;
             showProximityArtworkBeaconFAB();
         }
         else
-        {
             hideProximityArtworkBeaconFAB();
-        }
 
     }
     @Override
@@ -685,7 +683,7 @@ public class IndoorMap
         FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMarkerSpotSelected(proximityMarker);
+                onMarkerSpotSelected(selectedArtworkPosition.getMarker());
                 markerManager.invalidate();
                 toolTipView.remove();
                 FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
