@@ -1,12 +1,16 @@
-package micc.beaconav.indoorEngine.spot.__old.path;
+package micc.beaconav.indoorEngine;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import micc.beaconav.indoorEngine.building.Position;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraNodeAdapter;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
+import micc.beaconav.indoorEngine.spot.Spot;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
@@ -30,32 +34,23 @@ public class DoorSpot extends PathSpot {
     }
 
     private Visibility _visibleInDijkstraPath = Visibility.HIDDEN;
-    private DoorSpot _linkedDoor;
 
-    public DoorSpot(float x, float y, DoorSpot linkedDoor, Visibility visibleInPath ) {
-        super(x, y);
+    public DoorSpot(float x, float y, Visibility visibleInPath ) {
+       this(new  Spot(x, y), visibleInPath);
+    }
+
+    public DoorSpot(Spot spot, Visibility visibleInPath ) {
+        super(spot);
         this._visibleInDijkstraPath = visibleInPath;
-        if(linkedDoor != null)
-        {
-            if (linkedDoor != null && linkedDoor._linkedDoor == null)
-            {
-                _linkedDoor = linkedDoor;
-                linkedDoor._linkedDoor = this;
-            }
-            else
-            {
-                //TODO:  exception
-            }
-        }
-        else this._linkedDoor = null;
+
 
         if(arrowPaint != null) {
             initPaint();
         }
     }
 
-    public DoorSpot(float x, float y, DoorSpot linkedDoor) {
-        this(x, y, linkedDoor, Visibility.HIDDEN);
+    public DoorSpot(Spot spot) {
+        this(spot, Visibility.HIDDEN);
     }
 
 
@@ -71,7 +66,7 @@ public class DoorSpot extends PathSpot {
     @Override
     public List<? extends DijkstraNodeAdapter> getAdjacent() {
         ArrayList<DijkstraNodeAdapter> retList = new ArrayList<>(super.getAdjacent());
-        retList.add(_linkedDoor);
+        //retList.add(_linkedDoor);
         return retList;
     }
 

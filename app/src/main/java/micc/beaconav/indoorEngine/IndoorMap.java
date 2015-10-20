@@ -24,7 +24,6 @@ import java.util.List;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconBestProximityListener;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconProximityListener;
@@ -32,12 +31,10 @@ import micc.beaconav.indoorEngine.beaconHelper.GoodBadBeaconProximityManager;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.Position;
 import micc.beaconav.indoorEngine.spot.marker.Marker;
-import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.indoorEngine.spot.marker.OnMarkerSelectedListener;
-import micc.beaconav.indoorEngine.spot.__old.path.LocalizationSpot;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpotManager;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloader;
 
 /**

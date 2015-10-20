@@ -28,7 +28,8 @@ import micc.beaconav.indoorEngine.building.Vertex;
  */
 public class BuildingAdapter
 {
-    protected static final String TAG = "DataAdapter";
+    protected static final String TAG = "BuildingAdapter";
+
 
     private final Context mContext;
     private SQLiteDatabase mDb;
@@ -36,6 +37,17 @@ public class BuildingAdapter
 
     private String dbPath = null;
 
+
+    public class DBLiteQueryException extends SQLException {
+        private String sql_query;
+        SQLException sqlException;
+        DBLiteQueryException(SQLException mSQLException, String sql_query) {
+            this.sqlException = mSQLException;
+            this.sql_query = sql_query;
+        }
+        public String getSqlQuery(){ return sql_query; }
+        public SQLException getSqlException() { return sqlException; }
+    }
 
     public BuildingAdapter(Context context)
     {
@@ -72,9 +84,9 @@ public class BuildingAdapter
 
     public Cursor getRooms()
     {
+        String sql ="SELECT * FROM Room";
         try
         {
-            String sql ="SELECT * FROM Room";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -82,20 +94,20 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getRooms() >>"+ mSQLException.toString());
+            Log.e(TAG, "getRooms() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 
 
     public Cursor getConvexAreas()
     {
+        String sql ="SELECT ConvexArea.* "+
+                "  FROM ConvexArea" +
+                "  JOIN Room ON Room.ID = ConvexArea.ID_room";
         try
         {
-            String sql ="SELECT ConvexArea.* "+
-                    "  FROM ConvexArea" +
-                    "  JOIN Room ON Room.ID = ConvexArea.ID_room";
-
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -103,20 +115,22 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getConvexAreas() >>"+ mSQLException.toString());
+            Log.e(TAG, "getConvexAreas() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 
 
     public Cursor getVertexInAllConvexAreas()
     {
+        String sql ="SELECT ConvexAreaVertices.*, Vertex.x as x, Vertex.y as y, Vertex.type as ID_type " +
+                "FROM ConvexAreaVertices JOIN Vertex ON ConvexAreaVertices.ID_vertex = Vertex.ID " +
+                "JOIN ConvexArea ON ConvexAreaVertices.ID_convexArea = ConvexArea.ID " +
+                "ORDER BY ID_room ASC\t";
         try
         {
-            String sql ="SELECT ConvexAreaVertices.*, Vertex.x as x, Vertex.y as y, Vertex.type as ID_type " +
-                    "FROM ConvexAreaVertices JOIN Vertex ON ConvexAreaVertices.ID_vertex = Vertex.ID " +
-                    "JOIN ConvexArea ON ConvexAreaVertices.ID_convexArea = ConvexArea.ID " +
-                    "ORDER BY ID_room ASC\t";
+
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -124,20 +138,21 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getVertexInAllConvexAreas() >>"+ mSQLException.toString());
+            Log.e(TAG, "getVertexInAllConvexAreas() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 
     public Cursor getPoiInAllRooms()
     {
+        String sql ="SELECT Position.ID_room as ID_room Position.*, Artwork.ID as idArtwork, Artwork.*, QRCode.code as QRCode, Beacon.minor, Beacon.major" +
+                "FROM Position " +
+                " LEFT JOIN Artwork ON Artwork.ID_position = Position.id " +
+                " LEFT JOIN QRCode ON QRCode.ID_position = Position.id " +
+                " LEFT JOIN Beacon  ON Beacon.ID_position = Position.id ";
         try
         {
-            String sql ="SELECT Position.ID_room as ID_room Position.*, Artwork.ID as idArtwork, Artwork.*, QRCode.code as QRCode, Beacon.minor, Beacon.major" +
-                    "FROM Position " +
-                    " LEFT JOIN Artwork ON Artwork.ID_position = Position.id " +
-                    " LEFT JOIN QRCode ON QRCode.ID_position = Position.id " +
-                    " LEFT JOIN Beacon  ON Beacon.ID_position = Position.id ";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -145,22 +160,23 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>" + mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getPoiInAllRooms() >>"+ mSQLException.toString());
+            Log.e(TAG, "getPoiInAllRooms() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 
 
     public Cursor getVertexInAllRooms()
     {
+        String sql ="SELECT Room.ID as ID_room, Vertex.*, RoomVertices.indexInRoom, VertexType.ID as vertexType, VertexType.descr as VertexTypeDescr " +
+                "FROM RoomVertices " +
+                "JOIN Vertex ON RoomVertices.ID_vertex = Vertex.ID " +
+                "JOIN Room ON RoomVertices.ID_room = Room.ID " +
+                "JOIN VertexType ON Vertex.type = VertexType.ID " +
+                " ORDER BY ID_room ASC, indexInRoom ASC";
         try
         {
-            String sql ="SELECT Room.ID as ID_room, Vertex.*, RoomVertices.indexInRoom, VertexType.ID as vertexType, VertexType.descr as VertexTypeDescr " +
-                    "FROM RoomVertices " +
-                    "JOIN Vertex ON RoomVertices.ID_vertex = Vertex.ID " +
-                    "JOIN Room ON RoomVertices.ID_room = Room.ID " +
-                    "JOIN VertexType ON Vertex.type = VertexType.ID " +
-                    " ORDER BY ID_room ASC, indexInRoom ASC";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -168,23 +184,24 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getVertexInAllRooms() >>"+ mSQLException.toString());
+            Log.e(TAG, "getVertexInAllRooms() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 
 
     public Cursor getPositionInAllRooms()
     {
+        String sql ="SELECT Position.*, Artwork.*, QRCode.*, Beacon.*, Room.ID as ID_room, ConvexArea.ID as ID_convexArea " +
+                "FROM Position " +
+                "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
+                "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +
+                "LEFT JOIN Beacon ON Position.ID = Beacon.ID_position " +
+                "JOIN Room ON Position.ID_room = Room.ID "+
+                "JOIN ConvexArea ON Position.ID_convexArea = ConvexArea.ID ";
         try
         {
-            String sql ="SELECT Position.*, Artwork.*, QRCode.*, Beacon.*, Room.ID as ID_room, ConvexArea.ID as ID_convexArea " +
-                    "FROM Position " +
-                    "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
-                    "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +
-                    "LEFT JOIN Beacon ON Position.ID = Beacon.ID_position " +
-                    "JOIN Room ON Position.ID_room = Room.ID "+
-                    "JOIN ConvexArea ON Position.ID_convexArea = ConvexArea.ID ";
             Cursor mCur = mDb.rawQuery(sql, null);
             if(mCur != null)
                 mCur.moveToFirst();
@@ -192,8 +209,9 @@ public class BuildingAdapter
         }
         catch (SQLException mSQLException)
         {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e(TAG, "getPositionInAllRooms() >>"+ mSQLException.toString());
+            Log.e(TAG, "getPositionInAllRooms() >> query: "+sql);
+            throw new DBLiteQueryException(mSQLException, sql);
         }
     }
 

@@ -4,9 +4,9 @@ import android.graphics.Canvas;
 
 import java.util.TreeMap;
 
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
+import micc.beaconav.indoorEngine.dijkstraSolver.PathSpotManager;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraSolver;
 import micc.beaconav.util.containerContained.Container;
 

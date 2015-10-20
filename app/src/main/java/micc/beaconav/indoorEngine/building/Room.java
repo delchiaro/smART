@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import micc.beaconav.indoorEngine.ProportionsHelper;
-import micc.beaconav.indoorEngine.spot.marker.Marker;
-import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
-import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.util.containerContained.ContainerContained;
 
 /**
@@ -84,6 +81,9 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
         return this._doors.get(index);
     }
 
+    public ArrayList<Door> doors() {
+        return this._doors;
+    }
 
 // * * * * * * * *  S P O T S  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
