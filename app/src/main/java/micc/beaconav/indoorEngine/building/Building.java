@@ -2,8 +2,13 @@ package micc.beaconav.indoorEngine.building;
 
 import android.graphics.Canvas;
 
+import com.estimote.sdk.Beacon;
+import com.google.common.collect.HashBiMap;
+
+import java.util.HashMap;
 import java.util.TreeMap;
 
+import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
 import micc.beaconav.indoorEngine.spot.__old.path.PathSpot;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.indoorEngine.spot.__old.path.PathSpotManager;
@@ -21,11 +26,17 @@ public class Building extends Container<Floor>
 
 	private float width; // in  metri
     private float height; // in metri
+
     private TreeMap<Integer, Floor> floorList;
     private int _activeFloor;
 
-    DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
-    PathSpotManager<PathSpot> dijkstraPath = null;
+    private DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
+    private PathSpotManager<PathSpot> dijkstraPath = null;
+
+    private HashBiMap<String, Position> QRCodePositionMap = null;
+    private HashBiMap<BeaconAddress, Position> BeaconPositionMap = null;
+
+
 
 
 
@@ -37,8 +48,6 @@ public class Building extends Container<Floor>
         floorList = new TreeMap<Integer, Floor>();
 	}
 
-
-
     public float    getWidth(){
         return width;
     }
@@ -47,18 +56,13 @@ public class Building extends Container<Floor>
     }
 
 
-
-
     public Floor getActiveFloor() {
         return get(this._activeFloor);
     }
 
-
     public MarkerManager getActiveMarkerManager() {
         return this.getActiveFloor().getMarkerManager();
     }
-
-
 
     public PathSpotManager<PathSpot> drawBestPath( PathSpot startSpot, PathSpot goalSpot) {
         dijkstraPath = new PathSpotManager( dijkstraSolver.solve(startSpot, goalSpot));
@@ -75,6 +79,12 @@ public class Building extends Container<Floor>
     }
 
 
+    public HashBiMap<String, Position> getQRCodePositionMap() {
+        return QRCodePositionMap;
+    }
+    public HashBiMap<BeaconAddress, Position> getBeaconPositionMap() {
+        return BeaconPositionMap;
+    }
 
 
 
@@ -87,13 +97,6 @@ public class Building extends Container<Floor>
     {
         this.draw(canvas, this._activeFloor);
     }
-
-
-
-
-
-
-
 
 
 }

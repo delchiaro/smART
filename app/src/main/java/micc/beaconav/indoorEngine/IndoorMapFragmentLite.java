@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,22 +31,22 @@ import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloaderList
  */
 public class IndoorMapFragmentLite extends Fragment
     implements BuildingDownloaderListener
-
 {
-
 
 //    private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/database.sqlite";
     private static String museumUrl = "http://whitelight.altervista.org/database.sqlite";
 
     IndoorMap indoorMap = null;
-    TextView tv;
+
 
     ViewGroup container = null;
-
     ImageView backgroundImgView;
     ImageView foregroundImgView;
     ImageView navigationImgView;
     ImageView localizationImgView;
+    FrameLayout frameLayout;
+    TextView tv;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,13 +55,13 @@ public class IndoorMapFragmentLite extends Fragment
         return inflater.inflate(R.layout.fragment_indoor_map_lite, container, false);
     }
 
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
         FragmentHelper.instance().getMainActivity().showMenuItemStopPath();
-
-
 
         if(container != null)
         {
@@ -68,15 +69,19 @@ public class IndoorMapFragmentLite extends Fragment
             foregroundImgView = (ImageView) container.findViewById(R.id.foregroundImageView);
             navigationImgView = (ImageView) container.findViewById(R.id.navigationLayerImageView);
             localizationImgView = (ImageView) container.findViewById(R.id.localizationLayerImageView);
+            frameLayout = (FrameLayout) container.findViewById(R.id.indoorFrameLayout);
+            tv = (TextView) this.getActivity().findViewById(R.id.textView7);
         }
 
         BuildingDownloader downloader;
         downloader = new BuildingDownloader(this.getActivity(), museumUrl, this);
         downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        tv = (TextView) this.getActivity().findViewById(R.id.textView7);
         tv.setText("downloading");
     }
+
+
+
 
 
     @Override
@@ -86,13 +91,13 @@ public class IndoorMapFragmentLite extends Fragment
         BuildingFactory buildingFactory = new BuildingFactory(downloadedFilePath, this.getActivity());
         Building building =  buildingFactory.generateBuilding();
 
-        indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView,
-                                        navigationImgView, localizationImgView, this.getActivity());
+        indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
+                                    this.getActivity(), FragmentHelper.instance().getMainActivity());
 
 
-        tv.setText("download finished");
 
-
+        tv.setText("Download finished!");
+        frameLayout.removeView(tv);
 
 
     }

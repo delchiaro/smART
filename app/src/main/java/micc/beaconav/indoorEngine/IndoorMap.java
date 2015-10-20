@@ -23,10 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import micc.beaconav.FragmentHelper;
+import micc.beaconav.MainActivity;
 import micc.beaconav.R;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
+import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconBestProximityListener;
+import micc.beaconav.indoorEngine.beaconHelper.BeaconHelper;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconProximityListener;
 import micc.beaconav.indoorEngine.beaconHelper.GoodBadBeaconProximityManager;
 import micc.beaconav.indoorEngine.building.Building;
@@ -73,14 +76,11 @@ public class IndoorMap
     PathSpotManager myLocationPathSpotManager;
 
     private Building building;
-    private HashMap<Integer, Position> spot_beacon_map = new HashMap<>();
-    private HashMap<Integer, Position> spot_QR_map = new HashMap<>();
-    private HashMap<Integer, Position> beacon_position_map = new HashMap<>();
-    private HashMap<String, Position> qr_position_map = new HashMap<>();
+
+
+
 
     GoodBadBeaconProximityManager proximityManager;
-
-    private BuildingDownloader downloader;
 
 
 
@@ -103,7 +103,8 @@ public class IndoorMap
     ImageView localizationImgView;
 
     public IndoorMap( Building building, ImageView foregroundImgView, ImageView backgroundImgView,
-                      ImageView navigationImgView, ImageView localizationImgView,Context context ) {
+                      ImageView navigationImgView, ImageView localizationImgView,Context context, MainActivity activity )
+    {
         this.context = context;
         this.building = building;
         this.backgroundImgView  = backgroundImgView;
@@ -121,12 +122,10 @@ public class IndoorMap
         backgroundImgView.setImageBitmap(backgroundBmp.get() );
 
 
-        //indoorMap = new IndoorMap(building);
         markerManager = building.getActiveMarkerManager();
         markerManager.setOnMarkerSpotSelectedListener(this);
 
         foregroundImgView.setImageDrawable(markerManager.newWrapperDrawable());
-
         //foregroundImgView.setOnTouchListener(markerManager);
 
         // pathSpotManager = building.drawBestPath(corridoio.getRoomSpot(), stanzaFerracani.getRoomSpot());
@@ -136,8 +135,14 @@ public class IndoorMap
         myLocationPathSpotManager = new PathSpotManager();
 //        navigationImgView.setImageDrawable(myLocationPathSpotManager.newWrapperDrawable());
 
+
+
         translateAll(40, 40);
         navigationImgView.invalidate();
+
+        proximityManager = new GoodBadBeaconProximityManager(activity, this);
+        proximityManager.scan();
+
     }
 
 
@@ -151,15 +156,26 @@ public class IndoorMap
     }
 
 
-    private void translateAll(int x, int y) {
 
-        bgMatrix.postTranslate(x, y);
-        this.backgroundImgView.setImageMatrix(bgMatrix);
-        markerManager.translate(x, y);
-        pathSpotManager.translate(x, y);
-        myLocationPathSpotManager.translate(x, y);
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * GESTIONE TOUCH EVENT IMAGE VIEW MAPPA (ZOOM - DRAG) * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
     // we can be in one of these 3 states
     private static final int NONE = 0;
@@ -356,8 +372,15 @@ public class IndoorMap
 
 
 
+    private void translateAll(int x, int y) {
 
+        bgMatrix.postTranslate(x, y);
+        this.backgroundImgView.setImageMatrix(bgMatrix);
+        markerManager.translate(x, y);
+        pathSpotManager.translate(x, y);
+        myLocationPathSpotManager.translate(x, y);
 
+    }
 
 
 
@@ -443,6 +466,12 @@ public class IndoorMap
 
 
 
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * GESTIONE MARKERS, BEACON E NAVIGAZIONE INDOOR MAP * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
     Date startNavigationDate;
@@ -468,22 +497,11 @@ public class IndoorMap
         if(selectedMarker != null)
         {
             selectedMarker.select();
-
-            // TODO: artworks not from JSON but from DBLITE
-//            if(selectedMarker.getArtworkRow() == null)
-//                DbManager.getLastArtworkDownloader().addHandler( new JSONHandler<ArtworkRow>() {
-//                    @Override
-//                    public void onJSONDownloadFinished(ArtworkRow[] result) {
-//
-//                        if(selectedMarker != null && selectedMarker.getArtworkRow() != null)
-//                            FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
-//                    }
-//                });
-//            else FragmentHelper.instance().showArtworkDetailsFragment((selectedMarker).getArtworkRow());
+            FragmentHelper.instance().showArtworkDetailsFragment(selectedMarker.getArtworkPosition().getArtworkRow());
         }
         else
         {
-            FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+            //FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
             markerManager.invalidate();
         }
 
@@ -541,6 +559,9 @@ public class IndoorMap
             }
         }
     }
+
+
+
 
     // GESTIONE BEACON (MARKER PIÙ VICINO E POSIZIONE CORRENTE)
 
@@ -623,12 +644,11 @@ public class IndoorMap
     }
 
 
-
-
     @Override
     public void OnNewBeaconBestProximity(Beacon bestProximity, Beacon oldBestProximity) {
 
-        Position beaconAssociatedPosition  = beacon_position_map.get(ABeaconProximityManager.getID(bestProximity));
+        BeaconAddress bestBeaconAddress = new BeaconAddress(bestProximity.getMinor(), bestProximity.getMajor());
+        Position beaconAssociatedPosition  = building.getBeaconPositionMap().get(bestBeaconAddress);
 
         if( beaconAssociatedPosition instanceof ArtworkPosition)
         {
@@ -673,6 +693,19 @@ public class IndoorMap
     public void OnNoneBeaconBestProximity(Beacon oldBestProximity) {
         lostCurrentLocation();
         hideProximityArtworkBeaconFAB();
+    }
+
+
+    @Override
+    public void OnBeaconProximity(List<Beacon> proximityBeacons)
+    {
+
+//        if(BeaconHelper.isInProximity(proximityBeacons.get(0)))
+//        {
+//            //spot2.sele;
+//            spot2.drawable().invalidateSelf();
+//            foregroundImgView.invalidate();
+//        }
     }
 
 
@@ -753,18 +786,6 @@ public class IndoorMap
             navigationImgView.setImageDrawable(null);
     }
 
-
-    @Override
-    public void OnBeaconProximity(List<Beacon> proximityBeacons)
-    {
-//
-//        if(BeaconHelper.isInProximity(proximityBeacons.get(0) ))
-//        {
-//            //spot2.sele;
-//            spot2.drawable().invalidateSelf();
-//            foregroundImgView.invalidate();
-//        }
-    }
 
 
 

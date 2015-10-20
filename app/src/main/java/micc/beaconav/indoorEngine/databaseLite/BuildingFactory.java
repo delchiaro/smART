@@ -2,6 +2,7 @@ package micc.beaconav.indoorEngine.databaseLite;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -14,6 +15,7 @@ import micc.beaconav.indoorEngine.ArtworkPosition;
 import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.ProportionsHelper;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
+import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.ConvexArea;
 import micc.beaconav.indoorEngine.building.ConvexCut;
@@ -55,11 +57,6 @@ public class BuildingFactory
 
 
 
-
-
-
-    HashMap<String, Position> QRCodePositionMap = null;
-    HashMap<Integer, Position> BeaconPositionMap = null;
 
 
     private final boolean loadConvexAreasAndRooms()
@@ -394,8 +391,8 @@ public class BuildingFactory
 
         // C A R I C O    POSITIONs
 
-        QRCodePositionMap = new HashMap<>();
-        BeaconPositionMap = new HashMap<>();
+        HashBiMap<String, Position> QRCodePositionMap = building.getQRCodePositionMap();
+        HashBiMap<BeaconAddress, Position> BeaconPositionMap = building.getBeaconPositionMap();
 
         Cursor positionData = adapter.getPositionInAllRooms();
         if (positionData != null && positionData.moveToFirst())
@@ -472,8 +469,7 @@ public class BuildingFactory
                 }
                 if(minor != null && major != null)
                 {
-                    int beaconID = ABeaconProximityManager.getID(minor, major);
-                    BeaconPositionMap.put(beaconID, position);
+                    BeaconPositionMap.put(new BeaconAddress(minor,major), position);
                 }
 
             } while (positionData.moveToNext());
