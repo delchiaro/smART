@@ -14,7 +14,8 @@ public class ArtworkRow implements IArtworkRow {
     private String _title;
     private String _descr;
     private String _creationYear;
-    private long _ID_artworkImage;
+    //private long _ID_artworkImage;
+    private String _artworkImageUrl;
     private String _dimensions;
     private String _artistName;
     private String _artistBiography;
@@ -22,14 +23,15 @@ public class ArtworkRow implements IArtworkRow {
 
 
 
-    public ArtworkRow(long ID, String title, String descr, String creationYear, long ID_image, String dimensions,
+    public ArtworkRow(long ID, String title, String descr, String creationYear, long ID_image, String artworkImageUrl, String dimensions,
                String artistName, String artistBiography, String artworkType)
     {
         this._ID = ID;
         this._title = title;
         this._descr = descr;
         this._creationYear = creationYear;
-        this._ID_artworkImage = ID_image;
+        //this._ID_artworkImage = ID_image;
+        this._artworkImageUrl = artworkImageUrl;
         this._dimensions = dimensions;
         this._artistName = artistName;
         this._artistBiography = artistBiography;
@@ -74,6 +76,11 @@ public class ArtworkRow implements IArtworkRow {
         //qui va presa la stringa per l'id di ogni opera
         return 0;
 
+    }
+
+    public String get_artworkImageUrl()
+    {
+        return this._artworkImageUrl;
     }
 
     @Override

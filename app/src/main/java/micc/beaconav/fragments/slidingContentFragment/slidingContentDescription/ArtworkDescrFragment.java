@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.Timer;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.db.dbImagesDownloader.DbImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.ArtworkRow;
 
@@ -31,7 +33,7 @@ public class ArtworkDescrFragment extends Fragment {
 
 
     private ArtworkRow  artworkRow           = null;
-    private ImageView   imageViewArtwork     = null;
+    private WebView     webViewArtwork       = null;
     private TextView    textViewArtworkDescr = null;
     private TextView    textViewArtistDescr  = null;
     private TextView    textViewYear         = null;
@@ -57,7 +59,7 @@ public class ArtworkDescrFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         textViewArtworkDescr = (TextView) getView().findViewById(R.id.artworkDescription);
-        imageViewArtwork     = (ImageView)getView().findViewById(R.id.artworkImage);
+        webViewArtwork       = (WebView)  getView().findViewById(R.id.artworkImage);
         textViewArtistName   = (TextView) getView().findViewById(R.id.artistName);
         textViewYear         = (TextView) getView().findViewById(R.id.year);
         textViewLocation     = (TextView) getView().findViewById(R.id.location);
@@ -72,6 +74,9 @@ public class ArtworkDescrFragment extends Fragment {
             textViewArtworkDescr.setText(artworkRow.getDescription());
             // TODO: immagine artwork
             //imageViewArtwork.setImageDrawable(FragmentHelper.instance().getMainActivity().getResources().getDrawable(artworkRow.getImageId()));
+
+            DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+            dbImagesDownloader.getImage(webViewArtwork, "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg");
 
             textViewArtistName.setText("Artista: " + artworkRow.getArtistName());
             textViewYear.setText("Anno: " + artworkRow.getCreationYear());

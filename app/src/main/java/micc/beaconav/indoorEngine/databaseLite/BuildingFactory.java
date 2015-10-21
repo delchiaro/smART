@@ -456,7 +456,7 @@ public class BuildingFactory
                 Position position = null;
                 if( artworkID != null )
                 {
-                    artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
+                    artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID,null , null, null, null, null);
                     position = new ArtworkPosition(x, y, artworkRow);
                     //roomMap.get(roomID).get(convexAreaID).new ArtworkMarker(x, y, artworkRow));
                 }
