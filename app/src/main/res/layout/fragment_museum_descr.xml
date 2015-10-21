@@ -67,10 +67,12 @@
                 android:layout_below="@id/separator2">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imgContainer"
+                    android:orientation="horizontal">
 
-                    <ImageView
+                    <!--<ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:id="@+id/galleryImage"
@@ -116,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:id="@+id/galleryImageTest"
-                        android:padding="2dp"/>
+                        android:padding="2dp"/>-->
 
                 </LinearLayout>
 

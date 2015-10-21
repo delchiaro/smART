@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import micc.beaconav.R;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.FragmentHelper;
+import micc.beaconav.db.dbImagesDownloader.DbImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -29,6 +32,8 @@ public class MuseumDescrFragment extends Fragment
 
     private TextView  textViewMuseumDescr     = null;
     private MuseumRow museumRow               = null;
+
+    private LinearLayout imgContainer = null;
 
 
     Date startNavigationDate;
@@ -70,6 +75,16 @@ public class MuseumDescrFragment extends Fragment
         textViewMuseumDescr = (TextView)getView().findViewById(R.id.museumDescription);
         toIndoorBtn         = (FloatingActionButton)getView().findViewById(R.id.toIndoorBtn);
         navToMuseumBtn      = FragmentHelper.instance().getMainActivity().getFloatingActionButton();
+        imgContainer        = (LinearLayout)getView().findViewById(R.id.imgContainer);
+
+        //TODO:Array d'esempio, da caricare le immagini da DB
+        ArrayList<String> images = new ArrayList<String>();
+        for(int i = 0; i < 10 ; i++)
+        {
+            images.add(i,"https://giocondaproject.files.wordpress.com/2013/03/la-gioconda-de-nathalia-silva.jpg");
+        }
+        DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+        dbImagesDownloader.getGallery(imgContainer,images);
 
 
         if(museumRow != null) {

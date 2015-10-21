@@ -72,18 +72,15 @@ public class ArtworkDescrFragment extends Fragment {
         if(artworkRow != null)
         {
             textViewArtworkDescr.setText(artworkRow.getDescription());
-            // TODO: immagine artwork
-            //imageViewArtwork.setImageDrawable(FragmentHelper.instance().getMainActivity().getResources().getDrawable(artworkRow.getImageId()));
-
-            DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
-            dbImagesDownloader.getImage(webViewArtwork, "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg");
-
             textViewArtistName.setText("Artista: " + artworkRow.getArtistName());
             textViewYear.setText("Anno: " + artworkRow.getCreationYear());
             textViewLocation.setText("Locazione: " + artworkRow.getLocation());
             textViewArtistDescr.setText(artworkRow.getArtistDescr());
             textViewDimensions.setText("Dimensioni: "+artworkRow.getDimensions());
             textViewType.setText("Tecnica: "+artworkRow.getType());
+
+            DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+            dbImagesDownloader.getImage(webViewArtwork, "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg" /*artworkRow.getArtworkImageUrl()*/);
         }
 
 
