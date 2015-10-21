@@ -3,13 +3,13 @@ package micc.beaconav.fragments.fragmentMediator;
 import java.util.ArrayList;
 import java.util.List;
 
-import micc.beaconav.fragments.mainFragment.IndoorMapFragment;
 import micc.beaconav.fragments.mainFragment.MapFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.ArtworkDescrFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.MuseumDescrFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentList.ArtListFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.NameHeaderFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.SeekBarHeaderFragment;
+import micc.beaconav.indoorEngine.IndoorMapFragmentLite;
 
 /**
  * Created by nagash on 04/03/15.
@@ -20,7 +20,7 @@ public class Mediator
 
     // MAIN FRAGMENT
     protected MapFragment       main_mapFragment = null;
-    protected IndoorMapFragment main_indoorMapFragment = null;
+    protected IndoorMapFragmentLite main_indoorMapFragment = null;
 
 
     // SLIDING CONTENT FRAGMENT
@@ -40,7 +40,7 @@ public class Mediator
         return main_mapFragment;
     }
 
-    public IndoorMapFragment get_main_indoorMapFragment() {
+    public IndoorMapFragmentLite get_main_indoorMapFragment() {
         return main_indoorMapFragment;
     }
 

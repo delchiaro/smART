@@ -193,7 +193,10 @@ public class BuildingAdapter
 
     public Cursor getPositionInAllRooms()
     {
-        String sql ="SELECT Position.*, Artwork.*, QRCode.*, Beacon.*, Room.ID as ID_room, ConvexArea.ID as ID_convexArea " +
+        String sql ="SELECT Position.*, " +
+                "Artwork.ID as artworkID, Artwork.name as artworkName, Artwork.descr as artworkDescr, " +
+                " QRCode.code as qrCode, Beacon.minor as beaconMinor, Beacon.major as beaconMajor," +
+                " Room.ID as roomID, ConvexArea.ID as convexAreaID " +
                 "FROM Position " +
                 "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
                 "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +

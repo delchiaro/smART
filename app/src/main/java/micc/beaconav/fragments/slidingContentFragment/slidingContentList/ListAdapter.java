@@ -91,8 +91,8 @@ public class ListAdapter extends BaseAdapter {
                     FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
                 else if (currentRow instanceof ArtworkRow){
-                    FragmentHelper.instance().indoorMapFragment.simulateArtSpotSelection((ArtworkRow)currentRow);
-                    FragmentHelper.instance().indoorMapFragment.navigateToSelectedMarker();
+                    FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().simulateArtMarkerSelection((ArtworkRow)currentRow);
+                    FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().navigateToSelectedMarker();
                 }
             }
         });

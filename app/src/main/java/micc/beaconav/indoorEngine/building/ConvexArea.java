@@ -1,8 +1,14 @@
 package micc.beaconav.indoorEngine.building;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PointF;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import micc.beaconav.indoorEngine.ProportionsHelper;
 import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
 import micc.beaconav.indoorEngine.spot.marker.IMarkerContainer;
 import micc.beaconav.indoorEngine.spot.marker.Marker;
@@ -71,10 +77,11 @@ public class ConvexArea extends ContainerContained<Room, Position> implements IM
     public boolean containsConsecutiveVertex(Vertex v1, Vertex v2) {
         Vertex old_v = null;
 
-        Integer index1 = _vertices.indexOf(v1);
-        Integer index2 = _vertices.indexOf(v2);
+        // TODO: buggata??
+        int index1 = _vertices.indexOf(v1); // restituisce -1 quando non è presente!
+        int index2 = _vertices.indexOf(v2);
 
-        if(index1 != null && index2 != null)
+        if(index1 >= 0 && index2 >= 0)
         {
             int min = index1;
             int max = index2;
@@ -115,5 +122,52 @@ public class ConvexArea extends ContainerContained<Room, Position> implements IM
         return _vertices.get(index);
     }
 
+
+
+
+
+
+    private static final int PPM = ProportionsHelper.PPM; // Pixel Per Miter
+
+
+    private Paint wallsPaint = MapPaint.wall_convexArea_10.getPaint();
+    private Paint floorPaint = MapPaint.get_random_convexArea_floor().getPaint();
+
+    protected void drawWalls(Canvas canvas, PointF padding) {
+
+        //final DrawFilter filter = new PaintFlagsDrawFilter(Paint.ANTI_ALIAS_FLAG, 0);
+        //canvas.setDrawFilter(filter);
+
+        Path wallpath = new Path();
+
+
+
+
+        // Disegno PAVIMENTO e MURI:
+        Vertex vertex;
+        int nVertices = _vertices.size();
+
+        if(_vertices.size() > 2)
+        {
+            Vertex firstVertex  = _vertices.get(0);
+            wallpath.moveTo(firstVertex.getX()* PPM, firstVertex.getY()* PPM); // used for first point
+
+            Vertex secondVertex = _vertices.get(1);
+            wallpath.lineTo(secondVertex.getX() * PPM, secondVertex.getY() * PPM);
+
+            for(int i = 2; i < nVertices; i ++ )
+            {
+                vertex = _vertices.get(i);
+                wallpath.lineTo(vertex.getX() * PPM, vertex.getY() * PPM);
+            }
+
+            wallpath.lineTo(firstVertex.getX() * PPM, firstVertex.getY() * PPM);
+            wallpath.lineTo(secondVertex.getX() * PPM, secondVertex.getY() * PPM);
+            canvas.drawPath(wallpath, floorPaint);
+            canvas.drawPath(wallpath, wallsPaint);
+        }
+
+
+    }
 
 }

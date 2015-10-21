@@ -9,32 +9,20 @@ import android.graphics.drawable.Drawable;
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.indoorEngine.building.Room;
 import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
+import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
-public class LocalizationSpot extends PathSpot {
+public class LocalizationSpot extends DrawableSpot {
+
+    private boolean isVisible = false;
+    private boolean isCurrentlyLocalized = false;
 
 
-    boolean isCurrentlyLocalized = false;
-    PathSpot associatedPathSpot;
-
-
-    public LocalizationSpot(PathSpot associatedPathSpot)
+    public LocalizationSpot(float x, float y)
     {
-        super(associatedPathSpot);
-        this.associatedPathSpot = associatedPathSpot;
-    }
-
-    public LocalizationSpot(PathSpot associatedPath, float x, float y, Room room_container) {
-        super(associatedPath);
-        this.associatedPathSpot = associatedPath;
-        initDrawable();
-    }
-
-    public LocalizationSpot(PathSpot associatedPath, float x, float y) {
-        super(associatedPath);
-        this.associatedPathSpot = associatedPath;
+        super(x, y);
         initDrawable();
     }
 
@@ -42,14 +30,18 @@ public class LocalizationSpot extends PathSpot {
     public void setCurrentlyLocalized(boolean value){
         this.isCurrentlyLocalized = value;
     }
-
+    public void setVisible(boolean isVisible)
+    {
+        this.isVisible = isVisible;
+    }
+    public boolean isVisible() {
+        return isVisible;
+    }
     public boolean isCurrentlyLocalized() {
         return this.isCurrentlyLocalized;
     }
-    public PathSpot getAssociatedPathSpot() {
-        return associatedPathSpot;
-    }
-    @Override
+
+
     public void initDrawable() {
 
         if( myLocationWhiteCircle == null ) {
@@ -82,22 +74,23 @@ public class LocalizationSpot extends PathSpot {
 
     @Override
     protected Drawable generateDrawable() {
+
         return new Drawable() {
             @Override
             public void draw(Canvas canvas) {
 
 
-                if(isCurrentlyLocalized)
-                {
-                    canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_radius, myLocationWhiteCircle);
-                    canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_inner_radius, myLocationPaint);
-                }
-                else
-                {
-                    canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_radius, myLocationWhiteCircle);
-                    canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_inner_radius, myLastLocationPaint);
+                if(isVisible()) {
+                    if (isCurrentlyLocalized) {
+                        canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_radius, myLocationWhiteCircle);
+                        canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_inner_radius, myLocationPaint);
+                    } else {
+                        canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_radius, myLocationWhiteCircle);
+                        canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_inner_radius, myLastLocationPaint);
 
+                    }
                 }
+
             }
 
             @Override

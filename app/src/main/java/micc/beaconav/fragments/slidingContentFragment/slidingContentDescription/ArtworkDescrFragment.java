@@ -70,7 +70,9 @@ public class ArtworkDescrFragment extends Fragment {
         if(artworkRow != null)
         {
             textViewArtworkDescr.setText(artworkRow.getDescription());
-            imageViewArtwork.setImageDrawable(FragmentHelper.instance().getMainActivity().getResources().getDrawable(artworkRow.getImageId()));
+            // TODO: immagine artwork
+            //imageViewArtwork.setImageDrawable(FragmentHelper.instance().getMainActivity().getResources().getDrawable(artworkRow.getImageId()));
+
             textViewArtistName.setText("Artista: " + artworkRow.getArtistName());
             textViewYear.setText("Anno: " + artworkRow.getCreationYear());
             textViewLocation.setText("Locazione: " + artworkRow.getLocation());
@@ -86,9 +88,9 @@ public class ArtworkDescrFragment extends Fragment {
             public void onClick(View v) {
                 if( artworkRow != null && artworkRow instanceof ArtworkRow)
                 {
-                    if(FragmentHelper.instance().indoorMapFragment != null)
+                    if(FragmentHelper.instance().indoorMapFragmentLite != null)
                     {
-                        FragmentHelper.instance().indoorMapFragment.navigateToSelectedMarker();
+                        FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().navigateToSelectedMarker();
                         FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     }
                 }

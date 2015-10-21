@@ -30,8 +30,8 @@ public class Building extends Container<Floor>
 
     DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
     PathSpotManager<PathSpot> dijkstraPath = null;
-    private HashBiMap<String, Position> QRCodePositionMap = null;
-    private HashBiMap<BeaconAddress, Position> BeaconPositionMap = null;
+    private HashBiMap<String, Position> QRCodePositionMap = HashBiMap.create();
+    private HashBiMap<BeaconAddress, Position> BeaconPositionMap = HashBiMap.create();
 
 
 

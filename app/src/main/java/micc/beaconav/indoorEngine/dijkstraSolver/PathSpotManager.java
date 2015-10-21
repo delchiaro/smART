@@ -75,11 +75,12 @@ public class PathSpotManager<PS extends PathSpot> extends DrawableSpotManager<PS
                             i++;
                         }
                     }
-                    else if(spot instanceof LocalizationSpot)
-                    {
-                        spot.setStepNumber(0);
-                        spot.drawable().draw(canvas);
-                    }
+                    // TODO
+//                    else if(spot instanceof LocalizationSpot)
+//                    {
+//                        spot.setStepNumber(0);
+//                        spot.drawable().draw(canvas);
+//                    }
                     else
                     {
                         if (spotIter.hasNext() == false)

@@ -103,6 +103,9 @@ public class IndoorMapFragmentLite extends Fragment
 
 
 
+    public IndoorMap getIndoorMap() {
+        return indoorMap;
+    }
 
 
 

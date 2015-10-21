@@ -2,6 +2,9 @@ package micc.beaconav.indoorEngine.building;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.format.Time;
+
+import java.util.Random;
 
 import micc.beaconav.indoorEngine.ProportionsHelper;
 
@@ -11,6 +14,7 @@ import micc.beaconav.indoorEngine.ProportionsHelper;
 public class MapPaint
 {
 
+    public static boolean DEBUG_CONVEX_AREA = true;
 
     private static int PPM = ProportionsHelper.PPM;
 
@@ -26,15 +30,32 @@ public class MapPaint
     private static Paint.Style  FLOOR_DEFAULT_STYLE = Paint.Style.FILL;
 
 
-
-
-
     public static MapPaint wall_default_25 = new MapPaint(WALL_DEFAULT_COLOR, WALL_DEFAULT_WIDTH, WALL_STYLE, false);
     public static MapPaint door_default_25 = new MapPaint(DOOR_DEFAULT_COLOR, DOOR_DEFAULT_WIDTH, DOOR_DEFAULT_STYLE, false);
     public static MapPaint floor_default = new MapPaint(FLOOR_DEFAULT_COLOR, 0, FLOOR_DEFAULT_STYLE, false);
     public static MapPaint aperture_default = new MapPaint(FLOOR_DEFAULT_COLOR, WALL_DEFAULT_WIDTH, WALL_STYLE, false);
 
 
+
+
+    private static int          FLOOR_CONVEXAREA_COLOR = Color.argb(128,137, 231, 246); //Color.rgb(255, 255, 255);
+    private static int          WALL_CONVEXAREA_COLOR = Color.rgb(255, 255, 255);
+
+    public static MapPaint wall_convexArea_10 = new MapPaint(WALL_CONVEXAREA_COLOR, 0.15f, WALL_STYLE, false);
+    public static MapPaint floor_convexArea_default = new MapPaint(FLOOR_CONVEXAREA_COLOR, 0, FLOOR_DEFAULT_STYLE, false);
+
+
+    public static MapPaint get_random_convexArea_floor() {
+        Random randomGenerator = new Random();
+
+        int r = randomGenerator.nextInt(200)+55;
+        int g = randomGenerator.nextInt(170)+85;
+        int b = randomGenerator.nextInt(220)+35;
+
+        return  new MapPaint(Color.argb(128,r,g,b ), 0, FLOOR_DEFAULT_STYLE, false);
+
+
+    }
 
 
     private final Paint wallPaint;

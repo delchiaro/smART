@@ -16,6 +16,7 @@ import micc.beaconav.indoorEngine.ArtworkPosition;
 import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.ProportionsHelper;
 import micc.beaconav.indoorEngine.beaconHelper.ABeaconProximityManager;
+import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.ConvexArea;
 import micc.beaconav.indoorEngine.building.ConvexCut;
@@ -59,11 +60,6 @@ public class BuildingFactory
 
 
 
-
-
-
-    HashMap<String, Position> QRCodePositionMap = null;
-    HashMap<Integer, Position> BeaconPositionMap = null;
 
 
     private final boolean loadConvexAreasAndRooms()
@@ -398,26 +394,26 @@ public class BuildingFactory
 
         // C A R I C O    POSITIONs
 
-        QRCodePositionMap = new HashMap<>();
-        BeaconPositionMap = new HashMap<>();
+        HashBiMap<String, Position> QRCodePositionMap = building.getQRCodePositionMap();
+        HashBiMap<BeaconAddress, Position> BeaconPositionMap = building.getBeaconPositionMap();
 
         Cursor positionData = adapter.getPositionInAllRooms();
         if (positionData != null && positionData.moveToFirst())
         {
 
-            int roomID_ci = positionData.getColumnIndex("ID_room");
-            int convexAreaID_ci = positionData.getColumnIndex("ID_convexArea");
+            int roomID_ci = positionData.getColumnIndex("roomID");
+            int convexAreaID_ci = positionData.getColumnIndex("convexAreaID");
             int ID_ci = positionData.getColumnIndex("ID");
 
             int x_ci = positionData.getColumnIndex("x");
             int y_ci = positionData.getColumnIndex("y");
             int imageID_ci = positionData.getColumnIndex("ID_image");
-            int artworkID_ci = positionData.getColumnIndex("Artwork.ID");
-            int artworkName_ci = positionData.getColumnIndex("Artwork.name");
-            int artworkDescr_ci = positionData.getColumnIndex("Artwork.descr");
-            int qrCode_ci = positionData.getColumnIndex("QRCode.code");
-            int minor_ci = positionData.getColumnIndex("Beacon.minor");
-            int major_ci = positionData.getColumnIndex("Beacon.major");
+            int artworkID_ci = positionData.getColumnIndex("artworkID");
+            int artworkName_ci = positionData.getColumnIndex("artworkName");
+            int artworkDescr_ci = positionData.getColumnIndex("artworkDescr");
+            int qrCode_ci = positionData.getColumnIndex("qrCode");
+            int minor_ci = positionData.getColumnIndex("beaconMinor");
+            int major_ci = positionData.getColumnIndex("beaconMajor");
 
 
 
@@ -448,7 +444,9 @@ public class BuildingFactory
                 x = positionData.getInt(x_ci);
                 y = positionData.getInt(y_ci);
 
-                imageID = positionData.getInt(imageID_ci);
+                // TODO: immagini indoor
+               // imageID = positionData.getInt(imageID_ci);
+                imageID = 0;
                 artworkName = positionData.getString(artworkName_ci);
                 artworkDescr = positionData.getString(artworkDescr_ci);
 
@@ -476,8 +474,7 @@ public class BuildingFactory
                 }
                 if(minor != null && major != null)
                 {
-                    int beaconID = ABeaconProximityManager.getID(minor, major);
-                    BeaconPositionMap.put(beaconID, position);
+                    BeaconPositionMap.put(new BeaconAddress(minor, major), position);
                 }
 
             } while (positionData.moveToNext());
@@ -769,9 +766,8 @@ public class BuildingFactory
                     }
                     else
                     {
-                        // TODO: calcola il più vicino e collegami al più vicino
-                        currentBestPathSpot = currentBestCut.getPathSpotB();
-                        currentBestPathSpot = currentBestCut.getPathSpotA();
+                        // calcola il più vicino e collego al più vicino
+                        currentBestPathSpot = pCurrent.nearest(currentBestCut.getPathSpotA(), currentBestCut.getPathSpotB() );
                     }
 
                     pCurrent.getPathSpot().addLinkBidirectional(currentBestPathSpot);

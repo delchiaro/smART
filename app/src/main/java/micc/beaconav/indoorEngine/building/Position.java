@@ -72,6 +72,29 @@ public class Position extends Contained<ConvexArea> implements IMarkerContainer 
 
 
 
+    public double distance(Spot q)
+    {
+        float x_dist = _spot.x()-q.x();
+        float y_dist = _spot.y()-q.y();
+        return Math.sqrt(x_dist*x_dist + y_dist*y_dist);
+    }
+    public Spot nearest(Spot a, Spot b )
+    {
+        double dist_a = this.distance(a);
+        double dist_b = this.distance(b);
+        if(dist_a < dist_b)
+            return a;
+        else return b;
+    }
+    public PathSpot nearest(PathSpot a, PathSpot b )
+    {
+        double dist_a = this.distance(a);
+        double dist_b = this.distance(b);
+        if(dist_a < dist_b)
+            return a;
+        else return b;
+    }
+
 
     public boolean canSee(Position q)
     {
@@ -85,7 +108,7 @@ public class Position extends Contained<ConvexArea> implements IMarkerContainer 
 
     }
 
-    public boolean canSee(PathSpot q)
+    public boolean canSee(Spot q)
     {
         /**
          * Si suppone che Q sia nella stessa stanza di this (in caso contrario si ritornerebbe subito false).

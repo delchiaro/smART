@@ -224,6 +224,15 @@ public class Room  extends ContainerContained<Floor, ConvexArea>
             }
         }
 
+
+        if(MapPaint.DEBUG_CONVEX_AREA)
+        {
+            for( ConvexArea ca : this )
+            {
+                ca.drawWalls(canvas, padding);
+            }
+        }
+
     }
 
 

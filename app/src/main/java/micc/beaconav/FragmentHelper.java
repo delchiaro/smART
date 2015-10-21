@@ -24,7 +24,6 @@ import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.MuseumDescrFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.NameHeaderFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.SeekBarHeaderFragment;
-import micc.beaconav.fragments.mainFragment.IndoorMapFragment;
 import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.IndoorMapFragmentLite;
 import micc.beaconav.outdoorEngine.Map;
@@ -74,7 +73,6 @@ public class FragmentHelper  implements MuseumMarkerManager
 
 
     public MapFragment       mapFragment = new MapFragment();
-    public IndoorMapFragment indoorMapFragment = null;
     public IndoorMapFragmentLite indoorMapFragmentLite = null;
 
 
@@ -164,7 +162,7 @@ public class FragmentHelper  implements MuseumMarkerManager
 
                         case DETAILS:
                             //showArtworkListFragment(artworkList_museumRow);
-                            indoorMapFragment.onMarkerSpotSelected(null);
+                            indoorMapFragmentLite.getIndoorMap().onMarkerSpotSelected(null);
                             break;
 
                         case LIST:
@@ -192,7 +190,7 @@ public class FragmentHelper  implements MuseumMarkerManager
                                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 showOutdoorFragment();
-                                                indoorMapFragment = null;
+                                                indoorMapFragmentLite = null;
                                             }
                                         });
 
@@ -240,7 +238,7 @@ public class FragmentHelper  implements MuseumMarkerManager
     public final void showOutdoorFragment() {
         //if(activeMainFragment != MainFragment.OUTDOOR) {
             activeMainFragment = MainFragment.OUTDOOR;
-            indoorMapFragment = null;
+            indoorMapFragmentLite = null;
 
             swapFragment(R.id.fragment_map_container, mapFragment);
             mapFragment.setMuseumMarkerManager(this);
@@ -272,9 +270,9 @@ public class FragmentHelper  implements MuseumMarkerManager
 
     public final void showIndoorFragmentInline(MuseumRow museum) {
         showArtworkListFragment(museum);
-        indoorMapFragment = new IndoorMapFragment();// gli dovremmo passare il building, o il museo, o il file json del building
-        indoorMapFragment.initMuseumRow(museum);
-        swapFragment(R.id.fragment_map_container, indoorMapFragment);
+        indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
+       // indoorMapFragmentLite.initMuseumRow(museum);
+        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
         activeMainFragment = MainFragment.INDOOR;
         //indoorMapFragment.setMuseum(museum);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
@@ -360,7 +358,7 @@ public class FragmentHelper  implements MuseumMarkerManager
         artworkDescrFragment = new ArtworkDescrFragment();
         artworkDescrFragment.setArtworkRow(row);
         swapFragment(R.id.fragment_list_container, artworkDescrFragment);
-        indoorMapFragment.simulateArtSpotSelection(row);
+        indoorMapFragmentLite.getIndoorMap().simulateArtMarkerSelection(row);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.ic_directions_white_48dp));
 //        mainActivity.setFABListener(new View.OnClickListener() {

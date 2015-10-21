@@ -295,7 +295,7 @@ public class MainActivity extends FragmentActivity
 
         initActivityAndXML();
         initEventListeners();
-
+        initFragments();
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null)
         {
@@ -307,10 +307,11 @@ public class MainActivity extends FragmentActivity
         }
     }
 
+
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        initFragments();
+       // initFragments();
     }
 
     @Override
@@ -322,12 +323,12 @@ public class MainActivity extends FragmentActivity
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanningResult != null)
+        if (scanningResult != null && scanningResult.getContents() != null)
         {
             scanContent = scanningResult.getContents();
             scanFormat = scanningResult.getFormatName();
-            if(FragmentHelper.instance().indoorMapFragment != null)
-                FragmentHelper.instance().indoorMapFragment.onCameraScanResult(scanContent);
+            if(FragmentHelper.instance().indoorMapFragmentLite != null)
+                FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().onCameraScanResult(scanContent);
             // textViewFormat.setText("FORMAT: " + scanFormat);
             // textViewContent.setText("CONTENT: " + scanContent);
         }
@@ -415,9 +416,9 @@ public class MainActivity extends FragmentActivity
             }
             case R.id.stop_best_path:
             {
-                Fragment indoorMapFrag = FragmentHelper.instance().indoorMapFragment;
+                Fragment indoorMapFrag = FragmentHelper.instance().indoorMapFragmentLite;
                 if(indoorMapFrag != null)
-                   FragmentHelper.instance().indoorMapFragment.hideDijkstraPath();
+                   FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().hideDijkstraPath();
             }
         }
         return super.onOptionsItemSelected(item);
