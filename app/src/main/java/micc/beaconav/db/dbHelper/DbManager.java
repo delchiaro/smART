@@ -22,7 +22,8 @@ public class DbManager
 //    static private String vertexJSONLink = "http://trinity.micc.unifi.it/museumapp/JSON_RoomVertices.php";
 //    static private final String artworkJSONLink = "http://trinity.micc.unifi.it/museumapp/JSON_Artworks.php";
 
-    static private final String museumJSONLink = "http://whitelight.altervista.org/JSON_Museums.php";
+//    static private final String museumJSONLink = "http://whitelight.altervista.org/JSON_Museums.php";
+      static private final String museumJSONLink = "http://trinity.micc.unifi.it/museumapp/JSON_Museums.php";
 
     static public final JSONDownloader<MuseumRow, MuseumSchema> museumDownloader =
                             new JSONDownloader<MuseumRow, MuseumSchema>(museumSchema, museumJSONLink);
