@@ -65,15 +65,15 @@ public class PathSpotManager<PS extends PathSpot> extends DrawableSpotManager<PS
 
                     if (spot instanceof DoorSpot)
                     {
-                        if (((DoorSpot) spot).isVisibleInDijkstraPath())
-                        {
-                            if (spotIter.hasNext() == false)
-                                spot.setStepNumber(-100); // -100 = punto di arrivo
-                            else spot.setStepNumber(i); // 0 = punto di partenza
-                            spot.drawable().draw(canvas);
-                            path[i] = new PointF(spot.x_for_drawing(), spot.y_for_drawing());
-                            i++;
-                        }
+//                        if (((DoorSpot) spot).isVisibleInDijkstraPath())
+//                        {
+//                            if (spotIter.hasNext() == false)
+//                                spot.setStepNumber(-100); // -100 = punto di arrivo
+//                            else spot.setStepNumber(i); // 0 = punto di partenza
+//                            spot.drawable().draw(canvas);
+//                            path[i] = new PointF(spot.x_for_drawing(), spot.y_for_drawing());
+//                            i++;
+//                        }
                     }
                     // TODO
 //                    else if(spot instanceof LocalizationSpot)
@@ -121,14 +121,14 @@ public class PathSpotManager<PS extends PathSpot> extends DrawableSpotManager<PS
                     PS spot = spotIter.next();
                     if(spot instanceof DoorSpot)
                     {
-                        if( ((DoorSpot) spot).isVisibleInDijkstraPath() ) {
-
-                            if (spotIter.hasNext() == false)
-                                spot.setStepNumber(-100); // -100 = punto di arrivo
-                            else spot.setStepNumber(i); // 0 = punto di partenza
-                            spot.drawable().draw(canvas);
-                            i++;
-                        }
+//                        if( ((DoorSpot) spot).isVisibleInDijkstraPath() ) {
+//
+//                            if (spotIter.hasNext() == false)
+//                                spot.setStepNumber(-100); // -100 = punto di arrivo
+//                            else spot.setStepNumber(i); // 0 = punto di partenza
+//                            spot.drawable().draw(canvas);
+//                            i++;
+//                        }
 //                        PS nextSpot = spotIter.next();
 //                        if(nextSpot instanceof DoorSpot)
 //                        {

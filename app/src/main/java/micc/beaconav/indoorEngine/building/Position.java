@@ -126,7 +126,7 @@ public class Position extends Contained<ConvexArea> implements IMarkerContainer 
         for( int i = 1 ; i < nVertices+1 ; i++)
         {
             v2 = v1;
-            v1 = r.getVertex(i);
+            v1 = r.getVertex(i%nVertices);
             wallSegment = new Segment(v1, v2);
 
             // appena trovo un muro che interseca, ritorno FALSE --> non posso vedere q

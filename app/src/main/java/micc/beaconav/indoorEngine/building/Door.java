@@ -19,8 +19,8 @@ public class Door
     private ConvexArea ca1;
     private ConvexArea ca2;
 
-    private DoorSpot doorSpot;
-
+    //private DoorSpot doorSpot;
+    private PathSpot doorSpot;
     // package protected!
     // Solo tramite l'oggetto Room si possono aggiungere porte
     // (tramite metodo statico addDoor)
@@ -59,7 +59,7 @@ public class Door
 //        ca2.add(pos2);
 
 
-        doorSpot = new DoorSpot((vertexA.getX()+vertexB.getX())/2, (vertexA.getY()+vertexB.getY())/2, DoorSpot.Visibility.HIDDEN);
+        doorSpot = new PathSpot((vertexA.getX()+vertexB.getX())/2, (vertexA.getY()+vertexB.getY())/2);
 
     }
 
@@ -80,8 +80,12 @@ public class Door
     public ConvexArea getConvexArea2() { return ca2; }
 
 
+//
+//    public DoorSpot getDoorSpot() {
+//        return doorSpot;
+//    }
 
-    public DoorSpot getDoorSpot() {
+    public PathSpot getDoorSpot() {
         return doorSpot;
     }
 

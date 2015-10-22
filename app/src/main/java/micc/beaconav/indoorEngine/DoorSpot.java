@@ -15,11 +15,12 @@ import micc.beaconav.indoorEngine.spot.Spot;
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
+
+
+//  DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+//   DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
 public class DoorSpot extends PathSpot {
 
-    public enum Visibility {
-        VISIBLE, HIDDEN
-    }
 
     private static final float arrowCosin = 1;
     private static final int arrowColor = Color.RED;
@@ -33,15 +34,13 @@ public class DoorSpot extends PathSpot {
         arrowPaint.setStrokeWidth(arrowWidth);
     }
 
-    private Visibility _visibleInDijkstraPath = Visibility.HIDDEN;
 
-    public DoorSpot(float x, float y, Visibility visibleInPath ) {
-       this(new  Spot(x, y), visibleInPath);
+    public DoorSpot(float x, float y ) {
+       this(new  Spot(x, y));
     }
 
-    public DoorSpot(Spot spot, Visibility visibleInPath ) {
+    public DoorSpot(Spot spot ) {
         super(spot);
-        this._visibleInDijkstraPath = visibleInPath;
 
 
         if(arrowPaint != null) {
@@ -49,26 +48,13 @@ public class DoorSpot extends PathSpot {
         }
     }
 
-    public DoorSpot(Spot spot) {
-        this(spot, Visibility.HIDDEN);
-    }
 
-
-    public boolean isVisibleInDijkstraPath() {
-        return (this._visibleInDijkstraPath == Visibility.VISIBLE);
-    }
-
-
-    public void setVisibleInDijkstraPath( Visibility visibility ) {
-        this._visibleInDijkstraPath = visibility;
-    }
-
-    @Override
-    public List<? extends DijkstraNodeAdapter> getAdjacent() {
-        ArrayList<DijkstraNodeAdapter> retList = new ArrayList<>(super.getAdjacent());
-        //retList.add(_linkedDoor);
-        return retList;
-    }
+//    @Override
+//    public List<? extends DijkstraNodeAdapter> getAdjacent() {
+//        ArrayList<DijkstraNodeAdapter> retList = new ArrayList<>(super.getAdjacent());
+//        //retList.add(_linkedDoor);
+//        return retList;
+//    }
 
 
 

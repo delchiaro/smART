@@ -4,9 +4,11 @@ import android.graphics.Canvas;
 
 import com.google.common.collect.HashBiMap;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
+import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraNodeAdapter;
 import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
 import micc.beaconav.indoorEngine.spot.marker.MarkerManager;
 import micc.beaconav.indoorEngine.dijkstraSolver.PathSpotManager;
@@ -66,17 +68,29 @@ public class Building extends Container<Floor>
     }
 
     public PathSpotManager<PathSpot> drawBestPath( PathSpot startSpot, PathSpot goalSpot) {
-        dijkstraPath = new PathSpotManager( dijkstraSolver.solve(startSpot, goalSpot));
 
-        MarkerManager markerManager = getActiveMarkerManager();
-        if(markerManager != null) {
-            dijkstraPath.resetAllTranslationAndScale();
-            dijkstraPath.translate(markerManager.get_translation_x(), markerManager.get_translation_y());
-            dijkstraPath.translateByRealtimeScaling(markerManager.get_last_final_scaleTranslation_factor());
-            dijkstraPath.holdScalingFactor();
-            dijkstraPath.translateByRealtimeScaling(markerManager.get_realtime_scaleTranslation_factor());
+        ArrayList<DijkstraNodeAdapter> dijkstraNodesPath =  dijkstraSolver.solve(startSpot, goalSpot);
+
+        if( dijkstraNodesPath != null )
+        {
+            dijkstraPath = new PathSpotManager(dijkstraNodesPath);
+
+            MarkerManager markerManager = getActiveMarkerManager();
+            if (markerManager != null) {
+                dijkstraPath.resetAllTranslationAndScale();
+                dijkstraPath.translate(markerManager.get_translation_x(), markerManager.get_translation_y());
+                dijkstraPath.translateByRealtimeScaling(markerManager.get_last_final_scaleTranslation_factor());
+                dijkstraPath.holdScalingFactor();
+                dijkstraPath.translateByRealtimeScaling(markerManager.get_realtime_scaleTranslation_factor());
+            }
         }
+        else
+        {
+            dijkstraPath = new PathSpotManager<>();
+        }
+
         return dijkstraPath;
+
     }
 
 

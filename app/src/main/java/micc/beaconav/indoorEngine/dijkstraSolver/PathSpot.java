@@ -12,6 +12,9 @@ import java.util.List;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.indoorEngine.building.Room;
+import micc.beaconav.indoorEngine.building.Segment;
+import micc.beaconav.indoorEngine.building.Vertex;
 import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
 
@@ -105,6 +108,62 @@ public class PathSpot extends DrawableSpot implements DijkstraNodeAdapter<PathSp
                 netLinkedSpot[i].addLinkBidirectional(netLinkedSpot[j]);
             }
         }
+    }
+
+
+
+    public boolean canSee(Spot q, Room roomConstraint)
+    {
+        /**
+         * Si suppone che Q sia nella stessa stanza di this (in caso contrario si ritornerebbe subito false).
+         * Non si controlla che q sia nella stessa convex area di this (in tal caso si ritornerebbe subito true).
+         * Questi controlli si demandano al chiamante.
+         */
+        Segment seg = new Segment(new Vertex(x(), y()), new Vertex(q.x(), q.y()) );
+        Room r = roomConstraint;
+
+        int nVertices = r.nVertices();
+        Vertex v1 = r.getVertex(0);
+        Vertex v2 = null;
+        Segment wallSegment = null;
+
+        for( int i = 1 ; i < nVertices+1 ; i++)
+        {
+            v2 = v1;
+            v1 = r.getVertex(i%nVertices);
+            wallSegment = new Segment(v1, v2);
+
+            // appena trovo un muro che interseca, ritorno FALSE --> non posso vedere q
+            if(Segment.intersect(seg, wallSegment) == true)
+                return false;
+        }
+
+        return true; // se non ho intersecato nessun muro arrivo a questo statement, e ritorno true.
+    }
+
+
+
+    public double distance(Spot q)
+    {
+        float x_dist = x()-q.x();
+        float y_dist = y()-q.y();
+        return Math.sqrt(x_dist*x_dist + y_dist*y_dist);
+    }
+    public Spot nearest(Spot a, Spot b )
+    {
+        double dist_a = this.distance(a);
+        double dist_b = this.distance(b);
+        if(dist_a < dist_b)
+            return a;
+        else return b;
+    }
+    public PathSpot nearest(PathSpot a, PathSpot b )
+    {
+        double dist_a = this.distance(a);
+        double dist_b = this.distance(b);
+        if(dist_a < dist_b)
+            return a;
+        else return b;
     }
 
 

@@ -80,6 +80,8 @@ public class IndoorMap
 
 
 
+
+
     private static int PPM = ProportionsHelper.PPM; // pixel per meter
     // these matrices will be used to move and zoom image
     private Matrix bgMatrix = new Matrix();
@@ -137,6 +139,7 @@ public class IndoorMap
 
         proximityManager = new GoodBadBeaconProximityManager(mainActivity, this);
         this.activity = mainActivity;
+        proximityManager.scan();
     }
 
 
@@ -641,13 +644,18 @@ public class IndoorMap
 
         if(myNewPosition != null)
             setLocalizedPosition(myNewPosition, "Sei localizzato da un sensore in tempo reale!", true);
-        else lostRealtimeLocalization();
+        else
+        {
+            if(localizedPosition.isRealTimeLocalized())
+                lostRealtimeLocalization();
+        }
     }
 
 
 
     @Override
     public void OnNewBeaconBestProximity(Beacon bestProximity, Beacon oldBestProximity) {
+
 
         BeaconAddress bestBeaconAddress = new BeaconAddress(bestProximity.getMinor(), bestProximity.getMajor());
         Position beaconAssociatedPosition  = building.getBeaconPositionMap().get(bestBeaconAddress);
@@ -666,7 +674,10 @@ public class IndoorMap
             newRealtimeLocalizationPosition(artworkPosition);
         }
         else
+        {
             newRealtimeLocalizationPosition(beaconAssociatedPosition);
+
+        }
 
     }
     @Override
@@ -746,10 +757,21 @@ public class IndoorMap
         {
             // TODO: artwork nearest Path Spot
 
-            if(selectedArtworkPosition.getPathSpot() != null) {
+            if(selectedArtworkPosition.getPathSpot() != null)
+            {
                 this.pathSpotManager = building.drawBestPath(selectedArtworkPosition.getPathSpot(), localizedPosition.getPosition().getPathSpot());
+
+                if(pathSpotManager == null || pathSpotManager.size() == 0)
+                {
+                    if(pathSpotManager == null)
+                        pathSpotManager = new PathSpotManager();
+                    Toast toast = Toast.makeText(context,
+                            "Purtroppo non è stato possibile trovare un percorso verso l'opera selezionata...", Toast.LENGTH_LONG);
+                    toast.show();
+                }
                 this.navigationImgView.setImageDrawable(pathSpotManager.newWrapperDrawable());
                 pathSpotManager.invalidate();
+
             }
             else
             {

@@ -34,7 +34,7 @@ public class IndoorMapFragmentLite extends Fragment
 {
 
 
-    //private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/database.sqlite";
+    //private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/Applicazione/merciai/editorMuseum/db/database.sqlite";
     private static String museumUrl = "http://whitelight.altervista.org/database.sqlite";
 
     IndoorMap indoorMap = null;

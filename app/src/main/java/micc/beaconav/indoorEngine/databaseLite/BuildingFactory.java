@@ -2,6 +2,7 @@ package micc.beaconav.indoorEngine.databaseLite;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -495,18 +496,15 @@ public class BuildingFactory
 
     private final LinkedList<ConvexCut> convexCutPath_recursive(ConvexArea start, ConvexArea target, ConvexCut lastConvexCut)
     {
-        LinkedList<ConvexCut> convexCutPath = null; // room.size() == numero di convexArea
-
-        // ArrayList<ConvexArea> convexAreaPath = new ArrayList<>(room.size()); // room.size() == numero di convexArea
-
         if(start == target)
         {
-            convexCutPath = new LinkedList<>();
-            convexCutPath.add(lastConvexCut);
+            LinkedList<ConvexCut>  convexCutPath = new LinkedList<>();
+           // convexCutPath.add(lastConvexCut);
             return convexCutPath;
         }
         else
         {
+            LinkedList<ConvexCut> convexCutPath = null;
             for( ConvexCut cc : start.convexCuts() )
             {
 
@@ -518,183 +516,21 @@ public class BuildingFactory
                         nextCA = cc.getConvexArea2();
                     else nextCA = cc.getConvexArea1();
 
-                    convexCutPath = convexCutPath_recursive(nextCA, target, cc);
-                    if (convexCutPath != null)
-                    {
-                        convexCutPath.add(cc);
+                    // Il percorso esiste ed è unico! Appena lo trovo torno indietro senza cercarne altri.
+                   convexCutPath = convexCutPath_recursive(nextCA, target, cc);
+                    if (convexCutPath != null) {
+                        convexCutPath.addFirst(cc);
                         return convexCutPath;
                     }
+
                 }
             }
+            return null;
+
         }
 
-        return null;
 
     }
-//    private final boolean tryToLink(PathSpot p, PathSpot q)
-//    {
-//        Room room = p.getAssociatedPosition().getContainerRoom();
-//
-//        // se non sono nella stessa stanza non esiste un link inRoom che le possa collegare
-//        if(room != q.getAssociatedPosition().getContainerRoom())
-//            return false;
-//
-//
-//        // Controllo se lo vedo direttamente
-//        // (se sono nella stessa convex area lo vedo di sicuro, canSee fa internamente questo check)
-//        else if( p.canSee(q))
-//                p.addLinkBidirectional(q);
-//
-//        else
-//        {
-//            ArrayList<ConvexArea> convexAreaPath = new ArrayList<>(room.size()); // room.size() == numero di convexArea
-//
-//            ConvexArea currentCA = p.getAssociatedPosition().getContainerConvexArea();
-//            ConvexArea targetCA = q.getAssociatedPosition().getContainerConvexArea();
-//
-//            PathSpot currentPathSpot = p;
-//            LinkedList<ConvexCut> convexCutPath = convexCutPath(currentCA, targetCA);
-//
-//            PathSpot nextBestPathSpot = null;
-//            ConvexArea nextBestConvexArea = p.getAssociatedPosition().getContainerConvexArea();
-//
-//            ConvexCut nextCC = convexCutPath.peekFirst();
-//            ConvexCut nextNextCC = convexCutPath.peekFirst();
-//
-//            while( convexCutPath.size() > 0)
-//            {
-//
-//                //boolean canSeeTarget = false;
-//                boolean canSeeA = false;
-//                boolean canSeeB = false;
-//
-//                if(nextNextCC == null )
-//                {
-//                    // vuol dire che nextCC è l'ultimo ConvexCut prima del target
-//                    boolean canSeeTarget = currentPathSpot.canSee(q);
-//                    if( canSeeTarget) {
-//                        nextBestPathSpot = q;
-//                        nextBestConvexArea = q.getAssociatedPosition().getContainerConvexArea();
-//                    }
-//                }
-//                else if(nextNextCC != null)
-//                {
-//                    if(nextBestConvexArea == nextNextCC.getConvexArea1())
-//                    {
-//                        nextBestConvexArea = nextNextCC.getConvexArea1();
-//                        canSeeA = currentPathSpot.canSee(nextNextCC.getPatSpotA_CA1());
-//                        canSeeB = currentPathSpot.canSee(nextNextCC.getPatSpotB_CA1());
-//                    }
-//                    else
-//                    {
-//                        nextBestConvexArea = nextNextCC.getConvexArea2();
-//                        canSeeA = currentPathSpot.canSee(nextNextCC.getPatSpotA_CA2());
-//                        canSeeB = currentPathSpot.canSee(nextNextCC.getPatSpotB_CA2());
-//                    }
-//
-//
-//                }
-//
-//                if( canSeeA || canSeeB ) {
-//                    if (canSeeA && canSeeB)
-//                    {
-//
-//                        if(nextBestConvexArea == nextNextCC.getConvexArea1())
-//                        {
-//                            // TODO: calcola il best tra A e B
-//                            nextBestPathSpot = nextNextCC.getPatSpotA_CA1();
-//                            nextBestPathSpot = nextNextCC.getPatSpotB_CA1();
-//                            nextBestConvexArea = nextNextCC.getConvexArea1();
-//                        }
-//                        else
-//                        {
-//                            // TODO: calcola il best tra A e B
-//                            nextBestPathSpot = nextNextCC.getPatSpotA_CA2();
-//                            nextBestPathSpot = nextNextCC.getPatSpotB_CA2();
-//                            nextBestConvexArea = nextNextCC.getConvexArea2();
-//                        }
-//
-//                    }
-//                    else if (canSeeA)
-//                    {
-//                        if(nextBestConvexArea == nextNextCC.getConvexArea1()) {
-//                            nextBestPathSpot = nextNextCC.getPatSpotA_CA1();
-//                            nextBestConvexArea = nextNextCC.getConvexArea1();
-//                        }
-//                        else {
-//                            nextBestPathSpot = nextNextCC.getPatSpotA_CA2();
-//                            nextBestConvexArea = nextNextCC.getConvexArea2();
-//                        }
-//
-//                    }
-//                    else if (canSeeB) {
-//                        if(nextBestConvexArea == nextNextCC.getConvexArea1()) {
-//                            nextBestPathSpot = nextNextCC.getPatSpotB_CA1();
-//                            nextBestConvexArea = nextNextCC.getConvexArea1();
-//                        }
-//                        else {
-//                            nextBestPathSpot = nextNextCC.getPatSpotB_CA2();
-//                            nextBestConvexArea = nextNextCC.getConvexArea2();
-//                        }
-//                    }
-//
-//
-//                    nextCC = nextNextCC;
-//                    nextNextCC = convexCutPath.peekFirst();
-//                }
-//
-//                else
-//                {
-//                    // Non riusciamo a vedere convex cut più lontani, quindi facciamo lo spostamento
-//                    // verso il nextBestPathSpot.
-//                    // Se nextBestPathSpot è nullo vuol dire che dall'ultimo spostamento non abbiamo
-//                    // potuto vedere altri convex cut oltre  il prossimo da seguire nel percorso dei ConvexCut.
-//
-//                    // nextBestPathSpot potrebbe anche essere il target, se riusciamo a vederlo!
-//
-//                    if( nextBestPathSpot == null)
-//                    {
-//                        // in questo caso non ho visto nessun punto del nextNextCC e devo
-//                        // navigare verso il punto più vicino del nextCC nella mia convexArea
-//                        // TODO: calcola il best tra A e B
-//                        if(nextBestConvexArea == nextCC.getConvexArea1())
-//                        {
-//                            // TODO: calcola il best tra A e B
-//                            nextBestPathSpot = nextCC.getPatSpotA_CA1();
-//                            nextBestPathSpot = nextCC.getPatSpotB_CA1();
-//                            nextBestConvexArea = nextCC.getConvexArea1();
-//                        }
-//                        else
-//                        {
-//                            // TODO: calcola il best tra A e B
-//                            nextBestPathSpot = nextCC.getPatSpotA_CA2();
-//                            nextBestPathSpot = nextCC.getPatSpotB_CA2();
-//                            nextBestConvexArea = nextCC.getConvexArea2();
-//                        }
-//                    }
-//
-//                    currentPathSpot.addLinkBidirectional(nextBestPathSpot);
-//                    currentPathSpot = nextBestPathSpot;
-//                    currentCA = nextBestPathSpot.getAssociatedPosition().getContainerConvexArea();
-//                    nextBestPathSpot = null;
-//
-//                    nextCC = convexCutPath.peekFirst();
-//                    nextNextCC = convexCutPath.peekFirst();
-//                }
-//            }
-//
-//            if(  currentPathSpot != q)
-//            {
-//                currentPathSpot.addLinkBidirectional(q);
-//            }
-//
-//
-//
-//        }
-//        return true;
-//
-//
-//    }
 
 
 
@@ -707,100 +543,196 @@ public class BuildingFactory
         else if(pStart.canSee(pGoal))
             pStart.getPathSpot().addLinkBidirectional(pGoal.getPathSpot());
 
+
         else
         {
             LinkedList<ConvexCut> convexCutPath = convexCutPath(pStart.getContainerConvexArea(), pGoal.getContainerConvexArea());
 
-            Position pCurrent = pStart;
-            Iterator<ConvexCut> convexCutIterator = convexCutPath.iterator();
 
+            if(convexCutPath == null ) {
+                return true;
+                // eccezione
+            }
+            int len = convexCutPath.size();
+            Log.w("! CONVEX CUT PATH !", "convex cut length = " + len);
+
+            Iterator<ConvexCut> convexCutIterator = convexCutPath.iterator();
 
 
             //PathSpot currentBestPathSpot = null;
 
-            ConvexCut currentBestCut = convexCutIterator.next();
-            boolean canSeeCurrentA = true;
-            boolean canSeeCurrentB = true;
+            LinkedList<PathSpot> path = new LinkedList<>();
+            PathSpot current = pStart.getPathSpot();
+
 
             ConvexCut nextCut = null;
-            boolean canSeeNextA;
-            boolean canSeeNextB;
+            ConvexArea currentArea = pStart.getContainerConvexArea();
+            ConvexCut cut = convexCutIterator.next();
+            boolean canSeeA = true;
+            boolean canSeeB = true;
 
-            ConvexArea currentBestArea = pStart.getContainerConvexArea();
-
-
-            while( convexCutIterator.hasNext() && pCurrent.canSee(pGoal) == false)
+            while( true )
             {
-                // AGGIORNO BEST AREA:
-                if(currentBestCut.getConvexArea1() == currentBestArea)
-                    currentBestArea = currentBestCut.getConvexArea2();
-                else currentBestArea = currentBestCut.getConvexArea1();
-
-                // ITERO NEXT CUT
-                nextCut = convexCutIterator.next();
-
-
-
-                canSeeNextA = pCurrent.canSee(nextCut.getPathSpotA());
-                canSeeNextB = pCurrent.canSee(nextCut.getPathSpotB());
-
-                // p can se nextCut
-                if(canSeeNextA || canSeeNextB )
+                if(convexCutIterator.hasNext())
+                    nextCut = convexCutIterator.next();
+                else nextCut = null;
+//
+                if( nextCut != null)
                 {
-                    // AGGIORNO  CURRENT BEST CUT:
-                    currentBestCut = nextCut;
+                    boolean canSeeNextA = current.canSee(nextCut.getPathSpotA(), room);
+                    boolean canSeeNextB = current.canSee(nextCut.getPathSpotB(), room);
+
+                    if (canSeeNextA || canSeeNextB) {
+                        cut = nextCut;
+                        canSeeA = canSeeNextA;
+                        canSeeB = canSeeNextB;
+                        continue;
+                    }
                 }
 
-                // p can't see NEXT CUT.. so I link p with CURRENT BEST CUT
+                if(currentArea == pGoal.getContainerConvexArea() || current.canSee(pGoal.getPathSpot(), room))
+                {
+                    current.addLinkBidirectional(pGoal.getPathSpot());
+                    break;
+                }
                 else
                 {
-                    PathSpot currentBestPathSpot;
-
-                    if(canSeeCurrentA == false)
-                    {
-                        currentBestPathSpot = currentBestCut.getPathSpotB();
+                    PathSpot bestNextPathSpot;
+                    if(!canSeeA) {
+                        bestNextPathSpot = cut.getPathSpotB();
                     }
-                    else if(canSeeCurrentB == false)
-                    {
-                        currentBestPathSpot = currentBestCut.getPathSpotA();
-                    }
+                    else if(!canSeeB)
+                        bestNextPathSpot = cut.getPathSpotA();
                     else
-                    {
-                        // calcola il più vicino e collego al più vicino
-                        currentBestPathSpot = pCurrent.nearest(currentBestCut.getPathSpotA(), currentBestCut.getPathSpotB() );
-                    }
+                        bestNextPathSpot = current.nearest(cut.getPathSpotA(), cut.getPathSpotB());
 
-                    pCurrent.getPathSpot().addLinkBidirectional(currentBestPathSpot);
+                    currentArea = (cut.getConvexArea1() == currentArea ) ?
+                                cut.getConvexArea2() : cut.getConvexArea1();
 
-                    // se non è lo START o il GOAL, rimuovo il Position fittizio che era stato aggiunto
-                    if(pCurrent != pStart && pCurrent != pGoal)
-                        pCurrent.getContainerConvexArea().remove(pCurrent);
-
-                    //sposto la posizione corrente al BEST PATH SPOT
-                    pCurrent = new Position(currentBestPathSpot);
-
-                    // Aggiungo il Position fittizio pCurrent al convexArea giusto
-                    currentBestArea.add(pCurrent);
-
-                    if(convexCutIterator.hasNext())
-                    {
-                        currentBestCut = convexCutIterator.next();
-                        // entrambi true perchè il nextCut è nella stessa area convessa
-                        canSeeNextA = true;
-                        canSeeNextB = true;
-                    }
+                    current.addLinkBidirectional(bestNextPathSpot);
+                    current = bestNextPathSpot;
+                    cut = nextCut;
                 }
 
 
-                canSeeCurrentA = canSeeNextA;
-                canSeeCurrentB = canSeeNextB;
+
             }
 
-            // se non è lo START o il GOAL, rimuovo il Position fittizio che era stato aggiunto
-            if(pCurrent != pStart && pCurrent != pGoal)
-                pCurrent.getContainerConvexArea().remove(pCurrent);
-            pCurrent.getPathSpot().addLinkBidirectional(pGoal.getPathSpot());
 
+// funziona ma limitante..
+
+//            ConvexCut cut;
+//
+//            while( convexCutIterator.hasNext() )
+//            {
+//                cut = convexCutIterator.next();
+//                PathSpot nearestNextPathSpot = current.nearest(cut.getPathSpotA(), cut.getPathSpotB());
+//                //path.addLast(nearestNextPathSpot);
+//                current.addLinkBidirectional(nearestNextPathSpot);
+//                current = nearestNextPathSpot;
+//            }
+
+
+
+//
+//            boolean canSeeGoal = false;
+//
+//            Position pos = pStart;
+//            ConvexArea currentCA = pos.getContainerConvexArea();
+//            ConvexCut currentCut = null;
+//            boolean currentCutA = true;
+//            boolean currentCutB = true;
+//
+//            ConvexCut nextCut = null;
+//            while( convexCutIterator.hasNext() && !canSeeGoal)
+//            {
+//                if(currentCut == null)
+//                {
+//                    currentCut = convexCutIterator.next();
+//                    currentCutA = currentCutB = true;
+//                }
+//                else
+//                {
+//                    nextCut = convexCutIterator.next();
+//                    boolean canSeeNextA = pos.canSee(nextCut.getPathSpotA());
+//                    boolean canSeeNextB = pos.canSee(nextCut.getPathSpotB());
+//
+//                    // currentPos can se nextCut
+//                    if(canSeeNextA || canSeeNextB )
+//                    {
+//                        // AGGIORNO  CURRENT BEST CUT:
+//
+//                        currentCut = nextCut;
+//                        currentCutA = canSeeNextA;
+//                        currentCutB = canSeeNextB;
+//                    }
+//
+//                    //currentPos can not see nextCut -> move to currentCut
+//                    else
+//                    {
+//                        PathSpot bestNextPathSpot;
+//                        if(!currentCutA)
+//                            bestNextPathSpot = nextCut.getPathSpotB();
+//                        else if( !currentCutB)
+//                            bestNextPathSpot = nextCut.getPathSpotA();
+//                        else  bestNextPathSpot = pos.nearest(nextCut.getPathSpotA(), nextCut.getPathSpotB() );
+//
+//
+//                        pos.getPathSpot().addLinkBidirectional(bestNextPathSpot);
+//
+//
+//                        if(pos!=pStart)
+//                            pos.getContainerConvexArea().remove(pos); // rimuovo la position fittizia!
+//
+//                        currentCA = (currentCut.getConvexArea1() == currentCA ) ?
+//                                currentCut.getConvexArea2() : currentCut.getConvexArea1();
+//
+//                        currentCut = nextCut;
+//                        currentCutA = currentCutB = true;
+//
+//                        pos = new Position(bestNextPathSpot); // aggiungo una position fittizia!
+//                        currentCA.add(pos);
+//
+//                    }
+////
+//                }
+//
+//
+//                if(pos.canSee(pGoal))
+//                    canSeeGoal = true;
+//            }
+//
+//
+//            if(!canSeeGoal) // siamo arrivati all'ultima convex area
+//            {
+//                PathSpot bestNextPathSpot;
+//                if(!currentCutA)
+//                    bestNextPathSpot = currentCut.getPathSpotB();
+//                else if( !currentCutB)
+//                    bestNextPathSpot = currentCut.getPathSpotA();
+//                else  bestNextPathSpot = pos.nearest(currentCut.getPathSpotA(), currentCut.getPathSpotB() );
+//
+//                pos.getPathSpot().addLinkBidirectional(bestNextPathSpot);
+//
+//                if(pos!=pStart)
+//                    pos.getContainerConvexArea().remove(pos); // rimuovo la position fittizia!
+//
+//
+//                currentCA = (currentCut.getConvexArea1() == currentCA ) ?
+//                        currentCut.getConvexArea2() : currentCut.getConvexArea1();
+//
+//                pos = new Position(bestNextPathSpot); // aggiungo una position fittizia!
+//
+//                currentCA.add(pos);
+//
+//            }
+//
+//            pos.getPathSpot().addLinkBidirectional(pGoal.getPathSpot());
+//
+//
+//            if(pos!=pStart)
+//                pos.getContainerConvexArea().remove(pos); // rimuovo la position fittizia!
+//
         }
 
         return true;
@@ -875,6 +807,18 @@ public class BuildingFactory
     public Building generateBuilding()
     {
         adapter.open(downloadedFilePath);
+
+
+
+        Segment s1 = new Segment(new Vertex(2,2), new Vertex(5, 5));
+        Segment s2 = new Segment(new Vertex(10,2), new Vertex(2, 10));
+        boolean intersect = Segment.intersect(s1, s2);
+
+
+        Segment s3 = new Segment(new Vertex(2,2), new Vertex(5, 5));
+        Segment s4 = new Segment(new Vertex(5,2), new Vertex(2, 5));
+        boolean intersect2 = Segment.intersect(s3, s4);
+
 
         // inizio a generare l'edificio
         building = new Building(70* ProportionsHelper.PPM, 70* ProportionsHelper.PPM);

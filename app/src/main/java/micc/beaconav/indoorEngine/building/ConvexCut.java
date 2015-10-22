@@ -23,6 +23,19 @@ public class ConvexCut
         this.area1 = convexArea1;
         this.area2 = convexArea2;
         this.segment = segment;
+
+
+        float x1 = segment.getVertex1().getX();
+        float y1 = segment.getVertex1().getY();
+        float x2 = segment.getVertex2().getX();
+        float y2 = segment.getVertex2().getY();
+//
+//        float coeffAngolare = (y2-y1)/(x2-x1);
+//        float modulo = (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+//
+//        pathSpotA = new PathSpot(x1 + modulo/10, y1 + coeffAngolare * modulo/10 );
+//        pathSpotB = new PathSpot(x2 - modulo/10, y2 + coeffAngolare * modulo/10 );
+
         pathSpotA = new PathSpot(segment.getVertex1().getX(), segment.getVertex1().getY());
         pathSpotB = new PathSpot(segment.getVertex2().getX(), segment.getVertex2().getY());
 
