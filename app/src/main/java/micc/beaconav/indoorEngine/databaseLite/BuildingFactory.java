@@ -609,7 +609,8 @@ public class BuildingFactory
                     currentArea = (cut.getConvexArea1() == currentArea ) ?
                                 cut.getConvexArea2() : cut.getConvexArea1();
 
-                    current.addLinkBidirectional(bestNextPathSpot);
+                    if(current.getLinkedPathSpots().contains(bestNextPathSpot) == false)
+                        current.addLinkBidirectional(bestNextPathSpot);
                     current = bestNextPathSpot;
                     cut = nextCut;
                 }

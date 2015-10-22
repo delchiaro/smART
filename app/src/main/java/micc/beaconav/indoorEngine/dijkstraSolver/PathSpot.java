@@ -68,6 +68,11 @@ public class PathSpot extends DrawableSpot implements DijkstraNodeAdapter<PathSp
 
 
 
+    public final List<PathSpot> getLinkedPathSpots() {
+        return _linkedSpots;
+    }
+
+
 
     // * * * * * * * * * * * * DIJKSTRA * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

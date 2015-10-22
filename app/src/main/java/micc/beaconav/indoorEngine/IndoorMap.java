@@ -759,7 +759,7 @@ public class IndoorMap
 
             if(selectedArtworkPosition.getPathSpot() != null)
             {
-                this.pathSpotManager = building.drawBestPath(selectedArtworkPosition.getPathSpot(), localizedPosition.getPosition().getPathSpot());
+                this.pathSpotManager = building.drawBestPath( localizedPosition.getPosition().getPathSpot(), selectedArtworkPosition.getPathSpot());
 
                 if(pathSpotManager == null || pathSpotManager.size() == 0)
                 {

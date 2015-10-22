@@ -29,15 +29,71 @@ public class ConvexCut
         float y1 = segment.getVertex1().getY();
         float x2 = segment.getVertex2().getX();
         float y2 = segment.getVertex2().getY();
-//
-//        float coeffAngolare = (y2-y1)/(x2-x1);
-//        float modulo = (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-//
-//        pathSpotA = new PathSpot(x1 + modulo/10, y1 + coeffAngolare * modulo/10 );
-//        pathSpotB = new PathSpot(x2 - modulo/10, y2 + coeffAngolare * modulo/10 );
 
-        pathSpotA = new PathSpot(segment.getVertex1().getX(), segment.getVertex1().getY());
-        pathSpotB = new PathSpot(segment.getVertex2().getX(), segment.getVertex2().getY());
+
+
+
+         //float coeffAngolare = (float) Math.atan2(y2 - y1, x2 - x1);
+
+        float modulo = (float)Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+        float distance = modulo/10;
+
+        float coeffAngolare;
+
+        float max_x = Math.max(x1, x2);
+        if(max_x == x1) {
+            // Forzo x1 ad essere il min_x
+            float ff = x1;
+            x1 = x2;
+            x2 = ff;
+            ff = y1;
+            y1 = y2;
+            y2 = ff;
+        }
+
+
+        if(x2-x1 != 0)
+        {
+            coeffAngolare = (y2 - y1) / (x2 - x1);
+            x1 += distance;
+            x2 -= distance;
+
+        }
+        else
+        {
+            // vertical
+            float max_y = Math.max(y1, y2);
+            if(max_y == y1) {
+                coeffAngolare = -1;
+            }
+            else coeffAngolare = 1;
+
+        }
+        y1 += distance*coeffAngolare;
+        y2 -= distance*coeffAngolare;
+
+//        float max_y = Math.max(y1, y2);
+//        if(max_y == y1) {
+//
+//        }
+//        else
+//        {
+//            y1+=distance*coeffAngolare;
+//            y2-=distance*coeffAngolare;
+//        }
+
+
+
+
+
+
+        pathSpotA = new PathSpot( x1, y1 );
+        pathSpotB = new PathSpot( x2, y2 );
+
+//
+//        pathSpotA = new PathSpot(segment.getVertex1().getX(), segment.getVertex1().getY());
+//        pathSpotB = new PathSpot(segment.getVertex2().getX(), segment.getVertex2().getY());
 
 //        Position pA_ca1 = new Position(segment.getVertex1().getX(), segment.getVertex1().getY());
 //        Position pB_ca1 = new Position(segment.getVertex2().getX(), segment.getVertex2().getY());

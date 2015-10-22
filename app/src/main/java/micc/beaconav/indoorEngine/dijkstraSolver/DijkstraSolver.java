@@ -70,6 +70,8 @@ public class DijkstraSolver< DNA extends DijkstraNodeAdapter> {
             {
                 frontiera.add(node);
             }
+            // se il grafo è ben fatto, non dovrebbe mai entrare in 'else return null; '
+            // Se un nodo del grafo è collegato due volte ad un altro nodo, entra qua dentro..
             else return null;   // dovrebbe essere sempre true alla partenza
         }
 
