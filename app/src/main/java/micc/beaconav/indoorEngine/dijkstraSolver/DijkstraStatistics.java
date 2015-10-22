@@ -1,5 +1,7 @@
 package micc.beaconav.indoorEngine.dijkstraSolver;
 
+import micc.beaconav.db.dbJSONManager.tableScheme.columnSchema.basicTypes.DoubleField;
+
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
  */
@@ -7,7 +9,7 @@ public class DijkstraStatistics
 {
     private boolean _isPermanent;
     private DijkstraNodeAdapter _bestPredecessor;
-    private double _bestWeight;
+    private Double _bestWeight;
     private int _nPredecessor;
 
 
@@ -40,7 +42,7 @@ public class DijkstraStatistics
     void setBestWeight(double newBestWeight) {
         this._bestWeight = newBestWeight;
     }
-    double getBestWeight() {
+    Double getBestWeight() {
         return _bestWeight;
     }
 

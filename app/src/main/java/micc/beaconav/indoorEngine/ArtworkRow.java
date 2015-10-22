@@ -14,7 +14,7 @@ public class ArtworkRow implements IArtworkRow {
     private String _title;
     private String _descr;
     private String _creationYear;
-    private long _ID_artworkImage;
+    private String _imageLink;
     private String _dimensions;
     private String _artistName;
     private String _artistBiography;
@@ -22,14 +22,14 @@ public class ArtworkRow implements IArtworkRow {
 
 
 
-    public ArtworkRow(long ID, String title, String descr, String creationYear, long ID_image, String dimensions,
+    public ArtworkRow(long ID, String title, String descr, String creationYear, String imageLink, String dimensions,
                String artistName, String artistBiography, String artworkType)
     {
         this._ID = ID;
         this._title = title;
         this._descr = descr;
         this._creationYear = creationYear;
-        this._ID_artworkImage = ID_image;
+        this._imageLink = imageLink;
         this._dimensions = dimensions;
         this._artistName = artistName;
         this._artistBiography = artistBiography;

@@ -196,11 +196,12 @@ public class BuildingAdapter
         String sql ="SELECT Position.*, " +
                 "Artwork.ID as artworkID, Artwork.name as artworkName, Artwork.descr as artworkDescr, " +
                 " QRCode.code as qrCode, Beacon.minor as beaconMinor, Beacon.major as beaconMajor," +
-                " Room.ID as roomID, ConvexArea.ID as convexAreaID " +
+                " Room.ID as roomID, ConvexArea.ID as convexAreaID, Image.link_xhdpi as imageLink " +
                 "FROM Position " +
                 "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
                 "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +
                 "LEFT JOIN Beacon ON Position.ID = Beacon.ID_position " +
+                "LEFT JOIN Image ON Artwork.ID_image = Image.ID " +
                 "JOIN Room ON Position.ID_room = Room.ID "+
                 "JOIN ConvexArea ON Position.ID_convexArea = ConvexArea.ID ";
         try

@@ -9,10 +9,16 @@ public class DijkstraComparator implements Comparator<DijkstraNodeAdapter> {
 
     @Override
     public int compare(DijkstraNodeAdapter lhs, DijkstraNodeAdapter rhs) {
-        if( lhs.getDijkstraStatistic().getBestWeight() > rhs.getDijkstraStatistic().getBestWeight() )
-            return 1;
-        else if( lhs.getDijkstraStatistic().getBestWeight() < rhs.getDijkstraStatistic().getBestWeight() )
-            return -1;
-        else return 0;
+
+        return lhs.getDijkstraStatistic().getBestWeight().compareTo(rhs.getDijkstraStatistic().getBestWeight());
+//        if( lhs.getDijkstraStatistic().getBestWeight() > rhs.getDijkstraStatistic().getBestWeight() )
+//            return 1;
+//        else if( lhs.getDijkstraStatistic().getBestWeight() < rhs.getDijkstraStatistic().getBestWeight() )
+//            return -1;
+//        else return 0;
     }
+
+    
+
+
 }

@@ -408,7 +408,7 @@ public class BuildingFactory
 
             int x_ci = positionData.getColumnIndex("x");
             int y_ci = positionData.getColumnIndex("y");
-            int imageID_ci = positionData.getColumnIndex("ID_image");
+            int artworkImageLink_ci = positionData.getColumnIndex("imageLink");
             int artworkID_ci = positionData.getColumnIndex("artworkID");
             int artworkName_ci = positionData.getColumnIndex("artworkName");
             int artworkDescr_ci = positionData.getColumnIndex("artworkDescr");
@@ -424,7 +424,7 @@ public class BuildingFactory
             int positionID;
             float x;
             float y;
-            int imageID;
+            String artworkImageLink;
             String artworkName;
             String artworkDescr;
             String QRCode;
@@ -447,7 +447,7 @@ public class BuildingFactory
 
                 // TODO: immagini indoor
                // imageID = positionData.getInt(imageID_ci);
-                imageID = 0;
+                artworkImageLink = positionData.getString(artworkImageLink_ci);
                 artworkName = positionData.getString(artworkName_ci);
                 artworkDescr = positionData.getString(artworkDescr_ci);
 
@@ -457,7 +457,7 @@ public class BuildingFactory
                 Position position = null;
                 if( artworkID != null )
                 {
-                    artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, imageID, null, null, null, null);
+                    artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, artworkImageLink, null, null, null, null);
                     position = new ArtworkPosition(x, y, artworkRow);
                     //roomMap.get(roomID).get(convexAreaID).new ArtworkMarker(x, y, artworkRow));
                 }
