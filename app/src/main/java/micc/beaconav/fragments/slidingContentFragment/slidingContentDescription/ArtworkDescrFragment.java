@@ -3,24 +3,26 @@ package micc.beaconav.fragments.slidingContentFragment.slidingContentDescription
 
 import android.support.v4.app.Fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.db.dbImagesDownloader.DbImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.ArtworkRow;
 
@@ -31,6 +33,7 @@ public class ArtworkDescrFragment extends Fragment {
 
 
     private ArtworkRow  artworkRow           = null;
+    //private WebView     webViewArtwork       = null;
     private ImageView   imageViewArtwork     = null;
     private TextView    textViewArtworkDescr = null;
     private TextView    textViewArtistDescr  = null;
@@ -57,7 +60,8 @@ public class ArtworkDescrFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         textViewArtworkDescr = (TextView) getView().findViewById(R.id.artworkDescription);
-        imageViewArtwork     = (ImageView)getView().findViewById(R.id.artworkImage);
+        //webViewArtwork       = (WebView)  getView().findViewById(R.id.artworkImage);
+        imageViewArtwork     = (ImageView) getView().findViewById(R.id.artworkImage);
         textViewArtistName   = (TextView) getView().findViewById(R.id.artistName);
         textViewYear         = (TextView) getView().findViewById(R.id.year);
         textViewLocation     = (TextView) getView().findViewById(R.id.location);
@@ -70,15 +74,25 @@ public class ArtworkDescrFragment extends Fragment {
         if(artworkRow != null)
         {
             textViewArtworkDescr.setText(artworkRow.getDescription());
-            // TODO: immagine artwork
-            //imageViewArtwork.setImageDrawable(FragmentHelper.instance().getMainActivity().getResources().getDrawable(artworkRow.getImageId()));
-
             textViewArtistName.setText("Artista: " + artworkRow.getArtistName());
             textViewYear.setText("Anno: " + artworkRow.getCreationYear());
             textViewLocation.setText("Locazione: " + artworkRow.getLocation());
             textViewArtistDescr.setText(artworkRow.getArtistDescr());
             textViewDimensions.setText("Dimensioni: "+artworkRow.getDimensions());
             textViewType.setText("Tecnica: "+artworkRow.getType());
+
+            DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+          //  "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg"
+            //dbImagesDownloader.loadImage(webViewArtwork, artworkRow.get_artworkImageUrl(), this.getActivity().getApplicationContext());
+
+            DisplayImageOptions displayOption = new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .build();
+
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(artworkRow.get_artworkImageUrl(),imageViewArtwork, displayOption );
+
         }
 
 
