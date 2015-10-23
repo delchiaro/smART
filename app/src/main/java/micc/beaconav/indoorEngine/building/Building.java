@@ -5,8 +5,12 @@ import android.graphics.Canvas;
 import com.google.common.collect.HashBiMap;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 
+import micc.beaconav.indoorEngine.ArtworkPosition;
+import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.beaconHelper.BeaconAddress;
 import micc.beaconav.indoorEngine.dijkstraSolver.DijkstraNodeAdapter;
 import micc.beaconav.indoorEngine.dijkstraSolver.PathSpot;
@@ -36,6 +40,17 @@ public class Building extends Container<Floor>
     private HashBiMap<BeaconAddress, Position> BeaconPositionMap = HashBiMap.create();
 
 
+    public List<Position> getAllPositions() {
+
+        LinkedList<Position> positions = new LinkedList<Position>();
+        for(Floor f : this)
+            for(Room r: f)
+                for( ConvexArea ca : r)
+                    for( Position p : ca) {
+                        positions.addLast(p);
+                    }
+        return positions;
+    }
 
     public Building(int width, int height)  {
         this.width = width;

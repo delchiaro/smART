@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
+import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.Floor;
 import micc.beaconav.indoorEngine.building.Room;
@@ -35,7 +37,12 @@ public class IndoorMapFragmentLite extends Fragment
 
 
     //private static String museumUrl = "http://trinity.micc.unifi.it/museumapp/Applicazione/merciai/editorMuseum/db/database.sqlite";
-    private static String museumUrl = "http://whitelight.altervista.org/database.sqlite";
+   // private static String museumUrl = "http://whitelight.altervista.org/database.sqlite";
+
+    private static String museumsUrl =  "http://trinity.micc.unifi.it/museumapp/museums/";
+    private static String filename = "database.sqlite";
+
+    private MuseumRow museum;
 
     IndoorMap indoorMap = null;
 
@@ -74,40 +81,86 @@ public class IndoorMapFragmentLite extends Fragment
         }
 
         BuildingDownloader downloader;
-        downloader = new BuildingDownloader(this.getActivity(), museumUrl, this);
-        downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        tv.setText("downloading");
+        if(museum != null) {
+            String museumUrl = museumsUrl + museum.getID() + "/" + filename;
+            downloader = new BuildingDownloader(this.getActivity(), museumUrl, this);
+            downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            tv.setText("downloading");
+        }
+        else tv.setText("Can't start download.. Indoor Map: museum = null.");
     }
 
 
+    public void setMuseum(MuseumRow museum) {
+        this.museum = museum;
+    }
 
     @Override
     public void onDownloadFinished(String downloadedFilePath) {
         // TODO: volendo è possibile rendere anche la generazione del Building asincrona con un thread..
 
         BuildingFactory buildingFactory = new BuildingFactory(downloadedFilePath, this.getActivity());
-        Building building =  buildingFactory.generateBuilding();
+        tv.setText("Generating Building...");
+        Building building = null;
+        try {
+            building = buildingFactory.generateBuilding();
+        }
+        catch (BuildingAdapter.CantOpenDatabaseFileException e) {
+            e.printStackTrace();
+            tv.setText("File not found in local.. please connect to internet and retry.");
+            return;
+        }
+        catch (BuildingAdapter.CantOpenDatabaseException e) {
+            e.printStackTrace();
+            tv.setText("Can't access to database file..");
+            return;
+        }
 
-        indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
-                this.getActivity(), FragmentHelper.instance().getMainActivity());
+        if(building != null)
+        {
+            tv.setText("Building generated!");
+            indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
+                    this.getActivity(), FragmentHelper.instance().getMainActivity());
+            frameLayout.removeView(tv);
+        }
+        else
+        {
+            indoorMap = null;
+            tv.setText("Can't generate building...");
+            frameLayout.removeView(tv);
+        }
 
-        tv.setText("Download finished!");
-        frameLayout.removeView(tv);
 
-        tv.setText("Download finished!");
-        frameLayout.removeView(tv);
-
+        FragmentHelper.instance().showArtworkListFragment(museum, indoorMap.getBuilding());
 
     }
 
+    @Override
+    public void onDownloadFail(String notDownloadedFilePath) {
+        tv.setText("Can't download file.. are you connected to internet? Searching for a local map...");
+        try {
+            wait(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onDownloadFinished(notDownloadedFilePath);
+
+
+    }
 
 
     public IndoorMap getIndoorMap() {
         return indoorMap;
     }
 
+    public MuseumRow getMuseumRow() {
+        return museum;
+    }
 
+    public Building getBuilding() {
+        return indoorMap.getBuilding();
+    }
 
 
 

@@ -805,43 +805,52 @@ public class BuildingFactory
         return true;
     }
 
-    public Building generateBuilding()
-    {
-        adapter.open(downloadedFilePath);
+    public Building generateBuilding() throws BuildingAdapter.CantOpenDatabaseException, BuildingAdapter.CantOpenDatabaseFileException {
 
 
-
-        Segment s1 = new Segment(new Vertex(2,2), new Vertex(5, 5));
-        Segment s2 = new Segment(new Vertex(10,2), new Vertex(2, 10));
-        boolean intersect = Segment.intersect(s1, s2);
+            adapter.open(downloadedFilePath);
 
 
-        Segment s3 = new Segment(new Vertex(2,2), new Vertex(5, 5));
-        Segment s4 = new Segment(new Vertex(5,2), new Vertex(2, 5));
-        boolean intersect2 = Segment.intersect(s3, s4);
+//
+//
+//        Segment s1 = new Segment(new Vertex(2,2), new Vertex(5, 5));
+//        Segment s2 = new Segment(new Vertex(10,2), new Vertex(2, 10));
+//        boolean intersect = Segment.intersect(s1, s2);
+//
+//
+//        Segment s3 = new Segment(new Vertex(2,2), new Vertex(5, 5));
+//        Segment s4 = new Segment(new Vertex(5,2), new Vertex(2, 5));
+//        boolean intersect2 = Segment.intersect(s3, s4);
 
 
         // inizio a generare l'edificio
-        building = new Building(70* ProportionsHelper.PPM, 70* ProportionsHelper.PPM);
+        building = new Building(90* ProportionsHelper.PPM, 90* ProportionsHelper.PPM);
 
         building.add(new Floor());
 
-
-        HashMap<Integer, Room> roomMap = new HashMap<>();
-        HashMap<Integer, ConvexArea> convexAreaMap = new HashMap<>();
-
         boolean success = false;
-        success = loadConvexAreasAndRooms();
-        success = loadVerticesInRooms();
-        success = loadVerticesInConvexAreas();
-        success = buildDoorsAndConvexCut();
-        success = loadPositions();
-        success = buildPathGraph();
+        try {
 
+            success = loadConvexAreasAndRooms();
+            success = loadVerticesInRooms();
+            success = loadVerticesInConvexAreas();
+            success = buildDoorsAndConvexCut();
+            success = loadPositions();
+            success = buildPathGraph();
+        }
+        catch(Exception exception)
+        {
+            Log.e("BuildingFactoryError", "Can't generate building :(");
+            success = false;
+        }
 
         adapter.close();
-        this.building = building;
+
+        if(!success)
+            building = null;
+
         return building;
+
     }
     public Building getLatGeneratedBulding() {
         return building;

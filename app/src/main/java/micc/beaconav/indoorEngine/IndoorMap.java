@@ -97,6 +97,11 @@ public class IndoorMap
     ImageView navigationImgView;
     ImageView localizationImgView;
 
+
+    public Building getBuilding() {
+        return this.building;
+    }
+
     public IndoorMap( Building building, ImageView backgroundImgView, ImageView foregroundImgView,
 
         ImageView navigationImgView, ImageView localizationImgView,Context context, Activity mainActivity) {

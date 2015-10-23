@@ -14,7 +14,7 @@ import micc.beaconav.indoorEngine.ProportionsHelper;
 public class MapPaint
 {
 
-    public static boolean DEBUG_CONVEX_AREA = true;
+    public static boolean DEBUG_CONVEX_AREA = false;
 
     private static int PPM = ProportionsHelper.PPM;
 

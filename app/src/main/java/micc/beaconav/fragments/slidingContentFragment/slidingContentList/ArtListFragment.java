@@ -67,6 +67,12 @@ public class ArtListFragment extends Fragment
         }
         inflateList();
     }
+    public void insertRows(final List<IArtRow> result) {
+        iArtRowList = new ArrayList<>();
+        for(IArtRow row : result )
+            iArtRowList.add(row);
+        inflateList();
+    }
 
     public void refreshList() {
         listInflated = false;

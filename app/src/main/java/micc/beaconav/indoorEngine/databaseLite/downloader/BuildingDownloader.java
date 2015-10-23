@@ -55,7 +55,7 @@ public class BuildingDownloader extends AsyncTask<String, Integer, String> {
         dirPath = dirPath.substring(0, dirPath.lastIndexOf('/')-1);
 
         dirPath = TEMP_DIR_PATH + dirPath;
-        String filePath = dirPath + File.separator + "db.db";
+        fPath = dirPath + File.separator + "db.db";
 
         try {
             URL url = new URL(this.url);//new URL(sUrl[0]);
@@ -80,10 +80,10 @@ public class BuildingDownloader extends AsyncTask<String, Integer, String> {
 
             File directory = new File(dirPath);
             directory.mkdirs();
-            File file = new File(filePath);
-            output = new FileOutputStream(filePath);
+            File file = new File(fPath);
+            output = new FileOutputStream(fPath);
 
-            // todo
+            // TODO: file locally exists --> not download
 //
 //            if (file.exists())
 //            {
@@ -111,6 +111,7 @@ public class BuildingDownloader extends AsyncTask<String, Integer, String> {
 
         } catch (Exception e) {
             return e.toString();
+
         } finally {
             try {
                 if (output != null)
@@ -123,7 +124,6 @@ public class BuildingDownloader extends AsyncTask<String, Integer, String> {
             if (connection != null)
                 connection.disconnect();
         }
-        this.fPath = filePath;
         return null;
     }
 
@@ -143,7 +143,10 @@ public class BuildingDownloader extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         mWakeLock.release();
         if (result != null)
+        {
             Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
+            this.listener.onDownloadFail(fPath);
+        }
         else if( fPath != null ){
             Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
             this.listener.onDownloadFinished(fPath);

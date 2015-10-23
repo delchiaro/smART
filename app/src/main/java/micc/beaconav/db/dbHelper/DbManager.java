@@ -32,6 +32,6 @@ public class DbManager
 
 
      static private HashMap<Integer, JSONDownloader> vertexFromRoomDownloaders = new HashMap<>();
-
+    
 
 }

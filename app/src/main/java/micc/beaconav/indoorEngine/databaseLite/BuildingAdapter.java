@@ -56,8 +56,14 @@ public class BuildingAdapter
     }
 
 
-    public BuildingAdapter open(String dbPath) throws SQLException
-    {
+    public class CantOpenDatabaseException extends SQLException
+    {}
+
+    public class CantOpenDatabaseFileException extends IOException
+    {}
+
+
+    public BuildingAdapter open(String dbPath) throws CantOpenDatabaseException, CantOpenDatabaseFileException {
         close();
         try
         {
@@ -68,9 +74,10 @@ public class BuildingAdapter
         catch (SQLException mSQLException)
         {
             Log.e(TAG, "open >>"+ mSQLException.toString());
-            throw mSQLException;
+            throw new CantOpenDatabaseException();
         } catch (IOException e) {
             e.printStackTrace();
+            throw new CantOpenDatabaseFileException();
         }
         return this;
     }
@@ -196,7 +203,7 @@ public class BuildingAdapter
         String sql ="SELECT Position.*, " +
                 "Artwork.ID as artworkID, Artwork.name as artworkName, Artwork.descr as artworkDescr, " +
                 " QRCode.code as qrCode, Beacon.minor as beaconMinor, Beacon.major as beaconMajor," +
-                " Room.ID as roomID, ConvexArea.ID as convexAreaID, Image.link_xhdpi as imageLink " +
+                " Room.ID as roomID, ConvexArea.ID as convexAreaID, Image.link_mdpi as imageLink " +
                 "FROM Position " +
                 "LEFT JOIN Artwork ON Position.ID = Artwork.ID_position " +
                 "LEFT JOIN QRCode ON Position.ID = QRCode.ID_position " +

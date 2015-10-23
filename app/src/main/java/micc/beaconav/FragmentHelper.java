@@ -14,6 +14,10 @@ import android.view.View;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import micc.beaconav.db.dbHelper.DbManager;
 import micc.beaconav.db.dbHelper.IArtRow;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
@@ -24,8 +28,12 @@ import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.MuseumDescrFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.NameHeaderFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.SeekBarHeaderFragment;
+import micc.beaconav.indoorEngine.ArtworkPosition;
 import micc.beaconav.indoorEngine.ArtworkRow;
+import micc.beaconav.indoorEngine.IndoorMap;
 import micc.beaconav.indoorEngine.IndoorMapFragmentLite;
+import micc.beaconav.indoorEngine.building.Building;
+import micc.beaconav.indoorEngine.building.Position;
 import micc.beaconav.outdoorEngine.Map;
 import micc.beaconav.fragments.mainFragment.MapFragment;
 import micc.beaconav.outdoorEngine.MuseumMarkerManager;
@@ -135,6 +143,7 @@ public class FragmentHelper  implements MuseumMarkerManager
                                             public void onClick(DialogInterface dialog, int which) {
                                                 showOutdoorFragment();
                                                 mainActivity.finish();
+                                                //System.exit(0);
                                             }
                                         });
 
@@ -158,10 +167,11 @@ public class FragmentHelper  implements MuseumMarkerManager
                 {
                     switch(activeSlidingFragment){
                         case NAVIGATE:
+                            instance().indoorMapFragmentLite.getIndoorMap().hideDijkstraPath();
                             break;
 
                         case DETAILS:
-                            //showArtworkListFragment(artworkList_museumRow);
+                            showArtworkListFragment(indoorMapFragmentLite.getMuseumRow(), indoorMapFragmentLite.getBuilding());
                             indoorMapFragmentLite.getIndoorMap().onMarkerSpotSelected(null);
                             break;
 
@@ -241,7 +251,8 @@ public class FragmentHelper  implements MuseumMarkerManager
             indoorMapFragmentLite = null;
 
             swapFragment(R.id.fragment_map_container, mapFragment);
-            mapFragment.setMuseumMarkerManager(this);
+
+            //mapFragment.setMuseumMarkerManager(this);
             showMuseumListFragment();
 
             mainActivity.setFABListener(defaultFABOnClickListener);
@@ -257,9 +268,11 @@ public class FragmentHelper  implements MuseumMarkerManager
 //        swapFragment(R.id.fragment_map_container, indoorMapFragment);
 
         indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
+        indoorMapFragmentLite.setMuseum(museum);
+        IndoorMap indoorMap = indoorMapFragmentLite.getIndoorMap();
         swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
         activeMainFragment = MainFragment.INDOOR;
-//        showArtworkListFragment(museum);
+
 //        indoorMapFragment.setMuseum(museum);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
@@ -267,45 +280,42 @@ public class FragmentHelper  implements MuseumMarkerManager
         mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
     }
 
-
-    public final void showIndoorFragmentInline(MuseumRow museum) {
-        showArtworkListFragment(museum);
-        indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
-       // indoorMapFragmentLite.initMuseumRow(museum);
-        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
-        activeMainFragment = MainFragment.INDOOR;
-        //indoorMapFragment.setMuseum(museum);
-        mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
-        mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
-        mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
-        mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
-    }
-
-
+//
+//    public final void showIndoorFragmentInline(MuseumRow museum) {
+//        showArtworkListFragment(museum);
+//        indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
+//       // indoorMapFragmentLite.initMuseumRow(museum);
+//        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
+//        activeMainFragment = MainFragment.INDOOR;
+//        //indoorMapFragment.setMuseum(museum);
+//        mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
+//        mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
+//        mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
+//        mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
+//    }
 
 
 
 
-    public final void showArtworkListFragment(MuseumRow museum) {
 
-        if(museum != this.artworkList_museumRow)
+
+    public final void showArtworkListFragment(MuseumRow museum, Building building) {
+
+        if(building != null)
         {
-            artworkListFragment = new ArtListFragment();
-            artworkList_museumRow = museum;
-
-            // TODO: Artworks from dblite not from DB.
-//            DbManager.getArtworkDownloader(museum, new JSONHandler<ArtworkRow>() {
-//                @Override
-//                public void onJSONDownloadFinished(ArtworkRow[] result) {
-//                    artworkListFragment.insertRows(result);
-//                }
-//            });
+            List<Position> positions = building.getAllPositions();
+            LinkedList<IArtRow> artworkRows = new LinkedList<>();
+            for(Position p : positions)
+            {
+                if( p instanceof ArtworkPosition);
+                    artworkRows.addLast(((ArtworkPosition) p).getArtworkRow());
+            }
+            artworkListFragment.insertRows(artworkRows);
         }
-
 
         activeSlidingFragment = SlidingFragment.LIST;
         swapFragment(R.id.fragment_list_container, artworkListFragment);
-//        showNameHeaderFragment(museum);
+        showNameHeaderFragment(museum);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
         mainActivity.setFABListener(defaultFABOnClickListener);
@@ -481,5 +491,9 @@ public class FragmentHelper  implements MuseumMarkerManager
 
     public SlidingFragment getActiveSlidingFragment() {
         return activeSlidingFragment;
+    }
+
+    public IndoorMap getIndoorMap() {
+        return indoorMapFragmentLite.getIndoorMap();
     }
 }

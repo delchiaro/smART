@@ -103,7 +103,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         this.gmap.setMyLocationEnabled(true);
         this.gmap.getUiSettings().setZoomControlsEnabled(false);
         FragmentHelper fh = FragmentHelper.instance();
-        this.gmap.setPadding(fh.dpToPx(5),  fh.dpToPx(50), fh.dpToPx(0), fh.dpToPx(5));
+        this.gmap.setPadding(fh.dpToPx(5),  fh.dpToPx(5), fh.dpToPx(5), fh.dpToPx(5));
         proximityManager = new ProximityManager( PROXIMITY_RADIUS, PROXIMITY_SKIMMING_RADIUS, this);
 
         this.markerManager = markerManager;

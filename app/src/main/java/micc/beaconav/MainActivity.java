@@ -309,14 +309,28 @@ public class MainActivity extends FragmentActivity
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
        // initFragments();
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.exit(0);
+        //TODO: rimuovere questo exit erisolvere bug che quando pauso l'app (premo home) e la riapro poi cliccando su un google map marker crasha.
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.exit(0);
 
     }
 

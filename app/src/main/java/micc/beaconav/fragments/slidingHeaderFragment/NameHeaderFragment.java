@@ -78,7 +78,8 @@ public class NameHeaderFragment extends Fragment {
                             break;
 
                         case DETAILS:
-                            FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
+                            FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().indoorMapFragmentLite.getMuseumRow(),
+                                    FragmentHelper.instance().indoorMapFragmentLite.getBuilding());
                             break;
 
                         case LIST:

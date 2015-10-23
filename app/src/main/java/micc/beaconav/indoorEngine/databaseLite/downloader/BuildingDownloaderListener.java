@@ -5,4 +5,6 @@ package micc.beaconav.indoorEngine.databaseLite.downloader;
  */
 public interface BuildingDownloaderListener {
     public void onDownloadFinished(String downloadedFilePath);
+    public void onDownloadFail(String notDownloadedfilePath);
+
 }

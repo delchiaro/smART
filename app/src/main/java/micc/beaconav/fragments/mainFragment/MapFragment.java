@@ -39,7 +39,7 @@ public class MapFragment extends Fragment
     public MapFragment(){}
 
 
-    private MuseumMarkerManager manager;
+    private MuseumMarkerManager manager = null;
 
     private Button buttonProximity;
     private Button buttonJson;
@@ -48,11 +48,6 @@ public class MapFragment extends Fragment
 
 // * * * * SET UP FRAGMENT * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
-    public void setMuseumMarkerManager(MuseumMarkerManager manager)
-    {
-        this.manager = manager;
-    }
 
     private void setUp()  {
 //        buttonProximity      =  (Button) myFragmentView.findViewById(R.id.buttonProximity);
@@ -168,23 +163,41 @@ public class MapFragment extends Fragment
         context = this.getActivity();
         setUp();
         setUpEventListeners();
-        if(map == null) {
-            map = new Map(getGMapFromXML(), manager);
-            setUpMap();
-        }
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        this.manager = FragmentHelper.instance();
+        if(map == null) {
+            map = new Map(getGMapFromXML(), manager);
+            setUpMap();
+        }
+
         map.startLocalization();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        map.stopLocalization();
+        map.clearProximityNotificationTooltip();
+        map = null;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        map.stopLocalization();
-        map.clearProximityNotificationTooltip();
+//        map.stopLocalization();
+//        map.clearProximityNotificationTooltip();
 
     }
 }

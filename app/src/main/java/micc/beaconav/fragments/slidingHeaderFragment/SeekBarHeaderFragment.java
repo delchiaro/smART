@@ -86,7 +86,6 @@ public class SeekBarHeaderFragment extends Fragment {
         discreteSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
 
 
-
             @Override
             public int transform(int value) {
                 return 0;
@@ -113,8 +112,12 @@ public class SeekBarHeaderFragment extends Fragment {
         });
 
 
-        resetInitialSeekBarRadius();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        resetInitialSeekBarRadius();
+    }
 }
