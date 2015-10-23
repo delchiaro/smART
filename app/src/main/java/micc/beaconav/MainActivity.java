@@ -37,11 +37,19 @@ import micc.beaconav.__test.testLastLocationActivity;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.FIFOLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.io.File;
 
 /**
  * Created by Riccardo Del Chiaro & Franco Yang (25/02/2015)
@@ -279,6 +287,28 @@ public class MainActivity extends FragmentActivity
 
     }
 
+    public void initUniversalImageLoader() {
+
+        File cacheDir = StorageUtils.getCacheDirectory(context);
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+                .diskCacheExtraOptions(480, 800, null)
+                .threadPoolSize(3) // default
+                .memoryCache(new FIFOLimitedMemoryCache(20 * 1024 *1024)) //20MB ram cache
+                .diskCache(new UnlimitedDiskCache(cacheDir)) // default
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(100)
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(100)
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
+
+
+    }
+
 
 // * * * * * * * * * * * * * * *  EVENT MANAGER DELLA ACTIVITY * * * * * * * * * * * * * * *
 
@@ -296,6 +326,7 @@ public class MainActivity extends FragmentActivity
         initActivityAndXML();
         initEventListeners();
         initFragments();
+        initUniversalImageLoader();
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null)
         {
