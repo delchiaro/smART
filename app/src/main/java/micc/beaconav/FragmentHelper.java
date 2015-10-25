@@ -307,7 +307,7 @@ public class FragmentHelper  implements MuseumMarkerManager
             LinkedList<IArtRow> artworkRows = new LinkedList<>();
             for(Position p : positions)
             {
-                if( p instanceof ArtworkPosition);
+                if( p instanceof ArtworkPosition)
                     artworkRows.addLast(((ArtworkPosition) p).getArtworkRow());
             }
             artworkListFragment.insertRows(artworkRows);

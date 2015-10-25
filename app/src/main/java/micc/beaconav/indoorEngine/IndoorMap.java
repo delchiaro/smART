@@ -58,6 +58,10 @@ public class IndoorMap
 
 
 
+    boolean noMoreShowTooltip = false;
+    int tooltipHideCounter = 2;
+    private static boolean BEACON_DEBUG = false;
+
     private ToolTip artworkproximityToolTip = new ToolTip()
             .withText("Premi per\ninformazioni\nsull'opera")
             .withTextColor(Color.BLACK)
@@ -488,7 +492,8 @@ public class IndoorMap
             if (oldSelectedMarker != null && oldSelectedMarker.isSelected())
             {
                 oldSelectedMarker.deselect();
-                markerManager.invalidate();
+                // if(markerManager != null ) è sempre non nullo
+                    markerManager.invalidate();
                 // TODO: artworkList_museumRow e` sempre null...
                 //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
             }
@@ -505,7 +510,8 @@ public class IndoorMap
             // TODO: artworkList_museumRow e` sempre null...
           //  FragmentHelper.instance().showArtworkListFragment(FragmentHelper.instance().artworkList_museumRow);
             selectedArtworkPosition = null;
-            markerManager.invalidate();
+            // if(markerManager != null) è sempre non nullo
+               markerManager.invalidate();
         }
     }
 
@@ -526,7 +532,8 @@ public class IndoorMap
 
             selectedArtworkPosition = row.getPosition();
             selectedArtworkPosition.getMarker().select();
-            markerManager.invalidate();
+            // if(markerManager != null) è sempre non nullo
+                markerManager.invalidate();
         }
     }
 
@@ -704,39 +711,69 @@ public class IndoorMap
     }
 
 
-    public void showProximityArtworkFAB() {
-        Toast toast;
-        toolTipView = FragmentHelper.instance().getMainActivity()
-                .getArtworkFoundTooltipContainer().showToolTipForView(artworkproximityToolTip, FragmentHelper.instance().getMainActivity().findViewById(R.id.notifyToIndoor));
+    public void showProximityArtworkTooltip() {
 
-        FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setVisibility(View.VISIBLE);
-        toast = Toast.makeText(context, "BEACON VICINO!!!", Toast.LENGTH_LONG);
-        toast.show();
+        if (BEACON_DEBUG) {
+            Toast toast;
+            FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setVisibility(View.VISIBLE);
+            toast = Toast.makeText(context, "BEACON VICINO!!!", Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+        hideProximityArtworkTooltip();
+        if (noMoreShowTooltip == false) {
+            toolTipView = FragmentHelper.instance().getMainActivity().getArtworkFoundTooltipContainer()
+                    .showToolTipForView(artworkproximityToolTip, FragmentHelper.instance().getMainActivity().findViewById(R.id.notifyToIndoor));
+            toolTipView.setOnToolTipViewClickedListener(new ToolTipView.OnToolTipViewClickedListener() {
+                @Override
+                public void onToolTipViewClicked(ToolTipView toolTipView) {
+                    tooltipHideCounter--;
+                    if(tooltipHideCounter == 0)
+                        noMoreShowTooltip = true;
+                }
+            });
+
+        }
+    }
+    public void hideProximityArtworkTooltip() {
+        if(toolTipView != null)
+            toolTipView.remove();
+    }
+
+    public void showProximityArtworkFAB() {
 
         FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMarkerSpotSelected(selectedArtworkPosition.getMarker());
+                if(localizedPosition.getPosition() instanceof ArtworkPosition)
+                onMarkerSpotSelected(((ArtworkPosition)localizedPosition.getPosition()).getMarker());
                 markerManager.invalidate();
-                toolTipView.remove();
+                hideProximityArtworkTooltip();
                 FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
         });
+        FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setVisibility(View.VISIBLE);
+
+        showProximityArtworkTooltip();
 
     }
 
     public void hideProximityArtworkFAB() {
         // rimuovi la notifica di una opera d'arte vicina. Nascondi pulsante per visualizzare l'opera
-        FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
-            }
-        });
         FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setVisibility(View.INVISIBLE);
-        toolTipView.remove();
-        //Toast toast = Toast.makeText(getActivity(), "BEACON LONTANO ...", Toast.LENGTH_SHORT);
-        //toast.show();
+        this.hideProximityArtworkTooltip();
+
+        if(BEACON_DEBUG) {
+            Toast toast = Toast.makeText(context, "BEACON LONTANO ...", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 
