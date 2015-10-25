@@ -80,7 +80,7 @@ public class LocalizationSpot extends DrawableSpot {
             public void draw(Canvas canvas) {
 
 
-                if(isVisible()) {
+                if(isVisible) {
                     if (isCurrentlyLocalized) {
                         canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_radius, myLocationWhiteCircle);
                         canvas.drawCircle(x_for_drawing(), y_for_drawing(), getScaleFactor() * loc_inner_radius, myLocationPaint);
