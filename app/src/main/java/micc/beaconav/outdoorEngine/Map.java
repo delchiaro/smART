@@ -3,6 +3,7 @@ package micc.beaconav.outdoorEngine;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
@@ -437,18 +438,15 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
     {
         if(origin != null && dest != null) {
             RouteTask task = new RouteTask();
-            task.execute(origin, dest);
 
             /********************** IF MULTITASKING DOES NOT WORK TRY THIS: ******************************************
-
+            */
              if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB )
-             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, origin, dest);
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, origin, dest);
              else
-             task.execute(origin, dest);
-
+                task.execute(origin, dest);
+            /*
              ***************************************************************************************************/
-
-            Log.d("DEBUG", "Downloading directions from google servers...");
         }
     }
 
@@ -489,6 +487,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
 
         protected Navigation doInBackground(LatLng ... pt)
         {
+            Log.d("DEBUG", "Downloading directions from google servers...");
             Navigation nav = _route(pt[0], pt[1]);
             return nav;
         }

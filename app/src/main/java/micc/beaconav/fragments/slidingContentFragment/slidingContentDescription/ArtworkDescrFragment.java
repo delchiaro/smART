@@ -22,7 +22,7 @@ import java.util.Date;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.db.dbImagesDownloader.DbImagesDownloader;
+import micc.beaconav.db.imageDownloader.ImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 import micc.beaconav.indoorEngine.ArtworkRow;
 
@@ -81,7 +81,7 @@ public class ArtworkDescrFragment extends Fragment {
             textViewDimensions.setText("Dimensioni: "+artworkRow.getDimensions());
             textViewType.setText("Tecnica: "+artworkRow.getType());
 
-            DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+            ImagesDownloader dbImagesDownloader = new ImagesDownloader();
           //  "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg"
             //dbImagesDownloader.loadImage(webViewArtwork, artworkRow.get_artworkImageUrl(), this.getActivity().getApplicationContext());
 

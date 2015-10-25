@@ -1,7 +1,13 @@
 package micc.beaconav.indoorEngine.databaseLite;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.CharArrayBuffer;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.DataSetObserver;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.common.collect.BiMap;
@@ -388,7 +394,6 @@ public class BuildingFactory
     }
 
 
-
     private final boolean loadPositions()
     {
 
@@ -398,32 +403,37 @@ public class BuildingFactory
         HashBiMap<String, Position> QRCodePositionMap = building.getQRCodePositionMap();
         HashBiMap<BeaconAddress, Position> BeaconPositionMap = building.getBeaconPositionMap();
 
-        Cursor positionData = adapter.getPositionInAllRooms();
+
+        Cursor __positionData = adapter.getPositionInAllRooms();
+
+        CursorAdapterNullValue positionData = new CursorAdapterNullValue(__positionData);
+
+
         if (positionData != null && positionData.moveToFirst())
         {
 
-            int roomID_ci = positionData.getColumnIndex("roomID");
-            int convexAreaID_ci = positionData.getColumnIndex("convexAreaID");
-            int ID_ci = positionData.getColumnIndex("ID");
+            Integer roomID_ci = positionData.getColumnIndex("roomID");
+            Integer convexAreaID_ci = positionData.getColumnIndex("convexAreaID");
+            Integer ID_ci = positionData.getColumnIndex("ID");
 
-            int x_ci = positionData.getColumnIndex("x");
-            int y_ci = positionData.getColumnIndex("y");
-            int artworkImageLink_ci = positionData.getColumnIndex("imageLink");
-            int artworkID_ci = positionData.getColumnIndex("artworkID");
-            int artworkName_ci = positionData.getColumnIndex("artworkName");
-            int artworkDescr_ci = positionData.getColumnIndex("artworkDescr");
-            int qrCode_ci = positionData.getColumnIndex("qrCode");
-            int minor_ci = positionData.getColumnIndex("beaconMinor");
-            int major_ci = positionData.getColumnIndex("beaconMajor");
+            Integer x_ci = positionData.getColumnIndex("x");
+            Integer y_ci = positionData.getColumnIndex("y");
+            Integer artworkImageLink_ci = positionData.getColumnIndex("imageLink");
+            Integer artworkID_ci = positionData.getColumnIndex("artworkID");
+            Integer artworkName_ci = positionData.getColumnIndex("artworkName");
+            Integer artworkDescr_ci = positionData.getColumnIndex("artworkDescr");
+            Integer qrCode_ci = positionData.getColumnIndex("qrCode");
+            Integer minor_ci = positionData.getColumnIndex("beaconMinor");
+            Integer major_ci = positionData.getColumnIndex("beaconMajor");
 
 
 
-            int roomID;
-            int convexAreaID;
+            Integer roomID;
+            Integer convexAreaID;
             Integer artworkID;
-            int positionID;
-            float x;
-            float y;
+            Integer positionID;
+            Float x;
+            Float y;
             String artworkImageLink;
             String artworkName;
             String artworkDescr;
@@ -442,8 +452,8 @@ public class BuildingFactory
                 major = positionData.getInt(major_ci);
 
                 positionID = positionData.getInt(ID_ci);
-                x = positionData.getInt(x_ci);
-                y = positionData.getInt(y_ci);
+                x = positionData.getFloat(x_ci);
+                y = positionData.getFloat(y_ci);
 
                 // TODO: immagini indoor
                // imageID = positionData.getInt(imageID_ci);

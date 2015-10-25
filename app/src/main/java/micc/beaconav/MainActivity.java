@@ -354,7 +354,8 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onPause() {
         super.onPause();
-        System.exit(0);
+        if(FragmentHelper.instance().isIndoorMode() == false)
+            System.exit(0);
         //TODO: rimuovere questo exit erisolvere bug che quando pauso l'app (premo home) e la riapro poi cliccando su un google map marker crasha.
     }
 

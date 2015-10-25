@@ -12,7 +12,7 @@ import android.widget.TextView;
 import micc.beaconav.R;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.FragmentHelper;
-import micc.beaconav.db.dbImagesDownloader.DbImagesDownloader;
+import micc.beaconav.db.imageDownloader.ImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -83,7 +83,7 @@ public class MuseumDescrFragment extends Fragment
         {
             images.add(i,"https://giocondaproject.files.wordpress.com/2013/03/la-gioconda-de-nathalia-silva.jpg");
         }
-        DbImagesDownloader dbImagesDownloader = new DbImagesDownloader();
+        ImagesDownloader dbImagesDownloader = new ImagesDownloader();
         dbImagesDownloader.loadGallery(imgContainer, images);
 
 

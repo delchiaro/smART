@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="64dp"
     >
 
     <TextView
         android:id="@+id/art_museum_name"
-        android:layout_width="220dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/black"
@@ -17,7 +17,8 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit ="marquee_forever"
-        />
+        android:layout_toLeftOf="@+id/time_stat"
+        android:layout_toStartOf="@+id/time_stat" />
 
 
     <!--Qualsiasi cosa si voglia infilare fra il nome dell'opera/museo va messa qui e
@@ -26,35 +27,50 @@
 
     <ImageView
         android:id="@+id/navButton"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_directions_walk_black_48dp"
-        android:background="@drawable/layout_rounded_nav_button"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginRight="5dp"
-        android:paddingTop      ="6dp"
-        android:paddingBottom   ="4dp"
         android:paddingLeft     ="6dp"
         android:paddingRight    ="4dp"
+
+        android:src="@drawable/ic_directions_walk_black_48dp"
+        android:background="@drawable/layout_rounded_nav_button"
 
 
         />
 
 
+
+
+        <!--android:layout_marginTop="3dp"-->
+        <!--android:layout_marginBottom="3dp"-->
+
+        <!--android:paddingTop      ="4dp"-->
+        <!--android:paddingBottom   ="4dp"-->
+
+
+
+
+
+
+
+
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:id="@+id/time_stat"
         android:layout_alignTop="@id/art_museum_name"
-        android:layout_centerHorizontal="true"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit ="marquee_forever"
-        android:layout_toLeftOf="@id/navButton"
-        android:paddingRight="8dp"/>
+        android:paddingRight="8dp"
+        android:layout_toLeftOf="@+id/navButton"
+        android:layout_toStartOf="@+id/navButton" />
 
 
 
