@@ -28,7 +28,7 @@
 
 
         <!-- MAIN CONTENT -->
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -40,7 +40,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/fragment_map_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true">
 
 
             </RelativeLayout>
@@ -63,43 +64,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginTop="12dp"
                 sothree:fab_colorNormal="@color/black_semi_transparent"
                 sothree:fab_colorPressed="@color/white_pressed"
-                sothree:fab_icon="@mipmap/ic_qr_code"/>
+                sothree:fab_icon="@mipmap/ic_qr_code"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/notifyArtworkProximity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                sothree:fab_colorNormal="@color/white"
+                sothree:fab_colorPressed="@color/white_pressed"
+                sothree:fab_icon="@drawable/ic_report_black_48dp"
+                android:layout_below="@+id/scanCodeBtn"
+                android:layout_alignLeft="@+id/scanCodeBtn"
+                android:layout_alignStart="@+id/scanCodeBtn"
+                android:layout_marginTop="-7dp" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/notifyToIndoor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginTop="108dp"
                 android:visibility="invisible"
                 sothree:fab_colorNormal="@android:color/holo_red_light"
                 sothree:fab_colorPressed="@color/white_pressed"
-                sothree:fab_icon="@drawable/ic_report_white_48dp"/>
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/notifyArtworkProximity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|right"
-                android:layout_marginTop="60dp"
-                sothree:fab_colorNormal="@color/white"
-                sothree:fab_colorPressed="@color/white_pressed"
-                sothree:fab_icon="@drawable/ic_report_black_48dp"/>
+                sothree:fab_icon="@drawable/ic_report_white_48dp"
+                android:layout_below="@+id/notifyArtworkProximity"
+                android:layout_alignLeft="@+id/notifyArtworkProximity"
+                android:layout_alignStart="@+id/notifyArtworkProximity"
+                android:layout_marginTop="-7dp" />
 
             <com.nhaarman.supertooltips.ToolTipRelativeLayout
                 android:id="@+id/to_indoor_tooltip_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="124dp"/>
+                android:layout_alignBottom="@+id/fragment_map_container"
+                android:layout_alignRight="@+id/notifyArtworkProximity"
+                android:layout_alignEnd="@+id/notifyArtworkProximity"
+                android:layout_below="@+id/notifyArtworkProximity" />
 
             <com.nhaarman.supertooltips.ToolTipRelativeLayout
                 android:id="@+id/artwork_found_tooltip_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="124dp"/>
+                android:layout_alignBottom="@+id/fragment_map_container"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/notifyToIndoor" />
 
 
             <!--Questi 2 textView vanno tolti, servono solo per testare-->
@@ -117,7 +132,7 @@
 
 
 
-        </FrameLayout>
+        </RelativeLayout>
 
 
 
