@@ -266,51 +266,41 @@ public class FragmentHelper  implements MuseumMarkerManager
 //        indoorMapFragment = new IndoorMapFragment();
 //        swapFragment(R.id.fragment_map_container, indoorMapFragment);
 
-        indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
-        indoorMapFragmentLite.setMuseum(museum);
-        IndoorMap indoorMap = indoorMapFragmentLite.getIndoorMap();
-        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
         activeMainFragment = MainFragment.INDOOR;
-
-//        indoorMapFragment.setMuseum(museum);
+        showArtworkListFragment(museum, null);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
         mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
         mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
+
+        indoorMapFragmentLite = new IndoorMapFragmentLite();
+        indoorMapFragmentLite.setMuseum(museum);
+        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
+
+
+//        indoorMapFragment.setMuseum(museum);
     }
-
-//
-//    public final void showIndoorFragmentInline(MuseumRow museum) {
-//        showArtworkListFragment(museum);
-//        indoorMapFragmentLite = new IndoorMapFragmentLite();// gli dovremmo passare il building, o il museo, o il file json del building
-//       // indoorMapFragmentLite.initMuseumRow(museum);
-//        swapFragment(R.id.fragment_map_container, indoorMapFragmentLite);
-//        activeMainFragment = MainFragment.INDOOR;
-//        //indoorMapFragment.setMuseum(museum);
-//        mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
-//        mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.white_museum));
-//        mainActivity.getFloatingActionButtonQRScanBtn().setVisibility(View.VISIBLE);
-//        mainActivity.getFloatingActionButtonNotifyToIndoor().setVisibility(View.INVISIBLE);
-//    }
-
-
-
 
 
 
     public final void showArtworkListFragment(MuseumRow museum, Building building) {
 
+        LinkedList<IArtRow> artworkRows = new LinkedList<>();
         if(building != null)
         {
             List<Position> positions = building.getAllPositions();
-            LinkedList<IArtRow> artworkRows = new LinkedList<>();
             for(Position p : positions)
             {
                 if( p instanceof ArtworkPosition)
                     artworkRows.addLast(((ArtworkPosition) p).getArtworkRow());
             }
-            artworkListFragment.insertRows(artworkRows);
         }
+        else;
+        // artworkRows is empty! This prevent to show old artworkRows while building is loading.
+        // Recall this function with wit a valid loaded building to get right artworkRows
+
+        artworkListFragment.insertRows(artworkRows);
+        artworkListFragment.refreshList();
 
         activeSlidingFragment = SlidingFragment.LIST;
         swapFragment(R.id.fragment_list_container, artworkListFragment);
@@ -367,7 +357,8 @@ public class FragmentHelper  implements MuseumMarkerManager
         artworkDescrFragment = new ArtworkDescrFragment();
         artworkDescrFragment.setArtworkRow(row);
         swapFragment(R.id.fragment_list_container, artworkDescrFragment);
-        indoorMapFragmentLite.getIndoorMap().simulateArtMarkerSelection(row);
+        if(indoorMapFragmentLite!= null && indoorMapFragmentLite.getIndoorMap() != null)
+           indoorMapFragmentLite.getIndoorMap().simulateArtMarkerSelection(row);
         mainActivity.setThemeColor(MainActivity.ThemeColor.RED);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.ic_directions_white_48dp));
 //        mainActivity.setFABListener(new View.OnClickListener() {
