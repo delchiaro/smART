@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -108,12 +109,16 @@ public class IndoorMapFragmentLite extends Fragment
         }
         catch (BuildingAdapter.CantOpenDatabaseFileException e) {
             e.printStackTrace();
-            tv.setText("File not found in local.. please connect to internet and retry.");
+            Toast.makeText(getActivity(), "Error: File not found in local.. Can't generate building.. Please retry to open this Building",
+                    Toast.LENGTH_LONG).show();
+            tv.setText("File not found.. can't generate building.");
+
             return;
         }
         catch (BuildingAdapter.CantOpenDatabaseException e) {
             e.printStackTrace();
-            tv.setText("Can't access to database file..");
+            Toast.makeText(getActivity(), "Error: Can't access to local database file..", Toast.LENGTH_LONG).show();
+            tv.setText("Can't access to database file.. can't generate building.");
             return;
         }
 
@@ -123,30 +128,26 @@ public class IndoorMapFragmentLite extends Fragment
             indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
                     this.getActivity(), FragmentHelper.instance().getMainActivity());
             frameLayout.removeView(tv);
+
+            FragmentHelper.instance().showArtworkListFragment(museum, indoorMap.getBuilding());
+
         }
         else
         {
             indoorMap = null;
-            tv.setText("Can't generate building...");
-            frameLayout.removeView(tv);
+            //tv.setText("Can't generate building...");
+
+            FragmentHelper.instance().showArtworkListFragment(museum, null);
+
         }
 
-
-        FragmentHelper.instance().showArtworkListFragment(museum, indoorMap.getBuilding());
 
     }
 
     @Override
     public void onDownloadFail(String notDownloadedFilePath) {
-        tv.setText("Can't download file.. are you connected to internet? Searching for a local map...");
-        try {
-            wait(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Toast.makeText(getActivity(), "Can't download file.. are you connected to internet? Server error? Searching for a local map...", Toast.LENGTH_LONG).show();
         onDownloadFinished(notDownloadedFilePath);
-
-
     }
 
 

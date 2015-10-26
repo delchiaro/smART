@@ -3,8 +3,14 @@ package micc.beaconav.indoorEngine.spot.marker;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 import micc.beaconav.indoorEngine.spot.Spot;
 import micc.beaconav.indoorEngine.spot.drawable.DrawableSpot;
@@ -106,7 +112,11 @@ public class MarkerManager<M extends Marker> extends DrawableSpotManager<M> impl
 
         M collidedMarker = null;
 
-        Iterator<M> markerIter = iterator();
+        ArrayList<M> list =  new ArrayList<>(this);
+        Collections.reverse(list);
+        Iterator<M> markerIter = list.iterator();
+        //inverto l'ordine in modo che trovi prima gli ultimi elementi inseriti, ovvero con z-index maggiore
+        // Iterator<M> markerIter =  iterator();
         boolean collided = false;
 
         while( !collided && markerIter.hasNext())

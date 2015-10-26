@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        NagashMiccKeyStore {
+            keyAlias 'NagashMiccKeystore'
+            keyPassword 'nagashmicc2015'
+            storeFile file('C:/Users/Nagash/Workspace/zzOLDS/Keystores/NagashMiccKeystore/nagashMiccKeystore.jks')
+            storePassword 'nagashmicc2015'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
         applicationId "micc.beaconav"
         minSdkVersion 14 //14 //19
@@ -15,8 +22,8 @@ android {
         release {
             // runProguard false
             minifyEnabled false //true
-
             proguardFiles getDefaultProguardFile('proguard-android.artPieceName'), 'proguard-rules.pro'
+            signingConfig signingConfigs.NagashMiccKeyStore
         }
     }
 }
@@ -27,8 +34,6 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.7.0'
     compile 'com.android.support:support-v4:21.0.2'
     compile 'com.android.support:appcompat-v7:21.0.2'
-
-
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'com.sothree.slidinguppanel:library:3.0.0'
     compile 'com.android.support:recyclerview-v7:21.0.+'
@@ -38,6 +43,5 @@ dependencies {
     compile 'com.google.zxing:android-integration:3.+'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile 'com.nhaarman.supertooltips:library:3.0.+'
-
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 }
