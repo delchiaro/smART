@@ -438,12 +438,12 @@ public class BuildingFactory
             Integer positionID;
             Float x;
             Float y;
-            String artworkImageLink;
-            String artworkName;
-            String artworkDescr;
-            String QR_code;
-            Integer minor;
-            Integer major;
+            String artworkImageLink = null;
+            String artworkName = null;
+            String artworkDescr = null;
+            String QR_code = null;
+            Integer minor = null;
+            Integer major = null;
 
 
             do {

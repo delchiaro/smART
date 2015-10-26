@@ -99,7 +99,7 @@ public class ArtworkRow implements IArtworkRow {
 
     public String getLocation()
     {
-        return "Piano x, Stanza y";
+        return null;
     }
 
     public String getType()

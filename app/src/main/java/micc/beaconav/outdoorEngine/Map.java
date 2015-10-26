@@ -145,7 +145,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         this.rows = Arrays.asList(result);
         drawMarkers();
 
-        if(rows != null )
+        if(rows != null && proximityManager!= null)
           proximityManager.setProximityObjects(rows.toArray(new ProximityObject[rows.size()]));
     }
 
@@ -489,7 +489,8 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         this.proximityManager.startAnalysis();
     }
     private void stopProximityManager() {
-        this.proximityManager.stopAnalysis();
+        if(proximityManager!= null)
+          this.proximityManager.stopAnalysis();
         this.proximityManager = null;
     }
 

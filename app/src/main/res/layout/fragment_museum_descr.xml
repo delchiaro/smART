@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:padding="0dp"
+        android:layout_margin="0dp">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -19,156 +21,142 @@
             android:orientation="vertical"
             android:background="@android:color/white"
             android:paddingLeft="12dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/descr"
-                android:text="@string/outdoor__label__museum_descr"
-                android:textColor="@android:color/darker_gray"
-                android:paddingTop="8dp"/>
-
-            <View
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@id/descr"
-                android:id="@+id/separator"/>
+                android:layout_height="match_parent">
 
-
-            <TextView
-                android:id="@+id/museumDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/descr"
-                android:textColor="@android:color/black"/>
-
-            <TextView
-                android:id="@+id/gallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/outdoor__label__museum_artwork_images"
-                android:layout_below="@id/museumDescription"
-                android:paddingTop="8dp"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@id/gallery"
-                android:id="@+id/separator2"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:id="@+id/museumArtPieceGallery"
-                android:layout_gravity="center_horizontal"
-                android:layout_below="@id/separator2">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imgContainer"
-                    android:orientation="horizontal">
+                    android:id="@+id/artwork_in_museum_layout">
 
-                    <!--<ImageView
+                    <TextView
+                        android:id="@+id/gallery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/outdoor__label__museum_artwork_images"
+                        android:paddingTop="8dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_below="@id/gallery"
+                        android:id="@+id/separator2"/>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/museumArtPieceGallery"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_below="@id/separator2"
+                        android:padding="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/imgContainer"
+                            android:orientation="horizontal"
+                            android:longClickable="false"
+                            android:paddingBottom="7dp">
+
+
+                        </LinearLayout>
+
+
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/museum_description_layout">
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage"
-                        android:src="@drawable/caravaggio_bacco"
-                        android:padding="2dp"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/descr"
+                        android:text="@string/outdoor__label__museum_descr"
+                        android:textColor="@android:color/darker_gray"
+                        android:paddingTop="8dp"
+                        android:layout_alignParentTop="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_below="@id/descr"
+                        android:id="@+id/separator"/>
+
+                    <TextView
+                        android:id="@+id/museumDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/descr"
+                        android:textColor="@android:color/black"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/museum_map_preview_layout">
+
+                    <TextView
+                        android:id="@+id/indoorMapHere"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/outdoor__label__museum_map_previw"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_below="@id/museumArtPieceGallery"
+                        android:paddingTop="8dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_below="@id/indoorMapHere"
+                        android:id="@+id/separator3"/>
 
                     <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:id="@+id/indoorMapImg"
+                        android:layout_below="@id/separator3"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginRight="80dp"
+                        android:src="@drawable/indoor_map"/>
+
+                    <com.getbase.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/toIndoorBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage1"
-                        android:src="@drawable/primavera"
-                        android:padding="2dp"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@id/indoorMapHere"
+                        fab:fab_colorNormal="@color/material_red"
+                        fab:fab_colorPressed="@color/material_red_pressed"
+                        fab:fab_icon="@drawable/white_museum"/>
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage2"
-                        android:src="@drawable/ognissanti_giotto"
-                        android:padding="2dp"/>
+                        android:layout_height="wrap_content"
+                        android:text="@string/outdoor__label__fab_goto_indoor"
+                        android:id="@+id/textView5"
+                        android:layout_below="@+id/toIndoorBtn"
+                        android:layout_alignLeft="@+id/toIndoorBtn"
+                        android:layout_alignStart="@+id/toIndoorBtn"
+                        android:layout_alignRight="@+id/toIndoorBtn"
+                        android:layout_alignEnd="@+id/toIndoorBtn" />
+                </RelativeLayout>
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage3"
-                        android:src="@drawable/lippi_madonna_child_angels"
-                        android:padding="2dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage4"
-                        android:src="@drawable/raphael_madonna_goldfinch"
-                        android:padding="2dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImage5"
-                        android:src="@drawable/graphic"
-                        android:padding="2dp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/galleryImageTest"
-                        android:padding="2dp"/>-->
-
-                </LinearLayout>
-
-
-            </HorizontalScrollView>
-
-            <TextView
-                android:id="@+id/indoorMapHere"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/outdoor__label__museum_map_previw"
-                android:textColor="@android:color/darker_gray"
-                android:layout_below="@id/museumArtPieceGallery"
-                android:paddingTop="8dp"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@id/indoorMapHere"
-                android:id="@+id/separator3"/>
 
             <!--in futuro questa immagine dovrà essere presa dal db-->
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:id="@+id/indoorMapImg"
-                android:layout_below="@id/separator3"
-                android:layout_alignParentStart="true"
-                android:layout_marginRight="80dp"
-                android:src="@drawable/indoor_map"/>
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/toIndoorBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_below="@id/indoorMapHere"
-                fab:fab_colorNormal="@color/material_red"
-                fab:fab_colorPressed="@color/material_red_pressed"
-                fab:fab_icon="@drawable/white_museum"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/outdoor__label__fab_goto_indoor"
-                android:id="@+id/textView5"
-                android:layout_below="@id/toIndoorBtn"
-                android:layout_alignParentRight="true"/>
 
 
         </RelativeLayout>

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -33,7 +35,13 @@ public class ArtworkDescrFragment extends Fragment {
 
 
     private ArtworkRow  artworkRow           = null;
-    //private WebView     webViewArtwork       = null;
+
+
+    private RelativeLayout layoutContainer = null;
+    private RelativeLayout layoutInfo = null;
+    private RelativeLayout layoutDescr = null;
+    private RelativeLayout layoutArtistInfo = null;
+
     private ImageView   imageViewArtwork     = null;
     private TextView    textViewArtworkDescr = null;
     private TextView    textViewArtistDescr  = null;
@@ -55,9 +63,33 @@ public class ArtworkDescrFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_artwork_descr, container, false);
     }
 
+
+    private boolean tryToShowInfo(TextView view, String label, String info)
+    {
+        if(info == null) {
+            view.setVisibility(View.GONE);
+            return false;
+        }
+        else {
+            view.setText(label + info);
+            return true;
+        }
+    }
+
+    private boolean tryToShowInfo(TextView view, int id_resource_label, String info)
+    {
+        return tryToShowInfo(view, getString(id_resource_label), info);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        layoutContainer  = (RelativeLayout) getView().findViewById(R.id.artworkInfoLayout);
+        layoutInfo       = (RelativeLayout) getView().findViewById(R.id.layout_info);
+        layoutDescr      = (RelativeLayout) getView().findViewById(R.id.layout_descr);
+        layoutArtistInfo = (RelativeLayout) getView().findViewById(R.id.layout_artist_info);
+
 
         textViewArtworkDescr = (TextView) getView().findViewById(R.id.artworkDescription);
         //webViewArtwork       = (WebView)  getView().findViewById(R.id.artworkImage);
@@ -73,13 +105,30 @@ public class ArtworkDescrFragment extends Fragment {
 
         if(artworkRow != null)
         {
-            textViewArtworkDescr.setText(artworkRow.getDescription());
-            textViewArtistName.setText(getString(R.string.indoor__label__artist)+ artworkRow.getArtistName());
-            textViewYear.setText(getString(R.string.indoor__label__year) + artworkRow.getCreationYear());
-            textViewLocation.setText(getString(R.string.indoor__label__dimensions) + artworkRow.getLocation());
-            textViewArtistDescr.setText(artworkRow.getArtistDescr());
-            textViewDimensions.setText(getString(R.string.indoor__label__dimensions) + artworkRow.getDimensions());
-            textViewType.setText(getString(R.string.indoor__label__tecnique) + artworkRow.getType());
+
+            // Info
+            boolean atLeastInfo = false;
+            atLeastInfo |= tryToShowInfo(textViewArtistName, R.string.indoor__label__artist, artworkRow.getArtistName());
+            atLeastInfo |= tryToShowInfo(textViewYear,         R.string.indoor__label__year,        artworkRow.getCreationYear());
+            atLeastInfo |= tryToShowInfo(textViewType,         R.string.indoor__label__tecnique,    artworkRow.getType());
+            atLeastInfo |= tryToShowInfo(textViewDimensions,   R.string.indoor__label__dimensions,  artworkRow.getDimensions());
+            atLeastInfo |= tryToShowInfo(textViewLocation,     R.string.indoor__label__location,    artworkRow.getLocation());
+            if(atLeastInfo == false)
+                layoutInfo.setVisibility(View.GONE);
+
+            // Description
+            boolean hasDescr = false;
+            hasDescr = tryToShowInfo(textViewArtworkDescr, "", artworkRow.getDescription());
+            if( hasDescr == false )
+                layoutDescr.setVisibility(View.GONE);
+
+            // Artist Info
+            boolean hasArtistInfo = false;
+            hasArtistInfo = tryToShowInfo(textViewArtistDescr,  "", artworkRow.getArtistDescr());
+            if( hasArtistInfo == false )
+                layoutArtistInfo.setVisibility(View.GONE);
+
+
 
             //ImagesDownloader dbImagesDownloader = new ImagesDownloader();
           //  "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg"
@@ -94,16 +143,18 @@ public class ArtworkDescrFragment extends Fragment {
             imageLoader.displayImage(artworkRow.get_artworkImageUrl(),imageViewArtwork, displayOption );
 
         }
+        else
+        {
+            imageViewArtwork.setVisibility(View.GONE);
+        }
 
 
         navToArtworkBtn = FragmentHelper.instance().getMainActivity().getFloatingActionButton();
         navToArtworkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( artworkRow != null && artworkRow instanceof ArtworkRow)
-                {
-                    if(FragmentHelper.instance().indoorMapFragmentLite != null)
-                    {
+                if (artworkRow != null && artworkRow instanceof ArtworkRow) {
+                    if (FragmentHelper.instance().indoorMapFragmentLite != null) {
                         FragmentHelper.instance().indoorMapFragmentLite.getIndoorMap().navigateToSelectedMarker();
                         FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     }

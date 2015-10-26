@@ -19,7 +19,8 @@
         sothree:umanoParalaxOffset="0dp"
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
-        android:clipChildren="false" >
+        android:clipChildren="false"
+        android:paddingBottom="0dp">
         <!--        sothree:umanoParalaxOffset="100dp"   -->
         <!-- android:clipChildren="false"
                 consente di non nascondere gli overflow della dragView (slidingLayout)
