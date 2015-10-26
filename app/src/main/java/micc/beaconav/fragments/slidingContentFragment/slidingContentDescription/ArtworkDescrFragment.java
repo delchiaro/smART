@@ -38,6 +38,7 @@ public class ArtworkDescrFragment extends Fragment {
 
 
     private RelativeLayout layoutContainer = null;
+    private RelativeLayout layoutImage = null;
     private RelativeLayout layoutInfo = null;
     private RelativeLayout layoutDescr = null;
     private RelativeLayout layoutArtistInfo = null;
@@ -66,7 +67,7 @@ public class ArtworkDescrFragment extends Fragment {
 
     private boolean tryToShowInfo(TextView view, String label, String info)
     {
-        if(info == null) {
+        if(info == null || info.equals("")) {
             view.setVisibility(View.GONE);
             return false;
         }
@@ -85,6 +86,7 @@ public class ArtworkDescrFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        layoutImage      = (RelativeLayout) getView().findViewById(R.id.layout_image);
         layoutContainer  = (RelativeLayout) getView().findViewById(R.id.artworkInfoLayout);
         layoutInfo       = (RelativeLayout) getView().findViewById(R.id.layout_info);
         layoutDescr      = (RelativeLayout) getView().findViewById(R.id.layout_descr);
@@ -134,18 +136,28 @@ public class ArtworkDescrFragment extends Fragment {
           //  "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg"
             //dbImagesDownloader.loadImage(webViewArtwork, artworkRow.get_artworkImageUrl(), this.getActivity().getApplicationContext());
 
-            DisplayImageOptions displayOption = new DisplayImageOptions.Builder()
-                    .cacheInMemory(true)
-                    .cacheOnDisk(true)
-                    .build();
-
-            ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.displayImage(artworkRow.get_artworkImageUrl(),imageViewArtwork, displayOption );
-
+            if( artworkRow.get_artworkImageUrl() == null )
+            {
+                imageViewArtwork.setVisibility(View.GONE);
+                layoutImage.setVisibility(View.GONE);
+            }
+            else
+            {
+                DisplayImageOptions displayOption = new DisplayImageOptions.Builder()
+                        .cacheInMemory(true)
+                        .cacheOnDisk(true)
+                        .build();
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(artworkRow.get_artworkImageUrl(), imageViewArtwork, displayOption);
+            }
         }
         else
         {
+            layoutImage.setVisibility(View.GONE);
             imageViewArtwork.setVisibility(View.GONE);
+            layoutInfo.setVisibility(View.GONE);
+            layoutDescr.setVisibility(View.GONE);
+            layoutArtistInfo.setVisibility(View.GONE);
         }
 
 

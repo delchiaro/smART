@@ -140,7 +140,8 @@
                         android:layout_below="@id/indoorMapHere"
                         fab:fab_colorNormal="@color/material_red"
                         fab:fab_colorPressed="@color/material_red_pressed"
-                        fab:fab_icon="@drawable/white_museum"/>
+                        fab:fab_icon="@drawable/white_museum"
+                        android:layout_marginTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -151,7 +152,10 @@
                         android:layout_alignLeft="@+id/toIndoorBtn"
                         android:layout_alignStart="@+id/toIndoorBtn"
                         android:layout_alignRight="@+id/toIndoorBtn"
-                        android:layout_alignEnd="@+id/toIndoorBtn" />
+                        android:layout_alignEnd="@+id/toIndoorBtn"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center"
+                        android:layout_marginTop="-8dp" />
                 </RelativeLayout>
             </LinearLayout>
 
