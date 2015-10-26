@@ -1,4 +1,4 @@
-package micc.beaconav.fragments.mainFragment;
+package micc.beaconav.outdoorEngine;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -177,12 +177,10 @@ public class MapFragment extends Fragment
         super.onResume();
 
         this.manager = FragmentHelper.instance();
-        if(map == null) {
+        //if(map == null) {
             map = new Map(getGMapFromXML(), manager);
             setUpMap();
-        }
-
-        map.startLocalization();
+        //}
     }
 
     @Override

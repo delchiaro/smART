@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import micc.beaconav.indoorEngine.IndoorMapFragmentLite;
 import micc.beaconav.indoorEngine.building.Building;
 import micc.beaconav.indoorEngine.building.Position;
 import micc.beaconav.outdoorEngine.Map;
-import micc.beaconav.fragments.mainFragment.MapFragment;
+import micc.beaconav.outdoorEngine.MapFragment;
 import micc.beaconav.outdoorEngine.MuseumMarkerManager;
 
 /**

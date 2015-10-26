@@ -1,9 +1,6 @@
 package micc.beaconav.fragments.fragmentMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import micc.beaconav.fragments.mainFragment.MapFragment;
+import micc.beaconav.outdoorEngine.MapFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.ArtworkDescrFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.MuseumDescrFragment;
 import micc.beaconav.fragments.slidingContentFragment.slidingContentList.ArtListFragment;

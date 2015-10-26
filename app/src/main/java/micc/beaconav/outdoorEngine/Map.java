@@ -108,12 +108,12 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         this.gmap.getUiSettings().setZoomControlsEnabled(false);
         FragmentHelper fh = FragmentHelper.instance();
         this.gmap.setPadding(fh.dpToPx(5),  fh.dpToPx(5), fh.dpToPx(5), fh.dpToPx(5));
-        proximityManager = new ProximityManager( PROXIMITY_RADIUS, PROXIMITY_SKIMMING_RADIUS, this);
 
         this.markerManager = markerManager;
 
-        setUpDbObjects();
+        startLocalization();
 
+        setUpDbObjects();
         setUpEvents();
 
         LatLng coord = new LatLng(43.8007117, 11.2435291);
@@ -130,7 +130,6 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
 
         museumMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         selectedMuseumMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-
     }
 
     private void setUpDbObjects()
@@ -148,6 +147,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         if(rows != null )
           proximityManager.setProximityObjects(rows.toArray(new ProximityObject[rows.size()]));
     }
+
 
 
 
@@ -480,14 +480,25 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
     }
 
 
-    public void stopLocalization() {
-        this.gmap.setMyLocationEnabled(false);
-        this.proximityManager.abortAnalysis();
+
+    private void startProximityManager() {
+        this.proximityManager = new ProximityManager( PROXIMITY_RADIUS, PROXIMITY_SKIMMING_RADIUS, this);
+        this.proximityManager.startAnalysis();
+    }
+    private void stopProximityManager() {
+        this.proximityManager.stopAnalysis();
+        this.proximityManager = null;
     }
 
-    public void startLocalization() {
+
+    public void stopLocalization() {
+        this.gmap.setMyLocationEnabled(false);
+        stopProximityManager();
+    }
+
+    private void startLocalization() {
         this.gmap.setMyLocationEnabled(true);
-        this.proximityManager.startAnalysis();
+        startProximityManager();
     }
 
 

@@ -1,6 +1,8 @@
 package micc.beaconav.outdoorEngine.localization.outdoorProximity;
 
 import android.location.Location;
+import android.os.AsyncTask;
+import android.os.Build;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -118,7 +120,11 @@ public class ProximityManager
         if(analyzing == true)
         {
             asyncTask = new ProximityAsyncTask(this);
-            asyncTask.execute("null");
+
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB )
+                asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "null");
+            else
+                asyncTask.execute("null");
         }
     }
 
