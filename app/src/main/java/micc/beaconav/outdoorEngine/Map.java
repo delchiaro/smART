@@ -51,10 +51,11 @@ import micc.beaconav.outdoorEngine.localization.outdoorProximity.ProximityObject
 public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
 {
 
-    private final static int PROXIMITY_RADIUS = 50;//26 // in  metri
+    private final static int PROXIMITY_RADIUS = 300;//50;//26 // in  metri
     private final static int PROXIMITY_SKIMMING_RADIUS = 2000; // in metri
 
 
+    private boolean neverLocalized = true;
 
 
     private ToolTip toolTip = new ToolTip()
@@ -256,10 +257,17 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         gmap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
+
                 lastLocation = new LatLng( location.getLatitude(), location.getLongitude());
                 circle.setCenter(lastLocation);
                 proximityManager.pushProximityAnalysis(location.getLatitude(), location.getLongitude());
 
+                if(neverLocalized)
+                {
+                    neverLocalized = false;
+                    //setCamera(lastLocation, 4);
+                    zoomOnLatLng(lastLocation, 14);
+                }
             }
         });
 

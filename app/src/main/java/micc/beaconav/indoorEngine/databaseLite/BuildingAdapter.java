@@ -153,10 +153,10 @@ public class BuildingAdapter
 
     public Cursor getPoiInAllRooms()
     {
-        String sql ="SELECT Position.ID_room as ID_room Position.*, Artwork.ID as idArtwork, Artwork.*, QRCode.code as QRCode, Beacon.minor, Beacon.major" +
+        String sql ="SELECT Position.ID_room as ID_room Position.*, Artwork.ID as idArtwork, Artwork.*, QRCodeAddress.code as QRCodeAddress, Beacon.minor, Beacon.major" +
                 "FROM Position " +
                 " LEFT JOIN Artwork ON Artwork.ID_position = Position.id " +
-                " LEFT JOIN QRCode ON QRCode.ID_position = Position.id " +
+                " LEFT JOIN QRCodeAddress ON QRCodeAddress.ID_position = Position.id " +
                 " LEFT JOIN Beacon  ON Beacon.ID_position = Position.id ";
         try
         {
@@ -228,3 +228,5 @@ public class BuildingAdapter
 
 
 }
+
+

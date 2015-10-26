@@ -3,8 +3,10 @@ package micc.beaconav.indoorEngine.building;
 import android.graphics.Canvas;
 
 import com.google.common.collect.HashBiMap;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
@@ -36,8 +38,11 @@ public class Building extends Container<Floor>
 
     DijkstraSolver<PathSpot> dijkstraSolver = new DijkstraSolver<>();
     PathSpotManager<PathSpot> dijkstraPath = null;
+
+
     private HashBiMap<String, Position> QRCodePositionMap = HashBiMap.create();
     private HashBiMap<BeaconAddress, Position> BeaconPositionMap = HashBiMap.create();
+
 
 
     public List<Position> getAllPositions() {

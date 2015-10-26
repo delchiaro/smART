@@ -6,12 +6,17 @@ import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.estimote.sdk.Beacon;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -403,7 +408,6 @@ public class BuildingFactory
         HashBiMap<String, Position> QRCodePositionMap = building.getQRCodePositionMap();
         HashBiMap<BeaconAddress, Position> BeaconPositionMap = building.getBeaconPositionMap();
 
-
         Cursor __positionData = adapter.getPositionInAllRooms();
 
         CursorAdapterNullValue positionData = new CursorAdapterNullValue(__positionData);
@@ -437,7 +441,7 @@ public class BuildingFactory
             String artworkImageLink;
             String artworkName;
             String artworkDescr;
-            String QRCode;
+            String QR_code;
             Integer minor;
             Integer major;
 
@@ -447,7 +451,7 @@ public class BuildingFactory
                 convexAreaID = positionData.getInt(convexAreaID_ci);
                 artworkID = positionData.getInt(artworkID_ci);
 
-                QRCode = positionData.getString(qrCode_ci);
+                QR_code = positionData.getString(qrCode_ci);
                 minor = positionData.getInt(minor_ci);
                 major = positionData.getInt(major_ci);
 
@@ -465,8 +469,12 @@ public class BuildingFactory
                 ArtworkRow artworkRow = null;
                 ConvexArea convexArea = convexAreaMap.get(convexAreaID);
                 Position position = null;
-                if( artworkID != null )
+
+
+
+                if (artworkID != null)
                 {
+                    // TODO: NB: NON SI GESTISCONO POSITIONS CON PIÙ ARTWORKS O CON PIÙ IMMAGINI.
                     artworkRow = new ArtworkRow(artworkID, artworkName, artworkDescr, null, artworkImageLink, null, null, null, null);
                     position = new ArtworkPosition(x, y, artworkRow);
                     //roomMap.get(roomID).get(convexAreaID).new ArtworkMarker(x, y, artworkRow));
@@ -478,15 +486,22 @@ public class BuildingFactory
 
                 convexArea.add(position);
 
+                // TODO: NB: NON SI GESTISCONO POSITIONS CON PIÙ ARTWORKS O CON PIÙ IMMAGINI O PIÙ BEACON O PIÙ QRCODE.
 
-                if(QRCode != null)
+                if(QR_code != null)
                 {
-                    QRCodePositionMap.put(QRCode, position);
+                    if(!QRCodePositionMap.containsKey(QR_code))
+                        QRCodePositionMap.put(QR_code, position);
                 }
                 if(minor != null && major != null)
                 {
-                    BeaconPositionMap.put(new BeaconAddress(minor, major), position);
+                    BeaconAddress beaconAddress = new BeaconAddress(minor, major);
+                    if(!BeaconPositionMap.containsKey(beaconAddress));
+                        BeaconPositionMap.put(beaconAddress, position);
                 }
+
+
+
 
             } while (positionData.moveToNext());
         }
@@ -848,13 +863,21 @@ public class BuildingFactory
             success = loadPositions();
             success = buildPathGraph();
         }
+        catch(SQLException exception)
+        {
+            Log.e("BuildingAdapterError", exception.getMessage());
+        }
         catch(Exception exception)
         {
+
             Log.e("BuildingFactoryError", "Can't generate building :(");
             success = false;
         }
+        finally {
 
-        adapter.close();
+            adapter.close();
+        }
+
 
         if(!success)
             building = null;
