@@ -74,14 +74,14 @@ public class ArtworkDescrFragment extends Fragment {
         if(artworkRow != null)
         {
             textViewArtworkDescr.setText(artworkRow.getDescription());
-            textViewArtistName.setText("Artista: " + artworkRow.getArtistName());
-            textViewYear.setText("Anno: " + artworkRow.getCreationYear());
-            textViewLocation.setText("Locazione: " + artworkRow.getLocation());
+            textViewArtistName.setText(getString(R.string.indoor__label__artist)+ artworkRow.getArtistName());
+            textViewYear.setText(getString(R.string.indoor__label__year) + artworkRow.getCreationYear());
+            textViewLocation.setText(getString(R.string.indoor__label__dimensions) + artworkRow.getLocation());
             textViewArtistDescr.setText(artworkRow.getArtistDescr());
-            textViewDimensions.setText("Dimensioni: "+artworkRow.getDimensions());
-            textViewType.setText("Tecnica: "+artworkRow.getType());
+            textViewDimensions.setText(getString(R.string.indoor__label__dimensions) + artworkRow.getDimensions());
+            textViewType.setText(getString(R.string.indoor__label__tecnique) + artworkRow.getType());
 
-            ImagesDownloader dbImagesDownloader = new ImagesDownloader();
+            //ImagesDownloader dbImagesDownloader = new ImagesDownloader();
           //  "https://pbs.twimg.com/profile_images/458905059204423680/T3ZMCaFQ.jpeg"
             //dbImagesDownloader.loadImage(webViewArtwork, artworkRow.get_artworkImageUrl(), this.getActivity().getApplicationContext());
 

@@ -24,4 +24,90 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+
+    <string name="label__time">Time: </string>
+
+<!-- * * * * * * * * * * * * * * * * * * * * * *  INDOOR  * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+    <!-- * * * * INDOOR MAP FRAGMENT * * * * -->
+        <string name="indoor__message__downloading">downloading</string>
+        <string name="indoor__message__generating_building">Generating Building...</string>
+        <string name="indoor__message__generated_building">Building generated!</string>
+
+        <string name="indoor__error__cant_start_download__museum_is_null">Can\'t start download.. Indoor Map: museum = null.</string>
+
+        <string name="indoor__error__cant_generate_building__file_not_found">Error: File not found in local.. Can\'t generate building.. Please retry to open this Building.</string>
+        <string name="indoor__error__cant_generate_building__file_not_found_short">File not found.. can\'t generate building.</string>
+        <string name="indoor__error__cant_access_local_db">Error: Can\'t access to local database file..  can\'t generate building.</string>
+        <string name="indoor__error__onDownloadFail">Can\'t download file.. are you connected to internet? Server error? Searching for a local map...</string>
+    <!-- * * * * INDOOR MAP FRAGMENT * * * * -->
+
+    <!-- * * * * ARTWORK DESCRIPTION FRAGMENT * * * * -->
+        <string name="indoor__label__artist">Artista: </string>
+        <string name="indoor__label__year">Year: </string>
+        <string name="indoor__label__location">Location: </string>
+        <string name="indoor__label__dimensions">Dimensions: </string>
+        <string name="indoor__label__tecnique">Tecnica: </string>
+
+        <string name="indoor__label__info">Info: </string>
+        <string name="indoor__label__descr">Description: </string>
+        <string name="indoor__label__artist_info">Artist info: </string>
+
+    <!-- * * * * ARTWORK DESCRIPTION FRAGMENT * * * * -->
+
+
+
+    <!-- * * * * INDOOR MAP class * * * * -->
+        <!--<string name="indoor__message__artwork_tooltip">Premi per\ninformazioni\nsull\'opera</string>-->
+        <string name="indoor__message__artwork_tooltip">Touch for\nartwork info</string>
+        <string name="indoor__message__lost_realtime_localization">Non sei più localizzato in tempo reale dai sensori.. la tua ultima posizione è stata registrata.
+                                                                    \nAvvicinati ad un sensore o fai la foto ad un codice QR per aggiornare la tua posizione</string>
+        <string name="indoor__message__qrcode_no_position_update">Your position will not be updated: you are realtime localized by a beacon.</string>
+        <string name="indoor__message__qrcode_position_update">Sei stato localizzato tramite QR Code!</string>
+        <string name="indoor__message__beacon_position_update">Sei localizzato da un sensore in tempo reale!</string>
+        <string name="indoor__message__cant_navigate__not_localized">Purtroppo non siamo riusciti a localizzarti.. avvicinati ad un beacon o scannerizza un QR code per navigare.</string>
+        <string name="indoor__message__cant_navigate__no_marker_selected">Seleziona un marker per navigare.</string>
+        <string name="indoor__message__cant_navigate__no_path_found">Purtroppo non è stato possibile trovare un percorso verso l\'opera selezionata..</string>
+        <string name="indoor__message__cant_navigate__artwork_without_position">Purtroppo l\'opera d\'arte selezionata non è stata localizzata sulla mappa...</string>
+
+        <string name="indoor__debug__beacon_proximity">BEACON VICINO!</string>
+        <string name="indoor__debug__beacon_proximity_lost">BEACON LONTANO...</string>
+    <!-- * * * * INDOOR MAP class * * * * -->
+
+<!-- * * * * * * * * * * * * * * * * * * * * * *  INDOOR  * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- * * * * * * * * * * * * * * * * * * * * * *  OUTDOOR  * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+    <!-- * * * * OUTDOOR MAP class * * * * -->
+        <string name="outdoor__message__tooltip_museum_proximity">Premi per andare\nall\'interno del museo</string>
+    <!-- * * * * OUTDOOR MAP class * * * * -->
+
+    <!-- * * * * MUSEUM LIST FRAGMENT * * * * -->
+        <string name="outdoor__label__search_radius">Raggio di ricerca:</string>
+        <string name="outdoor__label_backbutton_museum_list">Museums</string>
+    <!-- * * * * MUSEUM LIST FRAGMENT * * * * -->
+
+    <!-- * * * * MUSEUM DESCR FRAGMENT * * * * -->
+    <string name="outdoor__label__museum_descr">Description</string>
+    <string name="outdoor__label__museum_artwork_images">Opere nel museo</string>
+    <string name="outdoor__label__museum_map_previw">Mappa del museo</string>
+    <string name="outdoor__label__fab_goto_indoor">Vai alle opere\ndel museo</string>
+    <!-- * * * * MUSEUM DESCR FRAGMENT * * * * -->
+
+    <!-- * * * * * * * * * * * * * * * * * * * * * *  OUTDOOR  * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+
+
+
 </resources>

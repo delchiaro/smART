@@ -1,7 +1,5 @@
 package micc.beaconav.indoorEngine;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -9,21 +7,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashMap;
-
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
 import micc.beaconav.db.dbHelper.museum.MuseumRow;
 import micc.beaconav.indoorEngine.building.Building;
-import micc.beaconav.indoorEngine.building.Floor;
-import micc.beaconav.indoorEngine.building.Room;
-import micc.beaconav.indoorEngine.building.Vertex;
 import micc.beaconav.indoorEngine.databaseLite.BuildingAdapter;
 import micc.beaconav.indoorEngine.databaseLite.BuildingFactory;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloader;
@@ -87,9 +79,9 @@ public class IndoorMapFragmentLite extends Fragment
             String museumUrl = museumsUrl + museum.getID() + "/" + filename;
             downloader = new BuildingDownloader(this.getActivity(), museumUrl, this);
             downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            tv.setText("downloading");
+            tv.setText(this.getString(R.string.indoor__message__downloading));
         }
-        else tv.setText("Can't start download.. Indoor Map: museum = null.");
+        else tv.setText(this.getString(R.string.indoor__error__cant_start_download__museum_is_null));
     }
 
 
@@ -102,29 +94,29 @@ public class IndoorMapFragmentLite extends Fragment
         // TODO: volendo è possibile rendere anche la generazione del Building asincrona con un thread..
 
         BuildingFactory buildingFactory = new BuildingFactory(downloadedFilePath, this.getActivity());
-        tv.setText("Generating Building...");
+        tv.setText(this.getString(R.string.indoor__message__generating_building));
         Building building = null;
         try {
             building = buildingFactory.generateBuilding();
         }
         catch (BuildingAdapter.CantOpenDatabaseFileException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Error: File not found in local.. Can't generate building.. Please retry to open this Building",
+            Toast.makeText(getActivity(), this.getString(R.string.indoor__error__cant_generate_building__file_not_found),
                     Toast.LENGTH_LONG).show();
-            tv.setText("File not found.. can't generate building.");
+            tv.setText(this.getString(R.string.indoor__error__cant_generate_building__file_not_found_short));
 
             return;
         }
         catch (BuildingAdapter.CantOpenDatabaseException e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Error: Can't access to local database file..", Toast.LENGTH_LONG).show();
-            tv.setText("Can't access to database file.. can't generate building.");
+            Toast.makeText(getActivity(), getString(R.string.indoor__error__cant_access_local_db), Toast.LENGTH_LONG).show();
+            tv.setText(getString(R.string.indoor__error__cant_access_local_db));
             return;
         }
 
         if(building != null)
         {
-            tv.setText("Building generated!");
+            tv.setText(getString(R.string.indoor__message__generated_building));
             indoorMap = new IndoorMap(building,  backgroundImgView, foregroundImgView, navigationImgView, localizationImgView,
                     this.getActivity(), FragmentHelper.instance().getMainActivity());
             frameLayout.removeView(tv);
@@ -146,7 +138,7 @@ public class IndoorMapFragmentLite extends Fragment
 
     @Override
     public void onDownloadFail(String notDownloadedFilePath) {
-        Toast.makeText(getActivity(), "Can't download file.. are you connected to internet? Server error? Searching for a local map...", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), getString(R.string.indoor__error__onDownloadFail), Toast.LENGTH_LONG).show();
         onDownloadFinished(notDownloadedFilePath);
     }
 

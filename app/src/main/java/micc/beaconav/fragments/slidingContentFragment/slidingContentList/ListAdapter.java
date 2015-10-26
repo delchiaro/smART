@@ -76,7 +76,7 @@ public class ListAdapter extends BaseAdapter {
         //holder._navButton.setImageResource(artRow.getImageId());
 
         long time = TimeStatisticsManager.readInAppTime(artRow);
-        holder._timeStat.setText("time: " + Long.toString(time)); //TODO Metterci la statistica sul tempo trascorso dentro
+        holder._timeStat.setText(context.getString(R.string.label__time) + Long.toString(time)); //TODO Metterci la statistica sul tempo trascorso dentro
 
 
         final IArtRow currentRow = list.get(position);

@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Raggio di ricerca:"
+            android:text="@string/outdoor__label__search_radius"
             android:id="@+id/search_radius"
             android:layout_above="@id/seekBar"
             android:layout_marginLeft="8dp"
@@ -46,7 +46,7 @@
             android:layout_marginBottom="20dp"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_chevron_left_white_36dp"
-            android:text="Musei"
+            android:text="@string/outdoor__label_backbutton_museum_list"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:paddingRight="24dp"

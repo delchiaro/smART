@@ -1,5 +1,6 @@
 package micc.beaconav.outdoorEngine;
 
+import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.graphics.Color;
@@ -57,9 +58,10 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
 
     private boolean neverLocalized = true;
 
+    private final static Context context = FragmentHelper.instance().getMainActivity();
 
     private ToolTip toolTip = new ToolTip()
-            .withText("Premi per andare\nall'interno del museo")
+            .withText(context.getString(R.string.outdoor__message__tooltip_museum_proximity))
             .withTextColor(Color.WHITE)
             .withColor(FragmentHelper.instance().getMainActivity().getResources().getColor(R.color.material_red))
             .withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);

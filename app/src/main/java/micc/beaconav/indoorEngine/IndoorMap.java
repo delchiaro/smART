@@ -63,7 +63,7 @@ public class IndoorMap
     private static boolean BEACON_DEBUG = false;
 
     private ToolTip artworkproximityToolTip = new ToolTip()
-            .withText("Premi per\ninformazioni\nsull'opera")
+            .withText(FragmentHelper.instance().getMainActivity().getString(R.string.indoor__message__artwork_tooltip))
             .withTextColor(Color.BLACK)
             .withColor(Color.WHITE)
             .withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
@@ -543,27 +543,7 @@ public class IndoorMap
     public void onCameraScanResult(String qr_code_result)
     {
         Position scannedPosition = building.getQRCodePositionMap().get(qr_code_result);
-        if(scannedPosition != null)
-        {
-            if( scannedPosition instanceof ArtworkPosition)
-            {
-
-                ArtworkPosition newPos = (ArtworkPosition) scannedPosition;
-                newCurrentQrPosition(newPos);
-                // TODO: artwork nearest Path Spot
-//                if( scannedArtworkMarker.getNearestPathSpot() != null)
-//                {
-//                    newRealtimeLocalizationPosition(scannedArtworkMarker.getNearestPathSpot());
-//                    hideDijkstraPath();
-//                    lostRealtimeLocalization();
-//                }
-            }
-
-            else
-            {
-                newCurrentQrPosition(scannedPosition);
-            }
-        }
+        newCurrentQrPosition(scannedPosition);
     }
 
 
@@ -620,42 +600,45 @@ public class IndoorMap
             localizedPosition.realtimeLocalied();
         else localizedPosition.notRealtimeLocalized();
 
-        Toast toast = Toast.makeText(activity, userMessage, Toast.LENGTH_SHORT);
-        toast.show();
-        myLocationDrawableManager.invalidate();
+        Toast.makeText(activity, userMessage, Toast.LENGTH_SHORT).show();
+                myLocationDrawableManager.invalidate();
     }
 
     public void lostRealtimeLocalization()
     {
         localizedPosition.notRealtimeLocalized();
         myLocationDrawableManager.invalidate();
-        Toast toast = Toast.makeText(context,
-                "Non sei più localizzato in tempo reale dai sensori.. la tua ultima posizione è stata registrata." +
-                        "\nAvvicinati ad un sensore o fai la foto ad un codice QR per aggiornare la tua posizione", Toast.LENGTH_LONG);
-        toast.show();
-
+        Toast.makeText(context, context.getString(R.string.indoor__message__lost_realtime_localization), Toast.LENGTH_LONG).show();
     }
 
     public void newCurrentQrPosition(Position myNewPosition)
     {
         if(myNewPosition!= null)
         {
-            if (localizedPosition.isRealTimeLocalized())
+            if(myNewPosition instanceof ArtworkPosition)
             {
                 this.onMarkerSpotSelected(((ArtworkPosition) myNewPosition).getMarker());
                 FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
             }
-            else
-                setLocalizedPosition(myNewPosition, "Sei stato localizzato tramite QR Code!", false);
 
+            if (localizedPosition.isRealTimeLocalized())
+                Toast.makeText(context, context.getString(R.string.indoor__message__qrcode_no_position_update), Toast.LENGTH_LONG).show();
+            else
+                setLocalizedPosition(myNewPosition, context.getString(R.string.indoor__message__qrcode_position_update), false);
         }
     }
 
     public void newRealtimeLocalizationPosition(Position myNewPosition)
     {
 
+        if(myNewPosition instanceof ArtworkPosition)
+        {
+            this.onMarkerSpotSelected(((ArtworkPosition) myNewPosition).getMarker());
+            FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+        }
+
         if(myNewPosition != null)
-            setLocalizedPosition(myNewPosition, "Sei localizzato da un sensore in tempo reale!", true);
+            setLocalizedPosition(myNewPosition, context.getString(R.string.indoor__message__beacon_position_update), true);
         else
         {
             if(localizedPosition.isRealTimeLocalized())
@@ -714,10 +697,8 @@ public class IndoorMap
     public void showProximityArtworkTooltip() {
 
         if (BEACON_DEBUG) {
-            Toast toast;
             FragmentHelper.instance().getMainActivity().getFloatingActionButtonNotifyBeaconProximity().setVisibility(View.VISIBLE);
-            toast = Toast.makeText(context, "BEACON VICINO!!!", Toast.LENGTH_LONG);
-            toast.show();
+            Toast.makeText(context,context.getString(R.string.indoor__debug__beacon_proximity), Toast.LENGTH_LONG).show();
         }
 
         hideProximityArtworkTooltip();
@@ -771,8 +752,7 @@ public class IndoorMap
         this.hideProximityArtworkTooltip();
 
         if(BEACON_DEBUG) {
-            Toast toast = Toast.makeText(context, "BEACON LONTANO ...", Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(context,context.getString(R.string.indoor__debug__beacon_proximity_lost), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -783,16 +763,13 @@ public class IndoorMap
 
         if(localizedPosition.getPosition()== null)
         {
-            Toast toast = Toast.makeText(context,
-                    "Purtroppo non siamo riusciti a localizzarti.. avvicinati ad un beacon o scannerizza un QR code per navigare.", Toast.LENGTH_LONG);
-            toast.show();
+            Toast.makeText(context, context.getString(R.string.indoor__message__cant_navigate__not_localized), Toast.LENGTH_LONG).show();
             return 0;
         }
         else if(selectedArtworkPosition == null )
         {
-            Toast toast = Toast.makeText(context,
-                    "Seleziona un marker per navigare.", Toast.LENGTH_LONG);
-            toast.show();
+            Toast.makeText(context,context.getString(R.string.indoor__message__cant_navigate__no_marker_selected), Toast.LENGTH_LONG).show();
+
             return 0;
         }
         else
@@ -807,9 +784,7 @@ public class IndoorMap
                 {
                     if(pathSpotManager == null)
                         pathSpotManager = new PathSpotManager();
-                    Toast toast = Toast.makeText(context,
-                            "Purtroppo non è stato possibile trovare un percorso verso l'opera selezionata...", Toast.LENGTH_LONG);
-                    toast.show();
+                    Toast.makeText(context,context.getString(R.string.indoor__message__cant_navigate__no_path_found), Toast.LENGTH_LONG).show();
                 }
                 this.navigationImgView.setImageDrawable(pathSpotManager.newWrapperDrawable());
                 pathSpotManager.invalidate();
@@ -817,9 +792,7 @@ public class IndoorMap
             }
             else
             {
-                Toast toast = Toast.makeText(context,
-                        "Purtroppo l'opera d'arte selezionata non è stata localizzata sulla mappa...", Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(context,context.getString(R.string.indoor__message__cant_navigate__artwork_without_position), Toast.LENGTH_SHORT).show();
                 return -1;
             }
 

@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/artworkInfos"
-                android:text="Informazioni"
+                android:text="@string/indoor__label__info"
                 android:textColor="@android:color/darker_gray"
                 android:paddingTop="8dp"
                 android:layout_below="@id/artworkImage"/>
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/descr1"
-                android:text="Descrizione"
+                android:text="@string/indoor__label__descr"
                 android:textColor="@android:color/darker_gray"
                 android:paddingTop="8dp"
                 android:layout_below="@id/location"/>
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/artworkDescription"
-                android:text="Informazioni sull'artista"
+                android:text="@string/indoor__label__artist_info"
                 android:textColor="@android:color/darker_gray"
                 android:paddingTop="8dp"/>
 
