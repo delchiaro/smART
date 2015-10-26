@@ -104,6 +104,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
     public Map(GoogleMap mMap, MuseumMarkerManager markerManager)
     {
         this.gmap = mMap;
+        this.neverLocalized = true;
         this.gmap.setMyLocationEnabled(true);
         this.gmap.getUiSettings().setZoomControlsEnabled(false);
         FragmentHelper fh = FragmentHelper.instance();
@@ -260,16 +261,18 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
             @Override
             public void onMyLocationChange(Location location) {
 
-                lastLocation = new LatLng( location.getLatitude(), location.getLongitude());
-                circle.setCenter(lastLocation);
-                proximityManager.pushProximityAnalysis(location.getLatitude(), location.getLongitude());
+               // if(location!=null) {
+                    lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    circle.setCenter(lastLocation);
+                    if(proximityManager != null)
+                        proximityManager.pushProximityAnalysis(location.getLatitude(), location.getLongitude());
 
-                if(neverLocalized)
-                {
-                    neverLocalized = false;
-                    //setCamera(lastLocation, 4);
-                    zoomOnLatLng(lastLocation, 14);
-                }
+                    if (neverLocalized) {
+                        neverLocalized = false;
+                        //setCamera(lastLocation, 4);
+                        zoomOnLatLng(lastLocation, 14);
+                    }
+               // }
             }
         });
 

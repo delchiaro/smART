@@ -188,6 +188,7 @@ public class MapFragment extends Fragment
         super.onPause();
         map.stopLocalization();
         map.clearProximityNotificationTooltip();
+        map.simulateUnselectMarker();
         map = null;
     }
 
