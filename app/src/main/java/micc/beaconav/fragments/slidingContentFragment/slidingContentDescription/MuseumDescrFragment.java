@@ -171,7 +171,7 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
         int heigth = (int) FragmentHelper.instance().getMainActivity().getResources().getDimension(R.dimen.museum_gallery_heigth);
 
         LinearLayout.LayoutParams dimens = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, FragmentHelper.dpToPx( heigth ));
+                (LinearLayout.LayoutParams.WRAP_CONTENT, heigth);
         dimens.leftMargin = FragmentHelper.dpToPx(3);
         dimens.rightMargin = FragmentHelper.dpToPx(3);
 
