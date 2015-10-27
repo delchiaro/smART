@@ -209,8 +209,9 @@ public class ArtworkDescrFragment extends Fragment {
                 webViewArtworkDescr.setVisibility(View.VISIBLE);
                 layoutDescr.setVisibility(View.VISIBLE);
             }
-            WebSettings webSettings = webViewArtworkDescr.getSettings();
-            webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
+            // TODO: SET WEBVIEW TEXT SIZE
+            //WebSettings webSettings = webViewArtworkDescr.getSettings();
+            //webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
 
             String text = getResources().getString(R.string.html_header);
             text += artworkRow.getDescription();

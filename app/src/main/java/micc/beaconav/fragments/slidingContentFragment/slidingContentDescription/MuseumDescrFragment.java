@@ -216,8 +216,9 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
                 webViewMuseumDescr.setVisibility(View.VISIBLE);
                 museumDescrLayout.setVisibility(View.VISIBLE);
             }
-            WebSettings webSettings = webViewMuseumDescr.getSettings();
-            webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
+            // TODO: SET WEBVIEW FONT SIZE
+            //WebSettings webSettings = webViewMuseumDescr.getSettings();
+            //webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
 
             // si passa dal FragmentHelper perchè questo fragment potrebbe non essere ancora stato
             // attaccato alla main activity.

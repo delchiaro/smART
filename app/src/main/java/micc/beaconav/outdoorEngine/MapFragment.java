@@ -27,8 +27,13 @@ import micc.beaconav.R;
 public class MapFragment extends Fragment
 {
 
-    private static final LatLng startLatLng = new LatLng(42.2226192,12.55);
-    private static final float  startZoom = 5.4f;
+    // Australia
+    private static final LatLng startLatLng = new LatLng(-26.634145,134.620111);
+    private static final float  startZoom = 3.5f;
+
+//  Italy
+//    private static final LatLng startLatLng = new LatLng(42.2226192,12.55);
+//    private static final float  startZoom = 5.4f;
 
     private Map map; // Might be null if Google Play services APK is not available.
     private Context context;

@@ -56,6 +56,9 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
     private final static int PROXIMITY_SKIMMING_RADIUS = 2000; // in metri
 
 
+
+
+
     private boolean neverLocalized = true;
 
     private final static Context context = FragmentHelper.instance().getMainActivity();
@@ -117,6 +120,7 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
         setUpDbObjects();
         setUpEvents();
 
+
         LatLng coord = new LatLng(43.8007117, 11.2435291);
         // Instantiates a new CircleOptions object and defines the center and radius
         circleOptions = new CircleOptions()
@@ -127,7 +131,6 @@ public class Map implements JSONHandler<MuseumRow>, ProximityNotificationHandler
                 .fillColor(Color.parseColor("#20FFA726"));
         // Get back the mutable Circle
         circle = gmap.addCircle(circleOptions);
-
 
         museumMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         selectedMuseumMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
