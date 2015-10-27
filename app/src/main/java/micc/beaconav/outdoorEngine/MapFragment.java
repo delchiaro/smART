@@ -33,7 +33,8 @@ public class MapFragment extends Fragment
     private Map map; // Might be null if Google Play services APK is not available.
     private Context context;
 
-    private View myFragmentView = null;
+    //private View myFragmentView = null;
+    private ViewGroup container = null;
 
 
     public MapFragment(){}
@@ -131,41 +132,43 @@ public class MapFragment extends Fragment
 
 
 // * * * * OVERRIDE METHODS * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
 
+//
 //    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-//    {
-//        //super.onCreateView(inflater, container, savedInstanceState);
-//        myFragmentView = inflater.inflate(R.layout.fragment_map, container, false);
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        if (myFragmentView != null)
+//        {
+//            ViewGroup parent = (ViewGroup) myFragmentView.getParent();
+//            if (parent != null) parent.removeView(myFragmentView);
+//        }
+//        try
+//        {
+//            myFragmentView = inflater.inflate(R.layout.fragment_map, container, false);
+//        }
+//        catch (InflateException e) { /* map is already there, just return view as it is */ }
+//        FragmentHelper.instance().getMainActivity().hideMenuItemStopPath();
+//
 //        return myFragmentView;
 //    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (myFragmentView != null)
-        {
-            ViewGroup parent = (ViewGroup) myFragmentView.getParent();
-            if (parent != null) parent.removeView(myFragmentView);
-        }
-        try
-        {
-            myFragmentView = inflater.inflate(R.layout.fragment_map, container, false);
-        }
-        catch (InflateException e) { /* map is already there, just return view as it is */ }
-        FragmentHelper.instance().getMainActivity().hideMenuItemStopPath();
-
-        return myFragmentView;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getArguments();
+        //getArguments();
         context = this.getActivity();
         setUp();
-        setUpEventListeners();
 
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        super.onCreateView(inflater, container, savedInstanceState);
+        this.container = container;
+        return inflater.inflate(R.layout.fragment_map, container, false);
+        //return myFragmentView;
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -175,11 +178,12 @@ public class MapFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-
+        setUpEventListeners();
         this.manager = FragmentHelper.instance();
         //if(map == null) {
-            map = new Map(getGMapFromXML(), manager);
-            setUpMap();
+        map = new Map(getGMapFromXML(), manager);
+        setUpMap();
+
         //}
     }
 

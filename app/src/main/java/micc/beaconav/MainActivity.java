@@ -287,8 +287,7 @@ public class MainActivity extends FragmentActivity
 
     }
 
-    public void initUniversalImageLoader() {
-
+    public void destroyUniversalImageLoader() {
         ImageLoader loader = ImageLoader.getInstance();
         if(loader != null)
         {
@@ -299,6 +298,11 @@ public class MainActivity extends FragmentActivity
             catch (Exception e)
             {}
         }
+    }
+
+    public void initUniversalImageLoader() {
+
+        destroyUniversalImageLoader();
         File cacheDir = StorageUtils.getCacheDirectory(context);
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
@@ -352,6 +356,7 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
+        this.initUniversalImageLoader();
     }
 
     @Override
@@ -369,6 +374,7 @@ public class MainActivity extends FragmentActivity
             //System.exit(0);
             //TODO: rimuovere questo exit erisolvere bug che quando pauso l'app (premo home) e la riapro poi cliccando su un google map marker crasha.
         }
+        //destroyUniversalImageLoader();
     }
 
     @Override

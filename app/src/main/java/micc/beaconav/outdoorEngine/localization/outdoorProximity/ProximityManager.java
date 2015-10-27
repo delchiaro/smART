@@ -120,11 +120,7 @@ public class ProximityManager
         if(analyzing == true)
         {
             asyncTask = new ProximityAsyncTask(this);
-
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB )
-                asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "null");
-            else
-                asyncTask.execute("null");
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "null");
         }
     }
 

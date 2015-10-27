@@ -130,7 +130,6 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
         artworkInMuseumLayout.setVisibility(View.GONE);
         DbManager.getArtworkDownloader(museumRow.getID()).addHandler(this);
         DbManager.getArtworkDownloader(museumRow.getID()).startDownload();
-
         setDescription(true);
 
         toIndoorBtn.setOnClickListener(new View.OnClickListener() {

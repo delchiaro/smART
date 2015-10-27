@@ -92,7 +92,10 @@ public class JSONDownloader<TR extends TableRow, TS extends TableSchema<TR>> ext
 
     public boolean startDownload() {
         if(isDownloadStarted()==false) {
-            this.execute(URL, schema.getName());
+
+            //this.execute(URL, schema.getName());
+            this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, URL, schema.getName());
+
             return true;
         }
         else return false;

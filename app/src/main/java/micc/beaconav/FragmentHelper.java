@@ -135,8 +135,8 @@ public class FragmentHelper  implements MuseumMarkerManager
                                     if (mainActivity.getSlidingUpPanelLayout().getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                                         AlertDialog alertDialog = new AlertDialog.Builder(mainActivity).create();
 
-                                        alertDialog.setTitle("Conferma azione");
-                                        alertDialog.setMessage("Vuoi uscire dal programma?");
+                                        alertDialog.setTitle("Action confirm request");
+                                        alertDialog.setMessage("Do you want to close the application?");
 
                                         // Setting Icon to Dialog
                                         //alertDialog.setIcon(R.drawable.);
@@ -149,7 +149,7 @@ public class FragmentHelper  implements MuseumMarkerManager
                                             }
                                         });
 
-                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Annulla", new DialogInterface.OnClickListener() {
+                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
 
                                             }
@@ -193,8 +193,8 @@ public class FragmentHelper  implements MuseumMarkerManager
                                     if (mainActivity.getSlidingUpPanelLayout().getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                                         AlertDialog alertDialog = new AlertDialog.Builder(mainActivity).create();
 
-                                        alertDialog.setTitle("Conferma azione");
-                                        alertDialog.setMessage("Vuoi uscire dal museo e tornare alla mappa esterna?");
+                                        alertDialog.setTitle("Action confirm request");
+                                        alertDialog.setMessage("Do you want to come back to the outdoor map?");
 
                                         // Setting Icon to Dialog
                                         //alertDialog.setIcon(R.drawable.);
@@ -206,7 +206,7 @@ public class FragmentHelper  implements MuseumMarkerManager
                                             }
                                         });
 
-                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Annulla", new DialogInterface.OnClickListener() {
+                                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
 
                                             }
@@ -347,10 +347,12 @@ public class FragmentHelper  implements MuseumMarkerManager
 
     public final void showMuseumDetailsFragment(final MuseumRow row) {
         activeSlidingFragment = SlidingFragment.DETAILS;
+        //museumDescrFragment = new MuseumDescrFragment();
 
         showNameHeaderFragment(row);
-        swapFragment(R.id.fragment_list_container, museumDescrFragment);
         museumDescrFragment.setMuseumRow(row);
+        swapFragment(R.id.fragment_list_container, museumDescrFragment);
+
         mainActivity.setThemeColor(MainActivity.ThemeColor.PURPLE);
         mainActivity.getFloatingActionButton().setIconDrawable(mainActivity.getResources().getDrawable(R.drawable.ic_directions_white_48dp));
 
