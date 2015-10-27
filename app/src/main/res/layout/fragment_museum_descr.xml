@@ -63,7 +63,10 @@
                             android:id="@+id/imgContainer"
                             android:orientation="horizontal"
                             android:longClickable="false"
-                            android:paddingBottom="7dp">
+                            android:paddingBottom="7dp"
+                            android:measureWithLargestChild="false"
+                            android:gravity="center_vertical"
+                            android:dividerPadding="3dp">
 
 
                         </LinearLayout>

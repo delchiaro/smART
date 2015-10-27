@@ -167,9 +167,15 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
-        ViewGroup.LayoutParams dimens = imgContainer.getLayoutParams();
-        dimens.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        dimens.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        int heigth = (int) FragmentHelper.instance().getMainActivity().getResources().getDimension(R.dimen.museum_gallery_heigth);
+
+        LinearLayout.LayoutParams dimens = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, FragmentHelper.dpToPx( heigth ));
+        dimens.leftMargin = FragmentHelper.dpToPx(3);
+        dimens.rightMargin = FragmentHelper.dpToPx(3);
+
+        //dimens.weight = 1;
 
         for(int i = 0; i < result.length ; i++)
         {
@@ -179,10 +185,13 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
             imageLoader.displayImage(result[i].getLink(), imageView, displayOption);
 
             imgContainer.addView(imageView);
-            imgContainer.setLayoutParams(dimens);
+            //imgContainer.setLayoutParams(dimens);
+            imageView.setLayoutParams(dimens);
 
-            imageView.setMaxHeight(DpHelper.dpToPx(300, getActivity()));
-            //imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            //imageView.setMaxHeight(FragmentHelper.dpToPx(300));
+            //imageView.setMinimumWidth(FragmentHelper.dpToPx(200));
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setAdjustViewBounds(true);
         }
 
 //        ImagesDownloader dbImagesDownloader = new ImagesDownloader();
