@@ -289,6 +289,16 @@ public class MainActivity extends FragmentActivity
 
     public void initUniversalImageLoader() {
 
+        ImageLoader loader = ImageLoader.getInstance();
+        if(loader != null)
+        {
+            try {
+                loader.stop();
+                loader.destroy();
+            }
+            catch (Exception e)
+            {}
+        }
         File cacheDir = StorageUtils.getCacheDirectory(context);
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCacheExtraOptions(480, 800) // default = device screen dimensions

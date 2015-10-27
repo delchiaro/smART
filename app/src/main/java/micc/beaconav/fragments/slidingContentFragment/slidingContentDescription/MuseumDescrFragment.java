@@ -183,7 +183,6 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
 
             ImageLoader imageLoader = ImageLoader.getInstance();
             imageLoader.displayImage(result[i].getLink(), imageView, displayOption);
-
             imgContainer.addView(imageView);
             //imgContainer.setLayoutParams(dimens);
             imageView.setLayoutParams(dimens);

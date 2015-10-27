@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.LinkedList;
@@ -247,6 +248,8 @@ public class FragmentHelper  implements MuseumMarkerManager
 
 
     public final void showOutdoorFragment() {
+
+        mainActivity.initUniversalImageLoader();
         //if(activeMainFragment != MainFragment.OUTDOOR) {
             activeMainFragment = MainFragment.OUTDOOR;
             indoorMapFragmentLite = null;
@@ -267,6 +270,8 @@ public class FragmentHelper  implements MuseumMarkerManager
     public final void showIndoorFragment(MuseumRow museum) {
 //        indoorMapFragment = new IndoorMapFragment();
 //        swapFragment(R.id.fragment_map_container, indoorMapFragment);
+
+        mainActivity.initUniversalImageLoader();
 
         activeMainFragment = MainFragment.INDOOR;
         showArtworkListFragment(museum, null);
