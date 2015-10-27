@@ -208,4 +208,9 @@ public class MapFragment extends Fragment
 //        map.clearProximityNotificationTooltip();
 
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

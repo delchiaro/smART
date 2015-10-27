@@ -4,7 +4,7 @@
     <string name="html_header">  <![CDATA[
                             <html>
                              <head></head>
-                             <body style="text-align:justify;color:black;background-color:trasparent;">
+                             <body style="text-align:justify;color:black;background-color:trasparent;font-size:150%">
                                                ]]>
     </string>
 

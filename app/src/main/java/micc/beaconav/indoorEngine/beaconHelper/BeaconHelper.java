@@ -24,6 +24,10 @@ public class BeaconHelper
     private static final int wait_time_between_scan = 1000;
     private static final String ALL_BEACONS_UUID = null;
 
+    private static int MAJOR_FILTER = 12830;
+    //private static Integer MAJOR_FILTER = null;
+
+
     private static final String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     private static final String ESTIMOTE_VIRTUAL_BEACON_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
@@ -42,6 +46,8 @@ public class BeaconHelper
 
     private static final int REQUEST_ENABLE_BT = 1234;
 
+
+
     public BeaconHelper(Activity activity) {
         this(activity, ALL_BEACONS_UUID);
     }
@@ -49,7 +55,7 @@ public class BeaconHelper
         this.context = activity;
         this.activity = activity;
         beaconManager = new BeaconManager(activity);
-        ALL_UUID_BEACONS = new Region("rid", Alternative_UUID, null, null);
+        ALL_UUID_BEACONS = new Region("rid", Alternative_UUID, MAJOR_FILTER, null);
 
 
 
@@ -75,6 +81,14 @@ public class BeaconHelper
                             for (int i = 0; i < nListeners; i++)
                             {
                                 proximityListeners.get(i).OnBeaconProximity(beacons);
+                            }
+                        }
+                        else
+                        {
+                            int nListeners = proximityListeners.size();
+                            for (int i = 0; i < nListeners; i++)
+                            {
+                                proximityListeners.get(i).OnBeaconProximity(new ArrayList<Beacon>());
                             }
                         }
                     }
@@ -145,11 +159,13 @@ public class BeaconHelper
     }
 
     public static boolean isInProximity(Beacon beacon) {
-        if(Utils.computeProximity(beacon) != Utils.Proximity.NEAR) // NEAR <= 0.5m
+
+        if(Utils.computeProximity(beacon) == Utils.Proximity.IMMEDIATE || // immediate 0.5 > x > 0m
+                Utils.computeProximity(beacon) == Utils.Proximity.NEAR ) // NEAR: 3 > x > 0.5m
         {
-            return false;
+            return true;
         }
-        else return true;
+        else return false;
     }
 
 }

@@ -33,7 +33,7 @@ public class GoodBadBeaconProximityManager extends ABeaconProximityManager {
 */
 
     private final int       INIT_GOOD = 5;
-    private final int       INIT_BAD  = 2;
+    private final int       INIT_BAD  = 3;
 
     private final int       DEFAULT_GOOD_TRESHOLD = 25;
     private final int       DEFAULT_BAD_TRESHOLD = -5;
@@ -78,8 +78,10 @@ public class GoodBadBeaconProximityManager extends ABeaconProximityManager {
         }
 
         public void standardStep() {
-            goodPoints /= stdDiv;
-            badPoints /= stdDiv;
+            if(goodPoints>INIT_GOOD)
+                goodPoints /= stdDiv;
+            if(badPoints>INIT_BAD)
+                badPoints /= stdDiv;
             if(goodPoints < INIT_GOOD / (stdDiv*MAX_INIT_GOOD_STD_REDUCTORS))
                 goodPoints = (int) (INIT_GOOD / (stdDiv*MAX_INIT_GOOD_STD_REDUCTORS));
             if(badPoints < INIT_BAD / (stdDiv*MAX_INIT_BAD_STD_REDUCTORS))

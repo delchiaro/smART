@@ -54,11 +54,12 @@
 
                     <ImageView
                         android:layout_width="fill_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="wrap_content"
                         android:id="@+id/artworkImage"
                         android:layout_centerHorizontal="true"
                         android:paddingTop="8dp"
-                        android:layout_below="@+id/artwork_image_separator" />
+                        android:layout_below="@+id/artwork_image_separator"
+                        android:minHeight="380dp" />
                 </RelativeLayout>
 
                 <RelativeLayout

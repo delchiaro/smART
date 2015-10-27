@@ -594,7 +594,7 @@ public class IndoorMap
             unsetActiveArtwork();
         }
 
-        hideDijkstraPath();
+        //hideDijkstraPath();
         localizedPosition.setPosition(myNewPosition);
         if(realtimePositionUpdate)
             localizedPosition.realtimeLocalied();
@@ -633,8 +633,8 @@ public class IndoorMap
 
         if(myNewPosition instanceof ArtworkPosition)
         {
-            this.onMarkerSpotSelected(((ArtworkPosition) myNewPosition).getMarker());
-            FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+            //this.onMarkerSpotSelected(((ArtworkPosition) myNewPosition).getMarker());
+//            FragmentHelper.instance().getMainActivity().getSlidingUpPanelLayout().setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
         }
 
         if(myNewPosition != null)

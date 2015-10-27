@@ -20,6 +20,7 @@ import micc.beaconav.indoorEngine.databaseLite.BuildingAdapter;
 import micc.beaconav.indoorEngine.databaseLite.BuildingFactory;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloader;
 import micc.beaconav.indoorEngine.databaseLite.downloader.BuildingDownloaderListener;
+import micc.beaconav.outdoorEngine.Map;
 
 /**
  * Created by nagash on 15/03/15.
@@ -55,7 +56,16 @@ public class IndoorMapFragmentLite extends Fragment
         return inflater.inflate(R.layout.fragment_indoor_map_lite, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        Map map = FragmentHelper.instance().getOutdoorMap();
+
+        if(map != null)
+            map.clearProximityNotificationTooltip();
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
