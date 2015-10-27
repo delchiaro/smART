@@ -93,12 +93,22 @@
                         android:layout_below="@id/descr"
                         android:id="@+id/separator"/>
 
-                    <TextView
+                    <!--<TextView-->
+                        <!--android:id="@+id/museumDescription"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@id/descr"-->
+                        <!--android:textColor="@android:color/black"/>-->
+
+
+                    <WebView
                         android:id="@+id/museumDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/descr"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        ></WebView>
+
                 </RelativeLayout>
 
                 <RelativeLayout

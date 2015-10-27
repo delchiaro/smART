@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -103,7 +105,9 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
     private RelativeLayout museumDescrLayout      = null;
     private RelativeLayout museumMapPreviewLayout = null;
 
-    private TextView  textViewMuseumDescr     = null;
+    private WebView webViewMuseumDescr     = null;
+
+//    private TextView  textViewMuseumDescr     = null;
     private LinearLayout imgContainer = null;
 
 
@@ -119,7 +123,7 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
         museumDescrLayout =     (RelativeLayout)getView().findViewById(R.id.museum_description_layout);
         museumMapPreviewLayout = (RelativeLayout)getView().findViewById(R.id.museum_map_preview_layout);
 
-        textViewMuseumDescr = (TextView)getView().findViewById(R.id.museumDescription);
+        webViewMuseumDescr = (WebView)getView().findViewById(R.id.museumDescription);
         imgContainer        = (LinearLayout)getView().findViewById(R.id.imgContainer);
 
 
@@ -127,16 +131,7 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
         DbManager.getArtworkDownloader(museumRow.getID()).addHandler(this);
         DbManager.getArtworkDownloader(museumRow.getID()).startDownload();
 
-
-        if(museumRow != null) {
-            if( tryToShowInfo(textViewMuseumDescr, "", museumRow.getDescr() ) )
-                museumDescrLayout.setVisibility(View.VISIBLE);
-            else  museumDescrLayout.setVisibility(View.GONE);
-        }
-        else{
-            tryToShowInfo(textViewMuseumDescr, "", null);
-            museumDescrLayout.setVisibility(View.GONE);
-        }
+        setDescription(true);
 
         toIndoorBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -198,11 +193,37 @@ public class MuseumDescrFragment extends Fragment implements JSONHandler<Artwork
     //Questo setter è fondamentale, al Fragment di quale museo sto parlando
     public void setMuseumRow(MuseumRow row){
         this.museumRow = row;
-        if(textViewMuseumDescr != null)
+        if(webViewMuseumDescr != null)
         {
-            textViewMuseumDescr.setText(museumRow.getDescr());
+            setDescription(false);
         }
     }
 
+
+    private void setDescription(boolean constructor)
+    {
+        String descr = museumRow.getDescription();
+        if(descr != null && (!descr.equals("")) )
+        {
+            if(!constructor) {
+                webViewMuseumDescr.setVisibility(View.VISIBLE);
+                museumDescrLayout.setVisibility(View.VISIBLE);
+            }
+            WebSettings webSettings = webViewMuseumDescr.getSettings();
+            webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
+
+            // si passa dal FragmentHelper perchè questo fragment potrebbe non essere ancora stato
+            // attaccato alla main activity.
+            String text = FragmentHelper.instance().getMainActivity().getString(R.string.html_header);
+            text += museumRow.getDescription();
+            text += FragmentHelper.instance().getMainActivity().getResources().getString(R.string.html_footer);
+            webViewMuseumDescr.loadData(text, "text/html", null);
+        }
+        else
+        {
+            webViewMuseumDescr.setVisibility(View.GONE);
+            museumDescrLayout.setVisibility(View.GONE);
+        }
+    }
 
 }

@@ -18,9 +18,19 @@ public class DpHelper
         return dpToPx(dimensioninDp, this.context);
     }
 
-    public static final int dpToPx(int dimensionInDp, Context context)
+    public static final int dpToPx(int dp, Context context)
     {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimensionInDp, context.getResources().getDisplayMetrics());
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
         return px;
+    }
+
+    public  static int spToPx(int sp, Context context) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+        return px;
+    }
+
+    public static int dpToSp(int dp, Context context) {
+        int sp = (int) ((float) dpToPx(dp, context) / (float) spToPx(dp, context));
+        return sp;
     }
 }

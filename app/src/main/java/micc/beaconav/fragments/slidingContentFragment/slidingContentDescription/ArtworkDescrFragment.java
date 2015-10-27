@@ -7,25 +7,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Date;
 
 import micc.beaconav.FragmentHelper;
 import micc.beaconav.R;
-import micc.beaconav.db.imageDownloader.ImagesDownloader;
 import micc.beaconav.db.timeStatistics.TimeStatisticsManager;
+import micc.beaconav.gui.animationHelper.DpHelper;
 import micc.beaconav.indoorEngine.ArtworkRow;
 
 /**
@@ -44,7 +42,7 @@ public class ArtworkDescrFragment extends Fragment {
     private RelativeLayout layoutArtistInfo = null;
 
     private ImageView   imageViewArtwork     = null;
-    private TextView    textViewArtworkDescr = null;
+    private WebView     webViewArtworkDescr = null;
     private TextView    textViewArtistDescr  = null;
     private TextView    textViewYear         = null;
     private TextView    textViewLocation     = null;
@@ -93,7 +91,7 @@ public class ArtworkDescrFragment extends Fragment {
         layoutArtistInfo = (RelativeLayout) getView().findViewById(R.id.layout_artist_info);
 
 
-        textViewArtworkDescr = (TextView) getView().findViewById(R.id.artworkDescription);
+        webViewArtworkDescr = (WebView) getView().findViewById(R.id.artworkDescription);
         //webViewArtwork       = (WebView)  getView().findViewById(R.id.artworkImage);
         imageViewArtwork     = (ImageView) getView().findViewById(R.id.artworkImage);
         textViewArtistName   = (TextView) getView().findViewById(R.id.artistName);
@@ -102,7 +100,6 @@ public class ArtworkDescrFragment extends Fragment {
         textViewArtistDescr  = (TextView) getView().findViewById(R.id.artistDescription);
         textViewDimensions   = (TextView) getView().findViewById(R.id.dimensions);
         textViewType         = (TextView) getView().findViewById(R.id.type);
-
 
 
         if(artworkRow != null)
@@ -119,16 +116,17 @@ public class ArtworkDescrFragment extends Fragment {
                 layoutInfo.setVisibility(View.GONE);
 
             // Description
-            boolean hasDescr = false;
-            hasDescr = tryToShowInfo(textViewArtworkDescr, "", artworkRow.getDescription());
-            if( hasDescr == false )
-                layoutDescr.setVisibility(View.GONE);
+            setDescription(true);
+
 
             // Artist Info
             boolean hasArtistInfo = false;
             hasArtistInfo = tryToShowInfo(textViewArtistDescr,  "", artworkRow.getArtistDescr());
             if( hasArtistInfo == false )
                 layoutArtistInfo.setVisibility(View.GONE);
+
+
+
 
 
 
@@ -196,11 +194,35 @@ public class ArtworkDescrFragment extends Fragment {
 
     public void setArtworkRow(ArtworkRow row){
         this.artworkRow = row;
-        if(textViewArtworkDescr != null) {
-            textViewArtworkDescr.setText(artworkRow.getDescription());
+        if(webViewArtworkDescr != null ) {
+            setDescription(false);
         }
     }
 
+
+    private void setDescription(boolean constructor)
+    {
+        String descr = artworkRow.getDescription();
+        if(descr != null && (!descr.equals("")) )
+        {
+            if(!constructor) {
+                webViewArtworkDescr.setVisibility(View.VISIBLE);
+                layoutDescr.setVisibility(View.VISIBLE);
+            }
+            WebSettings webSettings = webViewArtworkDescr.getSettings();
+            webSettings.setDefaultFontSize(FragmentHelper.spToPx(6));
+
+            String text = getResources().getString(R.string.html_header);
+            text += artworkRow.getDescription();
+            text += getResources().getString(R.string.html_footer);
+            webViewArtworkDescr.loadData(text, "text/html", null);
+        }
+        else
+        {
+            webViewArtworkDescr.setVisibility(View.GONE);
+            layoutDescr.setVisibility(View.GONE);
+        }
+    }
 
 
 }

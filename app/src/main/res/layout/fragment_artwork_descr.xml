@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/artwork_image"
-                        android:text="Artwork Picture:"
+                        android:text="@string/indoor__label__picture"
                         android:textColor="@android:color/darker_gray"
                         android:paddingTop="8dp"/>
 
@@ -140,7 +140,17 @@
                         android:layout_below="@id/descr1"
                         android:id="@+id/separatorArtwork2"/>
 
-                    <TextView
+                    <!--<TextView-->
+                        <!--android:id="@+id/artworkDescription"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@id/separatorArtwork2"-->
+                        <!--android:textColor="@android:color/black"-->
+                        <!--android:layout_gravity="center_horizontal|center"-->
+                        <!--android:gravity="left"-->
+                        <!--/>-->
+
+                    <WebView
                         android:id="@+id/artworkDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,7 +158,9 @@
                         android:textColor="@android:color/black"
                         android:layout_gravity="center_horizontal|center"
                         android:gravity="left"
-                        />
+                        >
+
+                    </WebView>
                 </RelativeLayout>
 
 

@@ -1,6 +1,7 @@
 package micc.beaconav;
 
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +28,7 @@ import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.
 import micc.beaconav.fragments.slidingContentFragment.slidingContentDescription.MuseumDescrFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.NameHeaderFragment;
 import micc.beaconav.fragments.slidingHeaderFragment.SeekBarHeaderFragment;
+import micc.beaconav.gui.animationHelper.DpHelper;
 import micc.beaconav.indoorEngine.ArtworkPosition;
 import micc.beaconav.indoorEngine.ArtworkRow;
 import micc.beaconav.indoorEngine.IndoorMap;
@@ -468,10 +470,15 @@ public class FragmentHelper  implements MuseumMarkerManager
 
 
 
-    public static int dpToPx(int dimensionInDp)
+    public static int dpToPx(int dp)
     {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimensionInDp, mainActivity.getResources().getDisplayMetrics());
-        return px;
+        return DpHelper.dpToPx(dp, mainActivity);
+    }
+    public  static int spToPx(int sp) {
+        return DpHelper.spToPx(sp, mainActivity);
+    }
+    public static int dpToSp(int dp) {
+        return DpHelper.dpToSp(dp, mainActivity);
     }
 
 
